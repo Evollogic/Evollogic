@@ -3,56 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVOLLOGIC_OS // TERMINAL</title>
+    <title>Evollogic - Restricted Access</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="crt"> <div id="stars"></div>
+<body>
 
-    <div id="terminal-boot">
-        <div id="terminal-text"></div>
-        <span class="cursor">_</span>
+    <div id="stars"></div>
+
+    <div id="loading-screen">
+        <p>> INITIALIZING_ENCRYPTION...</p>
     </div>
 
-    <div id="coming-soon-screen" style="display: none;">
+    <div id="coming-soon-screen">
+        
         <div id="transmission-prompt">
-            <h2 class="glitch" data-text="> INCOMING TRANSMISSION...">> INCOMING TRANSMISSION...</h2>
-            <button id="btn-accept-transmission" class="cyber-button">ACCEPT</button>
+            <h2 style="color: #00d4ff; letter-spacing: 3px;">> INCOMING TRANSMISSION...</h2>
+            <button id="btn-accept-transmission" style="width: auto; padding: 15px 40px; margin-top: 20px; font-size: 1.2rem;">ACCEPT</button>
         </div>
 
-        <div id="coming-soon-content" style="display: none;">
+        <div id="coming-soon-content">
             <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="main-logo">
-            <h1 style="letter-spacing: 5px; font-size: 2.5rem; text-shadow: 0 0 10px #00d4ff;">BUILDER WORLDS</h1>
+            <h1 style="letter-spacing: 5px; font-size: 2.5rem;">BUILDER WORLDS</h1>
             <div class="message-card">
                 <p style="font-size: 1.2rem; line-height: 1.6; color: #a0a0d0;">
-                    SYSTEM_LOCKED. <br>
-                    Exclusive access for the engineering team.
+                    The portals are currently under maintenance. <br>
+                    Exclusive access for the creation team only.
                 </p>
-                <p class="neon-text">COMING THIS MONTH</p>
+                <p class="glitch-text">COMING THIS MONTH</p>
             </div>
-            <button id="btn-toggle-music" class="cyber-button-small">🔊 MUTE AUDIO</button>
+            <button id="btn-toggle-music">🔊 MUTE AUDIO</button>
         </div>
 
         <audio id="bg-music" loop>
             <source src="Menu Suspenso.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
         </audio>
+
     </div>
 
-    <div id="app-wrapper" style="display: none;">
+    <div id="app-wrapper">
         <div id="login-screen" class="login-box">
-            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" style="width: 150px; margin-bottom: 10px;">
-            <h2 class="glitch" data-text="ADMIN_PANEL" style="margin-bottom: 20px;">ADMIN_PANEL</h2>
+            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" style="width: 180px; margin-bottom: 10px;">
+            <h2 style="color: #00d4ff; margin-bottom: 20px;">ADMIN_PANEL</h2>
             
-            <input type="email" id="email" placeholder="[ ENTER_EMAIL ]" autocomplete="off"><br>
-            <input type="password" id="password" placeholder="[ ENTER_KEY ]"><br>
-            <button id="btn-login" class="cyber-button">INITIALIZE</button>
+            <input type="email" id="email" placeholder="DECRYPT_EMAIL"><br>
+            <input type="password" id="password" placeholder="SECURITY_KEY"><br>
+            <button id="btn-login">ACCESS SYSTEM</button>
             
-            <p id="error-message" class="error-text">[!] AUTH_FAILED</p>
+            <p id="error-message" style="color: #ff0055; display: none; margin-top: 15px; font-weight: bold;">[!] ACCESS_DENIED</p>
         </div>
 
-        <div id="secret-hub" style="display: none;">
-            <h1 class="neon-text">MAIN_FRAME ACCESSED</h1>
+        <div id="secret-hub" style="display:none;">
+            <h1 style="color: #00ff88;">SYSTEM ONLINE</h1>
             <p>Welcome back, Architect.</p>
-            <button id="btn-logout" class="cyber-button alert-button">DISCONNECT</button>
+            <button id="btn-logout" style="background: #ff0055; color: #fff; width: auto; padding: 10px 40px;">SHUTDOWN</button>
         </div>
     </div>
 
