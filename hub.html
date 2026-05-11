@@ -5,21 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evollogic - Central Hub</title>
     
-    <link rel="stylesheet" href="style.css?v=3.0">
-    
-    <script>
-        const MEU_IP = "138.94.168.160"; 
-        fetch('https://api.ipify.org?format=json')
-            .then(res => res.json())
-            .then(data => {
-                // Se o IP não for o seu, ele avisa em vez de deixar a tela preta
-                if (data.ip !== MEU_IP) {
-                    alert("⚠️ MODO DEBUG: Seu IP atual é " + data.ip + ". Como é diferente da chave de segurança, o sistema iria te expulsar agora. Bloqueio desativado temporariamente para você testar o visual.");
-                    // window.location.href = "index.html"; <-- Comentado para não expulsar
-                }
-            })
-            .catch(() => console.log("Modo offline / Erro na API de IP"));
-    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body { 
+            background-color: #02050a; /* Fundo super escuro, quase preto */
+            color: #00ff88; 
+            font-family: 'Share Tech Mono', monospace; 
+            text-align: center; margin: 0; min-height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            overflow-x: hidden;
+        }
+
+        .crt::before {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            z-index: 100; background-size: 100% 3px; pointer-events: none;
+        }
+
+        #stars {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #001105 0%, #000 100%);
+            z-index: -1;
+        }
+
+        .header-logo { width: 150px; filter: drop-shadow(0 0 15px #00ff88); margin-bottom: 10px; }
+        .title-text { letter-spacing: 5px; font-size: 2.5rem; margin: 10px 0; color: #00ff88; text-shadow: 0 0 10px #00ff88;}
+
+        #app-wrapper { width: 100%; min-height: 100vh; display: flex; justify-content: center; padding: 40px 0; box-sizing: border-box; }
+        .dashboard-container { width: 90%; max-width: 1000px; z-index: 10; position: relative; }
+        
+        .dash-section { margin-bottom: 50px; text-align: left; background: rgba(0, 15, 5, 0.85); padding: 25px; border-radius: 10px; border: 1px solid rgba(0, 255, 136, 0.3); box-shadow: 0 0 20px rgba(0,0,0,0.8);}
+        .section-title { border-bottom: 2px solid rgba(0, 255, 136, 0.5); padding-bottom: 10px; font-size: 1.5rem; margin-bottom: 20px; text-transform: uppercase; color: #00ff88; }
+        
+        /* Carrossel */
+        .carousel-wrapper { display: flex; align-items: center; gap: 15px; position: relative; width: 100%; }
+        .scroll-btn { background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid #00ff88; border-radius: 5px; font-size: 1.5rem; padding: 10px 15px; cursor: pointer; transition: 0.3s; z-index: 10; }
+        .scroll-btn:hover { background: #00ff88; color: #000; box-shadow: 0 0 15px #00ff88; }
+        .carousel-container { display: flex; overflow-x: hidden; scroll-behavior: smooth; gap: 20px; padding: 10px 5px; flex: 1; }
+        
+        .company-card {
+            min-width: 130px; background: rgba(0, 0, 0, 0.8); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 10px; padding: 20px 10px;
+            display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s;
+        }
+        .company-card img { width: 60px; height: 60px; object-fit: contain; margin-bottom: 15px; filter: drop-shadow(0 0 5px rgba(0, 255, 136, 0.5)); }
+        .company-card span { color: #00ff88; font-weight: bold; font-size: 0.9rem; letter-spacing: 1px; }
+        .company-card:hover, .company-card.active { background: rgba(0, 255, 136, 0.2); border-color: #00ff88; transform: translateY(-5px); box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
+
+        /* Área de Info */
+        #info-display-area { background: rgba(0, 5, 2, 0.9); border: 1px dashed #00d4ff; padding: 30px; border-radius: 10px; min-height: 200px; text-align: left; }
+        .company-details { display: none; }
+        .company-details.active { display: block; animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .neon-subtitle { color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px; border-bottom: 1px solid rgba(0, 212, 255, 0.3); padding-bottom: 10px; text-transform: uppercase;}
+        .english-description { color: #d0d0d0; line-height: 1.6; font-size: 1.1rem;}
+        .meta-goal { font-size: 1.8rem; color: #ff0055; text-shadow: 0 0 10px #ff0055; font-weight: bold; margin: 10px 0;}
+    </style>
 </head>
 <body class="crt">
 
@@ -28,16 +70,16 @@
     <div id="app-wrapper">
         <div class="dashboard-container">
             
-            <header class="hub-header">
+            <header style="text-align: center; margin-bottom: 40px;">
                 <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="header-logo">
                 <h1 class="title-text">CENTRAL_HUB</h1>
             </header>
 
             <section class="dash-section">
                 <h2 class="section-title">> LATEST_POST</h2>
-                <div class="last-post-box">
-                    <p style="color: #00d4ff; font-weight: bold; margin-bottom: 10px;">[ TIMESTAMP: CURRENT_OPERATION ]</p>
-                    <p style="font-size: 1.1rem; line-height: 1.5; color: #d0d0d0;">
+                <div style="background: rgba(0,0,0,0.5); padding: 15px; border-left: 3px solid #00d4ff;">
+                    <p style="color: #00d4ff; font-weight: bold; margin-bottom: 10px; margin-top:0;">[ TIMESTAMP: CURRENT_OPERATION ]</p>
+                    <p style="font-size: 1.1rem; line-height: 1.5; color: #d0d0d0; margin-bottom:0;">
                         System update: May Roadmap active. Sodhupn ecosystem expansion verified. Network footprint scaling. Architect present.
                     </p>
                 </div>
@@ -50,89 +92,83 @@
                     <button id="scroll-left" class="scroll-btn">&#10094;</button>
                     
                     <div class="carousel-container" id="company-carousel">
-                        
                         <div class="company-card active" data-target="sodhupn">
                             <img src="https://i.imgur.com/WXcnLKE.png" alt="Sodhupn">
                             <span>Sodhupn</span>
                         </div>
-
                         <div class="company-card" data-target="seashare">
                             <img src="https://i.imgur.com/31WnC6D.png" alt="Seashare">
                             <span>Seashare</span>
                         </div>
-
                         <div class="company-card" data-target="tobump">
                             <img src="https://i.imgur.com/31WnC6D.png" alt="ToBump">
                             <span>ToBump</span>
                         </div>
-
                         <div class="company-card" data-target="toup">
                             <img src="https://i.imgur.com/31WnC6D.png" alt="ToUp">
                             <span>ToUp</span>
                         </div>
-
                         <div class="company-card" data-target="scriparadoxall">
                             <img src="https://i.imgur.com/31WnC6D.png" alt="Scriparadoxall">
                             <span>Scriparadoxall</span>
                         </div>
-
-                        <div class="company-card" data-target="youtube">
-                            <img src="https://i.imgur.com/31WnC6D.png" alt="YouTube">
-                            <span>YouTube</span>
-                        </div>
-
-                        <div class="company-card" data-target="gravity_coil">
-                            <img src="https://i.imgur.com/31WnC6D.png" alt="Gravity Coil">
-                            <span>Gravity Coil</span>
-                        </div>
-
-                        <div class="company-card" data-target="1x1scripter">
-                            <img src="https://i.imgur.com/31WnC6D.png" alt="1x1Scripter">
-                            <span>1x1Scripter</span>
-                        </div>
-
-                        <div class="company-card" data-target="hapiephone">
-                            <img src="https://i.imgur.com/31WnC6D.png" alt="Hapiephone">
-                            <span>Hapiephone</span>
-                        </div>
-
-                        <div class="company-card" data-target="gg">
-                            <img src="https://i.imgur.com/31WnC6D.png" alt="GG">
-                            <span>GG Games</span>
-                        </div>
-
                     </div>
                     
                     <button id="scroll-right" class="scroll-btn">&#10095;</button>
                 </div>
             </section>
 
-            <section class="dash-section" id="info-display-area">
-                
+            <section id="info-display-area">
                 <div class="company-details active" id="sodhupn-info">
                     <h2 class="neon-subtitle">Ecosystem_Overview: Sodhupn</h2>
                     <p class="english-description">
                         Sodhupn is a dedicated product sales store, currently operating across 3 major marketplaces (GG Max, Eldorado, and Desapego Games). We are committed to providing a secure and top-tier shopping experience.
                     </p>
-                    
-                    <div class="roadmap-block message-card">
-                        <h3 class="neon-subtitle">Vision_2026_Metas</h3>
-                        <p class="meta-goal">14 STORES_UNIFIED</p>
-                        <p style="color: #a0a0d0;">Our goal is to expand to 14 active stores by the end of 2026, launching our official website and a centralized marketplace hub soon.</p>
-                        <p class="glitch-text" style="margin-top: 15px; font-size: 1rem;">OFFICIAL WEBSITE COMING SOON</p>
-                    </div>
+                    <h3 class="neon-subtitle" style="margin-top: 20px;">Vision_2026_Metas</h3>
+                    <p class="meta-goal">14 STORES_UNIFIED</p>
+                    <p style="color: #a0a0d0;">Our goal is to expand to 14 active stores by the end of 2026, launching our official website and a centralized marketplace hub soon.</p>
                 </div>
 
                 <div class="company-details" id="placeholder-info">
                     <h2 class="neon-subtitle" style="color: #ff0055;">SYSTEM_LOCKED</h2>
                     <p style="color: #a0a0d0;">Select a valid subsystem from the network carousel to load its specific operational data.</p>
                 </div>
-
             </section>
 
         </div>
     </div>
 
-    <script src="hub.js?v=3.0"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const carousel = document.getElementById('company-carousel');
+            const cards = document.querySelectorAll('.company-card');
+            const details = document.querySelectorAll('.company-details');
+
+            document.getElementById('scroll-left').addEventListener('click', () => {
+                carousel.scrollBy({ left: -150, behavior: 'smooth' });
+            });
+
+            document.getElementById('scroll-right').addEventListener('click', () => {
+                carousel.scrollBy({ left: 150, behavior: 'smooth' });
+            });
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    cards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+
+                    const targetId = card.getAttribute('data-target');
+                    details.forEach(detail => detail.classList.remove('active'));
+
+                    const targetDetail = document.getElementById(`${targetId}-info`);
+                    if (targetDetail) {
+                        targetDetail.classList.add('active');
+                    } else {
+                        document.getElementById('placeholder-info').classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
