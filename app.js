@@ -1,11 +1,8 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-
-// 🛡️ IP FALSO PARA TESTAR A TELA DO MUTE E DA MÚSICA 🛡️
+// 🛡️ IP FALSO PARA TESTE 🛡️
 const ALLOWED_IP = "0.0.0.0"; 
 
 // ==========================================
-// 🎵 SINTETIZADOR DE ÁUDIO HACKER 🎵
+// 🎵 MOTOR DE ÁUDIO (SOM HACKER + ECO) 🎵
 // ==========================================
 let audioCtx;
 
@@ -19,16 +16,16 @@ function initAudio() {
     }
 }
 
-// 1. Som de digitação do Terminal
+// Som de digitação do Terminal (Teclado mecânico rápido)
 function playTerminalTick() {
     if (!audioCtx || audioCtx.state !== 'running') return;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     
     osc.type = 'square';
-    osc.frequency.setValueAtTime(1500 + Math.random() * 500, audioCtx.currentTime); 
+    osc.frequency.setValueAtTime(1200 + Math.random() * 300, audioCtx.currentTime); 
     
-    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02); 
     
     osc.connect(gain);
@@ -38,18 +35,19 @@ function playTerminalTick() {
     osc.stop(audioCtx.currentTime + 0.02);
 }
 
-// 2. Som Sci-Fi com ECO (Para o botão de Mute/Unmute)
+// Som Sci-Fi com ECO (Para o botão MUTE/UNMUTE)
 function playEchoSound() {
     if (!audioCtx || audioCtx.state !== 'running') return;
     
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    const delay = audioCtx.createDelay(); 
-    const feedback = audioCtx.createGain(); 
+    const delay = audioCtx.createDelay(); // Efeito de Eco
+    const feedback = audioCtx.createGain(); // Duração do Eco
 
-    delay.delayTime.value = 0.15; 
-    feedback.gain.value = 0.4;    
+    delay.delayTime.value = 0.15; // Velocidade da repetição
+    feedback.gain.value = 0.4;    // Intensidade da repetição
 
+    // Conectando os nós de áudio
     osc.connect(gain);
     gain.connect(audioCtx.destination);
     
@@ -58,9 +56,10 @@ function playEchoSound() {
     delay.connect(feedback);
     feedback.connect(delay);
 
+    // Frequência do som (Pew!)
     osc.type = 'sine';
     osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.2);
+    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
 
     gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
@@ -94,24 +93,24 @@ function typeTerminal() {
         
         let typingInterval = setInterval(() => {
             p.innerHTML += text.charAt(charIndex);
-            playTerminalTick(); 
+            playTerminalTick(); // Toca o clique do teclado
             charIndex++;
             
             if (charIndex === text.length) {
                 clearInterval(typingInterval);
                 lineIndex++;
-                setTimeout(typeTerminal, 300);
+                setTimeout(typeTerminal, 300); // Pausa entre linhas
             }
         }, 30);
     } else {
-        verifyIP();
+        verifyIP(); // Terminou de digitar? Verifica o IP!
     }
 }
 
-// O BOTÃO INICIAL
+// BOTÃO INICIAR SISTEMA
 document.getElementById('btn-start-boot').addEventListener('click', () => {
     initAudio(); 
-    playEchoSound(); 
+    playEchoSound(); // Toca o eco para confirmar o clique
     document.getElementById('init-screen').style.display = 'none';
     document.getElementById('terminal-boot').style.display = 'block';
     setTimeout(typeTerminal, 500); 
@@ -142,7 +141,7 @@ function verifyIP() {
             }, 1500); 
         })
         .catch(() => {
-            resultLine.innerHTML = `> NETWORK ERROR. FALLBACK ENGAGED.`;
+            resultLine.innerHTML = `> NETWORK FIREWALL DETECTED. BYPASSING...`;
             setTimeout(() => {
                 document.getElementById('terminal-boot').style.display = 'none';
                 document.getElementById('coming-soon-screen').style.display = 'block';
@@ -152,10 +151,11 @@ function verifyIP() {
 }
 
 // ==========================================
-// 🎵 MÚSICA E BOTÃO COM ECO 🎵
+// 🎵 CONTROLE DE MÚSICA 🎵
 // ==========================================
 const bgMusic = document.getElementById('bg-music');
 
+// Botão ACCEPT da transmissão
 document.getElementById('btn-accept-transmission').addEventListener('click', () => {
     initAudio();
     playEchoSound();
@@ -166,9 +166,10 @@ document.getElementById('btn-accept-transmission').addEventListener('click', () 
     bgMusic.play().catch(e => console.log("Erro de áudio:", e));
 });
 
+// Botão de MUTE / UNMUTE (COM O EFEITO DE ECO!)
 document.getElementById('btn-toggle-music').addEventListener('click', (e) => {
     initAudio();
-    playEchoSound(); // O SOM DO ECO AQUI!
+    playEchoSound(); // GERA O SOM DE ECO!
     
     if (bgMusic.paused) {
         bgMusic.play();
@@ -177,63 +178,4 @@ document.getElementById('btn-toggle-music').addEventListener('click', (e) => {
         bgMusic.pause();
         e.target.innerText = "🔇 UNMUTE AUDIO";
     }
-});
-
-// ==========================================
-// 🔥 FIREBASE (Blindado contra erros) 🔥
-// ==========================================
-let auth;
-try {
-    const firebaseConfig = {
-        apiKey: "SUA_API_KEY_AQUI", // Mesmo vazio, não vai travar o resto do site
-        authDomain: "SEU_AUTH_DOMAIN",
-        projectId: "SEU_PROJECT_ID",
-        storageBucket: "SEU_STORAGE_BUCKET",
-        messagingSenderId: "SEU_MESSAGING_ID",
-        appId: "SEU_APP_ID"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-
-    onAuthStateChanged(auth, (user) => {
-        const loginScreen = document.getElementById('login-screen');
-        const secretHub = document.getElementById('secret-hub');
-        if (user) {
-            loginScreen.style.display = 'none';
-            secretHub.style.display = 'block';
-        } else {
-            loginScreen.style.display = 'block';
-            secretHub.style.display = 'none';
-        }
-    });
-
-} catch (error) {
-    console.error("Aviso: Firebase não configurado corretamente.", error);
-}
-
-document.getElementById('btn-login').addEventListener('click', () => {
-    initAudio();
-    playEchoSound();
-    
-    if(!auth) {
-        document.getElementById('error-message').innerText = "[!] FIREBASE OFFLINE";
-        document.getElementById('error-message').style.display = 'block';
-        return;
-    }
-
-    const email = document.getElementById('email').value;
-    const pass = document.getElementById('password').value;
-    
-    signInWithEmailAndPassword(auth, email, pass)
-        .catch(() => {
-            playEchoSound();
-            document.getElementById('error-message').style.display = 'block';
-        });
-});
-
-document.getElementById('btn-logout').addEventListener('click', () => {
-    initAudio();
-    playEchoSound();
-    if(auth) signOut(auth);
 });
