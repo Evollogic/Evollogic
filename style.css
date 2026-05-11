@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
 body { 
-    background-color: #000; /* Fundo preto absoluto */
+    background-color: #000; /* Fundo preto total */
     color: #00ff88; /* Verde Hacker */
     font-family: 'Share Tech Mono', monospace; 
     text-align: center; 
@@ -14,11 +14,15 @@ body {
     overflow-x: hidden;
 }
 
-/* Efeito de linhas de monitor antigo */
+/* TV CRT Effect */
 .crt::before {
     content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
     z-index: 100; background-size: 100% 3px; pointer-events: none;
+}
+
+#init-screen {
+    display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw;
 }
 
 #terminal-boot {
@@ -27,39 +31,52 @@ body {
     color: #00ff88; text-shadow: 0 0 8px #00ff88;
 }
 
+.cursor { animation: blink 1s infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
 .main-logo {
     width: 250px; 
-    filter: drop-shadow(0 0 15px #00ff88); /* Brilho verde na logo */
+    filter: drop-shadow(0 0 15px #00ff88); /* Sombra Verde */
     animation: logoFloat 5s ease-in-out infinite;
     margin-bottom: 20px;
 }
-
-h1, h2, p, .glitch-text {
-    color: #00ff88 !important;
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+@keyframes logoFloat {
+    0% { transform: translateY(0px); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.4)); }
+    50% { transform: translateY(-15px); filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.8)); }
+    100% { transform: translateY(0px); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.4)); }
 }
+
+h1, h2, p, .glitch-text { color: #00ff88 !important; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
 
 .cyber-btn {
     padding: 15px 30px; background: transparent; color: #00ff88; 
     border: 2px solid #00ff88; border-radius: 5px; cursor: pointer; 
     font-weight: bold; text-transform: uppercase; letter-spacing: 2px;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Share Tech Mono', monospace; font-size: 1.1rem;
     transition: 0.3s;
 }
+.cyber-btn:hover { background: #00ff88; color: #000; box-shadow: 0 0 20px #00ff88; transform: scale(1.05); }
 
-.cyber-btn:hover {
-    background: #00ff88; color: #000;
-    box-shadow: 0 0 20px #00ff88;
+.init-btn { font-size: 1.5rem; padding: 20px 40px; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 10px #00ff88; } 50% { box-shadow: 0 0 30px #00ff88; } 100% { box-shadow: 0 0 10px #00ff88; } }
+
+.login-box {
+    background: rgba(0, 20, 10, 0.9);
+    border: 1px solid #00ff88; padding: 40px; border-radius: 10px;
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
 }
 
-.message-card {
-    border-top: 1px solid #00ff88;
-    margin-top: 20px; padding-top: 20px;
+input {
+    padding: 15px; margin: 10px 0; width: 100%; box-sizing: border-box;
+    border-radius: 5px; border: 1px solid #00ff88; 
+    background: #000; color: #00ff88; 
+    font-family: 'Share Tech Mono', monospace; outline: none; transition: 0.3s;
 }
+input:focus { box-shadow: 0 0 15px rgba(0, 255, 136, 0.5); }
 
 /* Estrelas verdes ao fundo */
 #stars {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at center, #002211 0%, #000 100%);
+    background: radial-gradient(circle at center, #001105 0%, #000 100%);
     z-index: -1;
 }
