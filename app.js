@@ -85,13 +85,13 @@ function typeTerminal() {
     if (lineIndex < bootSequence.length) {
         let p = document.createElement("p");
         p.style.margin = "5px 0";
-        terminalText.appendChild(p);
+        if(terminalText) terminalText.appendChild(p);
         
         let text = bootSequence[lineIndex];
         let charIndex = 0;
         
         let typingInterval = setInterval(() => {
-            p.innerHTML += text.charAt(charIndex);
+            if(p) p.innerHTML += text.charAt(charIndex);
             playTerminalTick(); // Toca o clique do teclado
             charIndex++;
             
@@ -124,7 +124,7 @@ if (btnStartBoot) {
 function verifyIP() {
     let resultLine = document.createElement("p");
     resultLine.style.margin = "5px 0";
-    terminalText.appendChild(resultLine);
+    if(terminalText) terminalText.appendChild(resultLine);
 
     fetch('https://api.ipify.org?format=json')
         .then(res => res.json())
@@ -134,22 +134,32 @@ function verifyIP() {
             setTimeout(() => {
                 if (data.ip === ALLOWED_IP) {
                     // SE FOR O SEU IP: Abre o Dashboard
-                    document.getElementById('terminal-boot').style.display = 'none';
-                    document.getElementById('app-wrapper').style.display = 'flex';
+                    let terminalBoot = document.getElementById('terminal-boot');
+                    let appWrapper = document.getElementById('app-wrapper');
+                    if(terminalBoot) terminalBoot.style.display = 'none';
+                    if(appWrapper) appWrapper.style.display = 'flex';
                 } else {
                     // SE NÃO FOR O SEU IP: Trava na tela de música
-                    document.getElementById('terminal-boot').style.display = 'none';
-                    document.getElementById('coming-soon-screen').style.display = 'block';
-                    document.getElementById('transmission-prompt').style.display = 'block';
+                    let terminalBoot = document.getElementById('terminal-boot');
+                    let comingSoon = document.getElementById('coming-soon-screen');
+                    let promptMsg = document.getElementById('transmission-prompt');
+                    
+                    if(terminalBoot) terminalBoot.style.display = 'none';
+                    if(comingSoon) comingSoon.style.display = 'block';
+                    if(promptMsg) promptMsg.style.display = 'block';
                 }
             }, 1500); 
         })
         .catch(() => {
             resultLine.innerHTML = `> NETWORK FIREWALL DETECTED. BYPASSING...`;
             setTimeout(() => {
-                document.getElementById('terminal-boot').style.display = 'none';
-                document.getElementById('coming-soon-screen').style.display = 'block';
-                document.getElementById('transmission-prompt').style.display = 'block';
+                let terminalBoot = document.getElementById('terminal-boot');
+                let comingSoon = document.getElementById('coming-soon-screen');
+                let promptMsg = document.getElementById('transmission-prompt');
+                
+                if(terminalBoot) terminalBoot.style.display = 'none';
+                if(comingSoon) comingSoon.style.display = 'block';
+                if(promptMsg) promptMsg.style.display = 'block';
             }, 1500);
         });
 }
@@ -168,8 +178,10 @@ if (btnAcceptTransmission) {
         document.getElementById('transmission-prompt').style.display = 'none';
         document.getElementById('coming-soon-content').style.display = 'block';
         
-        bgMusic.volume = 0.5; 
-        bgMusic.play().catch(e => console.log("Erro de áudio:", e));
+        if(bgMusic) {
+            bgMusic.volume = 0.5; 
+            bgMusic.play().catch(e => console.log("Erro de áudio:", e));
+        }
     });
 }
 
@@ -178,10 +190,10 @@ if (btnToggleMusic) {
         initAudio();
         playEchoSound(); // GERA O SOM DE ECO!
         
-        if (bgMusic.paused) {
+        if (bgMusic && bgMusic.paused) {
             bgMusic.play();
             e.target.innerText = "🔊 MUTE AUDIO";
-        } else {
+        } else if (bgMusic) {
             bgMusic.pause();
             e.target.innerText = "🔇 UNMUTE AUDIO";
         }
@@ -189,31 +201,56 @@ if (btnToggleMusic) {
 }
 
 // ==========================================
-// 🏢 NAVEGAÇÃO DE EMPRESAS (HUB.HTML) 🏢
+// 🏢 NAVEGAÇÃO DE EMPRESAS (HUB.HTML) - CARROSSEL 🏢
 // ==========================================
-// Adiciona a lógica de troca de conteúdo e som de eco ao clicar na barra lateral
-document.querySelectorAll('.sidebar-companies .grid-item').forEach(item => {
-    item.addEventListener('click', (e) => {
+
+// Lógica dos Botões de Scroll do Carrossel
+const track = document.getElementById('track');
+const btnLeft = document.getElementById('btnLeft');
+const btnRight = document.getElementById('btnRight');
+
+if (btnLeft && btnRight && track) {
+    btnLeft.addEventListener('click', () => {
         initAudio();
-        playEchoSound(); // O SOM DO ECO AQUI!
+        playEchoSound(); // Efeito sonoro do sistema ao clicar
+        track.scrollBy({ left: -200, behavior: 'smooth' });
+    });
+
+    btnRight.addEventListener('click', () => {
+        initAudio();
+        playEchoSound(); 
+        track.scrollBy({ left: 200, behavior: 'smooth' });
+    });
+}
+
+// Lógica de clicar no card e mostrar a página da empresa
+document.querySelectorAll('.empresa-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+        initAudio();
+        playEchoSound(); 
         
+        // currentTarget garante que pegamos o card inteiro, mesmo clicando no texto/imagem
+        const clickedCard = e.currentTarget;
+
         // Remove a classe ativa de todos
-        document.querySelectorAll('.sidebar-companies .grid-item').forEach(i => i.classList.remove('active'));
-        // Adiciona a classe ativa no clicado
-        e.target.classList.add('active');
+        document.querySelectorAll('.empresa-card').forEach(i => i.classList.remove('active'));
         
-        const targetId = e.target.getAttribute('data-target');
+        // Adiciona a classe ativa no clicado
+        clickedCard.classList.add('active');
+        
+        const targetId = clickedCard.getAttribute('data-target');
         
         // Esconde todos os perfis
         document.querySelectorAll('.company-profile').forEach(profile => profile.classList.remove('active'));
         
-        // Mostra o perfil correspondente (por enquanto o default é Sodhupn, preparei o campo pra outros)
+        // Mostra o perfil correspondente
         const targetProfile = document.getElementById(`${targetId}-profile`);
         if (targetProfile) {
             targetProfile.classList.add('active');
         } else {
-            // Failsafe: se não tiver o perfil ainda, mostra o placeholder
-            document.getElementById('placeholder-profile').classList.add('active');
+            // Failsafe: se não tiver o perfil ainda, mostra o placeholder de bloqueado
+            let placeholder = document.getElementById('placeholder-profile');
+            if(placeholder) placeholder.classList.add('active');
         }
     });
 });
