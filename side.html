@@ -13,99 +13,76 @@
             font-family: 'Poppins', sans-serif;
             color: #f8fafc;
             margin: 0;
-            padding: 20px; /* Dá um respiro das bordas do iframe */
+            padding: 20px;
             background: transparent;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* Mantém tudo lá no fundão */
-            height: calc(100vh - 40px); /* 100vh menos o padding */
+            justify-content: flex-end; 
+            height: calc(100vh - 40px);
             overflow: hidden;
             box-sizing: border-box;
         }
 
-        /* ==========================================
-           BLOCO PRINCIPAL (CONTA + IDIOMA + CONFIGS)
-           ========================================== */
         .bottom-section {
-            background: rgba(15, 23, 42, 0.7); 
+            background: rgba(15, 23, 42, 0.8); 
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 16px;
-            padding: 15px;
+            padding: 20px 15px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            gap: 15px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
         }
 
         .divider {
             height: 1px;
-            background: rgba(255, 255, 255, 0.05);
-            margin: 4px 0;
-        }
-
-        /* Estilo base de botões da sidebar */
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            color: #94a3b8;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            width: 100%;
-            box-sizing: border-box;
-            text-align: left;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
-
-        .menu-item svg {
-            width: 18px;
-            height: 18px;
-            transition: transform 0.3s;
+            background: rgba(255, 255, 255, 0.08);
+            margin: 2px 0;
         }
 
         /* ==========================================
-           ÁREA DE CONTA (LOGIN / PERFIL)
+           ÁREA DE CONTA (LOGIN / PERFIL) - CORRIGIDO
            ========================================== */
         
-        /* Botão de Entrar (Design aprimorado) */
         .login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Agora fica perfeitamente no centro */
+            gap: 10px;
+            padding: 14px;
             background: #38bdf8;
             color: #020617;
+            text-decoration: none;
+            border-radius: 12px;
             font-weight: 600;
-            justify-content: center; /* Agora centraliza direitinho */
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            width: 100%;
             box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
         }
+
         .login-btn:hover {
             background: #7dd3fc;
-            color: #020617;
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
         }
 
-        /* Perfil logado */
         .user-profile {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.25);
             border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: linear-gradient(135deg, #38bdf8, #818cf8);
             display: flex;
@@ -113,11 +90,10 @@
             justify-content: center;
             color: #fff;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             position: relative;
         }
 
-        /* Bolinha de status */
         .user-avatar::after {
             content: '';
             position: absolute;
@@ -130,81 +106,68 @@
             border-radius: 50%;
         }
 
-        .user-info-text {
-            display: flex;
-            flex-direction: column;
-        }
-        .user-name { color: #f8fafc; font-weight: 600; font-size: 0.95rem; }
+        .user-info-text { display: flex; flex-direction: column; }
+        .user-name { color: #f8fafc; font-weight: 600; font-size: 0.95rem; line-height: 1.2;}
         .user-status { color: #10b981; font-size: 0.75rem; font-weight: 500; }
 
-        /* Botão Sair */
         .logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            background: transparent;
             color: #ef4444;
-            margin-top: 5px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
         }
-        .logout-btn:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: #f87171;
-        }
+        .logout-btn:hover { background: rgba(239, 68, 68, 0.1); color: #f87171; }
 
         /* ==========================================
-           MENU DE IDIOMA E DROPDOWN
+           NOVO SELETOR DE IDIOMAS (PILLS MODERNO)
            ========================================== */
         
-        .dropdown-toggle {
-            justify-content: space-between;
-        }
-        .dropdown-toggle-content {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .arrow-icon { transition: transform 0.3s ease; }
-        .dropdown-toggle.open .arrow-icon { transform: rotate(180deg); }
-
-        /* A lista de idiomas que abre */
-        .dropdown-menu {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: all 0.3s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-
-        .dropdown-menu.open {
-            max-height: 200px;
-            opacity: 1;
-            padding: 8px;
-            margin-top: 5px;
-        }
-
-        .lang-option {
+        .setting-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 15px;
+            padding: 5px 0;
+        }
+
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             color: #94a3b8;
-            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .lang-selector {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 8px;
-            font-size: 0.9rem;
-            transition: 0.2s;
+            padding: 4px;
         }
 
-        .lang-option:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
-
-        /* O idioma que está selecionado agora */
-        .lang-option.active {
-            color: #38bdf8;
+        .lang-pill {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
             font-weight: 600;
-            background: rgba(56, 189, 248, 0.05);
+            color: #64748b;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .lang-pill.active {
+            background: #38bdf8;
+            color: #020617;
+            box-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
         }
 
     </style>
@@ -217,52 +180,28 @@
 
         <div class="divider"></div>
 
-        <div>
-            <button class="menu-item dropdown-toggle" id="lang-btn">
-                <div class="dropdown-toggle-content">
-                    <i data-feather="globe"></i> Idioma
-                </div>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span id="current-lang-text" style="font-size: 0.8rem; color: #64748b;">PT-BR</span>
-                    <i data-feather="chevron-down" class="arrow-icon"></i>
-                </div>
-            </button>
-
-            <div class="dropdown-menu" id="lang-menu">
-                <a href="#" class="lang-option active" onclick="selectLang(this, 'PT-BR')">
-                    Português (BR)
-                    <i data-feather="check" style="width: 16px; color: #38bdf8;"></i>
-                </a>
-                <a href="#" class="lang-option" onclick="selectLang(this, 'EN-US')">
-                    English (US)
-                    <i data-feather="check" style="width: 16px; opacity: 0;"></i>
-                </a>
-                <a href="#" class="lang-option" onclick="selectLang(this, 'ES-ES')">
-                    Español (ES)
-                    <i data-feather="check" style="width: 16px; opacity: 0;"></i>
-                </a>
+        <div class="setting-row">
+            <div class="setting-label">
+                <i data-feather="globe" style="width: 18px;"></i> Idioma
+            </div>
+            <div class="lang-selector">
+                <div class="lang-pill active" onclick="changeLang(this)">PT</div>
+                <div class="lang-pill" onclick="changeLang(this)">EN</div>
+                <div class="lang-pill" onclick="changeLang(this)">ES</div>
             </div>
         </div>
-
-        <button class="menu-item">
-            <i data-feather="settings"></i> Ajustes Gerais
-        </button>
 
     </div>
 
     <script>
-        // Inicializa ícones
         feather.replace();
 
-        // ==========================================
-        // LÓGICA DE LOGIN
-        // ==========================================
+        // LÓGICA DE LOGIN (Perfeitamente Alinhado)
         let isLogged = false; 
         const authContainer = document.getElementById('auth-container');
 
         function renderAuthStatus() {
             if (isLogged) {
-                // Logado
                 authContainer.innerHTML = `
                     <div class="user-profile">
                         <div class="user-avatar">S</div>
@@ -271,15 +210,14 @@
                             <span class="user-status">Online</span>
                         </div>
                     </div>
-                    <button class="menu-item logout-btn" onclick="toggleLogin()">
-                        <i data-feather="log-out"></i> Sair da Conta
+                    <button class="logout-btn" onclick="toggleLogin()" style="margin-top: 12px;">
+                        <i data-feather="log-out" style="width: 18px;"></i> Sair da Conta
                     </button>
                 `;
             } else {
-                // Deslogado (Botão Centralizado)
                 authContainer.innerHTML = `
-                    <button class="menu-item login-btn" onclick="toggleLogin()">
-                        <i data-feather="log-in"></i> Fazer Login
+                    <button class="login-btn" onclick="toggleLogin()">
+                        <i data-feather="log-in" style="width: 20px;"></i> Fazer Login
                     </button>
                 `;
             }
@@ -291,46 +229,14 @@
             renderAuthStatus();
         }
 
-        renderAuthStatus(); // Roda ao abrir a tela
+        renderAuthStatus(); 
 
-        // ==========================================
-        // LÓGICA DO MENU DE IDIOMAS
-        // ==========================================
-        const langBtn = document.getElementById('lang-btn');
-        const langMenu = document.getElementById('lang-menu');
-        const currentLangText = document.getElementById('current-lang-text');
-
-        // Abre/fecha a lista de idiomas
-        langBtn.addEventListener('click', () => {
-            langBtn.classList.toggle('open');
-            langMenu.classList.toggle('open');
-        });
-
-        // Função para selecionar um idioma
-        function selectLang(element, langCode) {
-            // 1. Tira a classe 'active' de todos
-            document.querySelectorAll('.lang-option').forEach(el => {
-                el.classList.remove('active');
-                // Esconde o ícone de 'check' dos outros
-                el.querySelector('svg').style.opacity = '0';
-            });
-
-            // 2. Adiciona 'active' no que foi clicado
+        // LÓGICA DO NOVO IDIOMA
+        function changeLang(element) {
+            // Remove a classe active de todos
+            document.querySelectorAll('.lang-pill').forEach(el => el.classList.remove('active'));
+            // Adiciona no que foi clicado
             element.classList.add('active');
-            
-            // Mostra o ícone de 'check' e pinta ele de azul
-            const checkIcon = element.querySelector('svg');
-            checkIcon.style.opacity = '1';
-            checkIcon.style.color = '#38bdf8';
-
-            // 3. Atualiza o textinho do lado da seta
-            currentLangText.textContent = langCode;
-
-            // 4. Fecha o menu depois de escolher
-            setTimeout(() => {
-                langBtn.classList.remove('open');
-                langMenu.classList.remove('open');
-            }, 200); // pequeno delay pra pessoa ver que clicou
         }
     </script>
 </body>
