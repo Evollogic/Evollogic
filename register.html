@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evollogic - Criar Conta</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            color: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Efeito de brilho de fundo */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(0,0,0,0) 70%);
+            top: -50px;
+            right: -100px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .register-container {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            box-sizing: border-box;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .register-header img {
+            width: 70px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+
+        .register-header h1 {
+            font-size: 1.8rem;
+            margin: 0 0 5px 0;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .register-header p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Botões Sociais */
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+
+        .btn-discord { background: rgba(88, 101, 242, 0.1); color: #fff; border-color: rgba(88, 101, 242, 0.3); }
+        .btn-discord:hover { background: #5865F2; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4); transform: translateY(-2px); }
+
+        .btn-google { background: rgba(255, 255, 255, 0.05); color: #fff; border-color: rgba(255, 255, 255, 0.1); }
+        .btn-google:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+
+        .social-icon { width: 18px; height: 18px; }
+
+        /* Divisor */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .divider:not(:empty)::before { margin-right: 15px; }
+        .divider:not(:empty)::after { margin-left: 15px; }
+
+        /* Formulário */
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+            text-align: left;
+            position: relative;
+            flex: 1;
+        }
+
+        .input-group label {
+            display: block;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            color: #64748b;
+            width: 16px;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            padding: 12px 14px 12px 40px;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        .input-field:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+        }
+
+        /* Checkbox Termos */
+        .terms-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .terms-group input[type="checkbox"] {
+            margin-top: 3px;
+            accent-color: #38bdf8;
+            cursor: pointer;
+        }
+
+        .terms-group a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .terms-group a:hover { text-decoration: underline; }
+
+        /* Botão Principal */
+        .submit-btn {
+            width: 100%;
+            background: #38bdf8;
+            color: #020617;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .submit-btn:hover {
+            background: #7dd3fc;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Login Link */
+        .login-area {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+
+        .login-area a {
+            color: #38bdf8;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .login-area a:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+
+        /* Responsividade para telas menores */
+        @media (max-width: 480px) {
+            .form-row { flex-direction: column; gap: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="register-container">
+        
+        <div class="register-header">
+            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic Logo">
+            <h1>Criar uma Conta</h1>
+            <p>Junte-se ao ecossistema Evollogic</p>
+        </div>
+
+        <div class="social-login">
+            <button class="social-btn btn-discord" type="button" onclick="registerWith('Discord')">
+                <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord" class="social-icon">
+                Discord
+            </button>
+            <button class="social-btn btn-google" type="button" onclick="registerWith('Google')">
+                <img src="https://cdn-icons-png.flaticon.com/512/300/300221.png" alt="Google" class="social-icon">
+                Google
+            </button>
+        </div>
+
+        <div class="divider">ou registre-se com e-mail</div>
+
+        <form id="registerForm">
+            
+            <div class="input-group">
+                <label for="username">Nome de Usuário</label>
+                <div class="input-wrapper">
+                    <i data-feather="user"></i>
+                    <input type="text" id="username" class="input-field" placeholder="Como devemos chamar você?" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <div class="input-wrapper">
+                    <i data-feather="mail"></i>
+                    <input type="email" id="email" class="input-field" placeholder="exemplo@evollogic.com" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <div class="input-wrapper">
+                        <i data-feather="lock"></i>
+                        <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="confirm-password">Confirmar</label>
+                    <div class="input-wrapper">
+                        <i data-feather="check-circle"></i>
+                        <input type="password" id="confirm-password" class="input-field" placeholder="••••••••" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">Eu concordo com os <a href="#">Termos de Serviço</a> e a <a href="#">Política de Privacidade</a>.</label>
+            </div>
+
+            <button type="submit" class="submit-btn">Criar Conta Agora</button>
+
+        </form>
+
+        <div class="login-area">
+            Já tem uma conta? <a href="login.html">Faça Login</a>
+        </div>
+
+    </div>
+
+    <script>
+        // Inicializa os ícones do Feather
+        feather.replace();
+
+        // Lógica de envio do formulário
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if(password !== confirmPassword) {
+                alert("As senhas não coincidem!");
+                return;
+            }
+
+            const btn = document.querySelector('.submit-btn');
+            
+            // Efeito de carregamento
+            btn.innerHTML = 'Criando conta...';
+            btn.style.opacity = '0.8';
+            btn.style.pointerEvents = 'none';
+
+            // Simula um tempo de carregamento e redireciona para o login
+            setTimeout(() => {
+                alert("Conta criada com sucesso! Faça login para continuar.");
+                window.location.href = 'login.html'; 
+            }, 1500);
+        });
+
+        // Lógica simulada para botões sociais
+        function registerWith(provider) {
+            alert(`Iniciando registro via ${provider}...`);
+        }
+    </script>
+</body>
+</html>
