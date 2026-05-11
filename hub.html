@@ -1,131 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evollogic - Central Hub</title>
-    <link rel="stylesheet" href="style.css">
-    
-    <script>
-        const MEU_IP = "138.94.168.160"; // SEU IP REAL
-        fetch('https://api.ipify.org?format=json')
-            .then(res => res.json())
-            .then(data => {
-                if (data.ip !== MEU_IP) {
-                    window.location.href = "index.html"; // Chuta de volta pra porta
-                }
-            })
-            .catch(() => window.location.href = "index.html");
-    </script>
-</head>
-<body class="crt">
+<div id="hub-wrapper" class="dashboard-wrapper">
+    <!-- Repare que removemos a nav.sidebar-companies inteira -->
 
-    <div id="stars"></div>
-
-    <div id="hub-wrapper" class="dashboard-wrapper">
+    <main class="main-content-area">
         
-        <nav class="sidebar-companies">
-            <h3 class="section-title">> COMPANY_NETWORKS</h3>
-            <div class="company-list-scroll">
-                <div class="grid-item active" data-target="sodhupn">Sodhupn</div>
-                <div class="grid-item" data-target="seashare">Seashare</div>
-                <div class="grid-item" data-target="tobump">ToBump</div>
-                <div class="grid-item" data-target="toup">ToUp</div>
-                <div class="grid-item" data-target="scriparadoxall">Scriparadoxall</div>
-                <div class="grid-item" data-target="youtube">YouTube</div>
-                <div class="grid-item" data-target="gravity_coil">Gravity Coil</div>
-                <div class="grid-item" data-target="1x1scripter">1x1Scripter</div>
-                <div class="grid-item" data-target="hapiephone">Hapiephone</div>
-                <div class="grid-item" data-target="gg">GG (Glimpse Games)</div>
-            </div>
-        </nav>
+        <header class="hub-header">
+            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="header-logo">
+            <h1 class="glitch" data-text="CENTRAL_HUB">CENTRAL_HUB</h1>
+        </header>
 
-        <main class="main-content-area">
+        <!-- NOVO CARROSSEL DE NAVEGAÇÃO -->
+        <div class="carrossel-wrapper">
+            <button class="scroll-btn left" id="btnLeft">❮</button>
             
-            <header class="hub-header">
-                <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="header-logo">
-                <h1 class="glitch" data-text="CENTRAL_HUB">CENTRAL_HUB</h1>
-            </header>
-
-            <section class="dash-section">
-                <h2 class="section-title">> LATEST_POST</h2>
-                <div class="last-post-box">
-                    <p style="color: #00d4ff; font-weight: bold; margin-bottom: 10px;">[ TIMESTAMP: CURRENT_OPERATION ]</p>
-                    <p style="font-size: 1.1rem; line-height: 1.5; color: #d0d0d0;">
-                        System update: May Roadmap active. Sodhupn ecosystem expansion verified. Gravity Coil subsystem stabilizing. Network footprint scaling. Architect present.
-                    </p>
+            <div class="carrossel-track" id="track">
+                <!-- Adicionei data-target em cada card para o JS saber qual tela abrir -->
+                <div class="empresa-card active" data-target="sodhupn">
+                    <img src="https://i.imgur.com/WXcnLKE.png" alt="Sodhupn Logo" class="empresa-img">
+                    <span class="empresa-nick">Sodhupn</span>
                 </div>
-            </section>
-
-            <section class="dash-section profile-section" id="profile-content">
-                <h2 class="section-title">> CONHECENDO NOIS (GETTING TO KNOW US)</h2>
                 
-                <div class="company-profile active" id="sodhupn-profile">
-                    
-                    <div class="profile-hero">
-                        <img src="https://i.imgur.com/WXcnLKE.png" alt="Sodhupn Profile" class="hero-image">
-                        <div class="hero-text">
-                            <h1 style="color: #00ff88; margin: 0; text-shadow: 0 0 15px #00ff88;">Sodhupn</h1>
-                            <p class="neon-subtitle">Your Trusted Shopping Destination</p>
-                        </div>
-                    </div>
-
-                    <div class="description-block">
-                        <h3 class="neon-subtitle">Ecosystem_Overview</h3>
-                        <p class="english-description">
-                            Sodhupn is our dedicated premiere sales platform, crafting a wide-ranging, secure product ecosystem. We are committed to unifying your shopping experiences, ensuring trust and excellence across multiple digital storefronts.
-                        </p>
-                    </div>
-
-                    <div class="ecosystem-block">
-                        <h3 class="neon-subtitle">Current_Footprint [3 STORES]</h3>
-                        <div class="footprint-grid">
-                            <div class="store-icon-box">
-                                <img src="image_2.png" alt="GG Max Conceptual Store" class="store-logo">
-                                <p>GG_MAX</p>
-                            </div>
-                            <div class="store-icon-box">
-                                <div class="conceptual-logo" style="background-color: #f7b731;">E</div>
-                                <p>ELDORADO</p>
-                            </div>
-                            <div class="store-icon-box">
-                                <img src="image_4.png" alt="Desapego Games Conceptual Store" class="store-logo">
-                                <p>DESAPEGO_GAMES</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="roadmap-block message-card">
-                        <h3 class="neon-subtitle">Vision_2026_Metas</h3>
-                        <p class="meta-goal">14 STORES_UNIFIED</p>
-                        <p style="color: #a0a0d0; line-height: 1.5;">By the end of 2026, the Sodhupn ecosystem aims to have expanded and unified 14 conceptual and digital storefronts, creating a comprehensive market network.</p>
-                    </div>
-
-                    <div class="upcoming-block">
-                        <h3 class="neon-subtitle">Centralization_Phase</h3>
-                        <div class="grid-container">
-                            <div class="grid-item upcoming-item">
-                                <span class="upcoming-status glitch-text" data-text="COMING SOON">COMING SOON</span>
-                                OFFICIAL_WEBSITE
-                            </div>
-                            <div class="grid-item upcoming-item">
-                                <span class="upcoming-status glitch-text" data-text="COMING SOON">COMING SOON</span>
-                                MARKETPLACE_HUB
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="empresa-card" data-target="seashare">
+                    <!-- Coloque o link da imagem real depois -->
+                    <img src="https://via.placeholder.com/80/001105/00ff88?text=S" alt="Seashare Logo" class="empresa-img">
+                    <span class="empresa-nick">Seashare</span>
                 </div>
 
-                <div class="company-profile" id="placeholder-profile">
-                    <h1 style="color: #ff0055; text-shadow: 0 0 10px #ff0055; margin-top: 50px;">SUBSYSTEM_ sealed</h1>
-                    <p style="color: #a0a0d0;">(This profile is currently locked or under development.)</p>
+                <div class="empresa-card" data-target="tobump">
+                    <img src="https://via.placeholder.com/80/001105/00ff88?text=T" alt="ToBump Logo" class="empresa-img">
+                    <span class="empresa-nick">ToBump</span>
                 </div>
+                
+                <div class="empresa-card" data-target="youtube">
+                    <img src="https://via.placeholder.com/80/001105/00ff88?text=Y" alt="YouTube Logo" class="empresa-img">
+                    <span class="empresa-nick">YouTube</span>
+                </div>
+            </div>
 
-            </section>
-
+            <button class="scroll-btn right" id="btnRight">❯</button>
         </div>
-    </div>
+        <!-- FIM DO CARROSSEL -->
 
-</body>
-</html>
+        <!-- Restante do conteúdo continua igual... -->
+        <section class="dash-section">
+            <h2 class="section-title">> LATEST_POST</h2>
+            <!-- ... -->
