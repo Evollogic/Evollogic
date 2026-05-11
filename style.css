@@ -1,122 +1,103 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-body { 
-    background-color: #000; color: #00ff88; 
-    font-family: 'Share Tech Mono', monospace; 
-    text-align: center; margin: 0; min-height: 100vh;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    overflow-x: hidden;
+/* ==========================================
+   CARROSSEL HORIZONTAL (NOVA NAVEGAÇÃO)
+   ========================================== */
+.carrossel-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 40px auto; /* Afasta o carrossel do conteúdo abaixo */
 }
 
-.crt::before {
-    content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-    z-index: 100; background-size: 100% 3px; pointer-events: none;
+.carrossel-track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Esconde no Firefox */
+    padding: 15px 10px;
+    width: 100%;
 }
 
-#stars {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at center, #001105 0%, #000 100%);
-    z-index: -1;
+.carrossel-track::-webkit-scrollbar {
+    display: none; /* Esconde no Chrome/Safari */
 }
 
-/* Telas do Index */
-#init-screen, #terminal-boot, #coming-soon-screen { width: 100%; }
-#terminal-boot { text-align: left; width: 90%; max-width: 600px; margin: 0 auto; font-size: 1.2rem; text-shadow: 0 0 8px #00ff88; }
-.cursor { animation: blink 1s infinite; }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-.main-logo {
-    width: 250px; filter: drop-shadow(0 0 15px #00ff88); 
-    animation: logoFloat 5s ease-in-out infinite; margin-bottom: 20px;
-}
-@keyframes logoFloat {
-    0% { transform: translateY(0px); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.4)); }
-    50% { transform: translateY(-15px); filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.8)); }
-    100% { transform: translateY(0px); filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.4)); }
+.empresa-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid transparent;
 }
 
-h1, h2, p, .glitch-text, .section-title, .neon-subtitle { color: #00ff88; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
-.title-text { letter-spacing: 5px; font-size: clamp(1.8rem, 6vw, 2.5rem); margin: 10px 0; }
-
-.cyber-btn {
-    padding: 15px 30px; background: transparent; color: #00ff88; 
-    border: 2px solid #00ff88; border-radius: 5px; cursor: pointer; 
-    font-weight: bold; text-transform: uppercase; letter-spacing: 2px;
-    font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; transition: 0.3s;
+.empresa-card:hover {
+    transform: translateY(-5px) scale(1.05); /* Efeito flutuante */
+    background: rgba(0, 255, 136, 0.05);
+    border: 1px solid rgba(0, 255, 136, 0.3);
 }
-.cyber-btn:hover { background: #00ff88; color: #000; box-shadow: 0 0 20px #00ff88; transform: scale(1.05); }
 
-.init-btn { font-size: 1.5rem; padding: 20px 40px; animation: pulse 2s infinite; }
-@keyframes pulse { 0% { box-shadow: 0 0 10px #00ff88; } 50% { box-shadow: 0 0 30px #00ff88; } 100% { box-shadow: 0 0 10px #00ff88; } }
-
-.message-card { width: 90%; max-width: 500px; padding: 20px; border-top: 1px solid #00ff88; margin: 20px auto 0 auto; box-sizing: border-box; }
-.glitch-text { color: #00ff88; text-shadow: 2px 2px #ff0055; font-weight: bold; font-size: 1.2rem; position: relative;}
-.glitch-text::before, .glitch-text::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;}
-.glitch-text::before { text-shadow: -2px 0 #ff0055; animation: glitch-anim-1 2s infinite; }
-.glitch-text::after { text-shadow: -2px 0 #00d4ff; animation: glitch-anim-2 2s infinite; }
-@keyframes glitch-anim-1 { 0%, 100% { clip: rect(10px, 9999px, 50px, 0); } 50% { clip: rect(80px, 9999px, 120px, 0); } }
-@keyframes glitch-anim-2 { 0%, 100% { clip: rect(70px, 9999px, 110px, 0); } 50% { clip: rect(30px, 9999px, 90px, 0); } }
-
-/* --- DASHBOARD WRAPPER: Flex layout for sidebar and content --- */
-#app-wrapper { width: 100%; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden;}
-.dashboard-wrapper { display: flex; width: 100%; flex: 1; min-height: 0; }
-
-/* SIDEBAR: Scrollable List of Companies */
-.sidebar-companies {
-    width: 250px; max-width: 30%; background: rgba(0, 10, 5, 0.9);
-    border-right: 1px solid rgba(0, 255, 136, 0.3); padding: 30px 10px;
-    display: flex; flex-direction: column; box-sizing: border-box;
+.empresa-card.active {
+    background: rgba(0, 255, 136, 0.15);
+    border: 1px solid #00ff88;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
 }
-.sidebar-companies .section-title { font-size: 1.2rem; letter-spacing: 1px; padding-bottom: 20px;}
-.company-list-scroll { flex: 1; overflow-y: auto; padding-right: 5px;}
-.company-list-scroll::-webkit-scrollbar { width: 5px; }
-.company-list-scroll::-webkit-scrollbar-thumb { background: rgba(0, 255, 136, 0.5); border-radius: 5px; }
 
-/* MAIN CONTENT AREA */
-.main-content-area {
-    flex: 1; padding: 40px; box-sizing: border-box;
-    overflow-y: auto; text-align: left;
+.empresa-card.active .empresa-img {
+    box-shadow: 0 0 20px #00ff88;
+    border-color: #00ff88;
 }
-.hub-header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid rgba(0, 255, 136, 0.1); padding-bottom: 20px;}
-.header-logo { width: 120px; filter: drop-shadow(0 0 10px #00ff88); margin-bottom: 10px; }
-.hub-header h1 { font-size: 2.5rem; letter-spacing: 3px; margin: 0;}
 
-.dash-section { margin-bottom: 50px; }
-.section-title { font-size: 1.5rem; letter-spacing: 2px; padding-bottom: 10px; border-bottom: 2px solid rgba(0, 255, 136, 0.5); margin-bottom: 20px; text-transform: uppercase;}
-.last-post-box { background: rgba(0, 20, 10, 0.8); border: 1px dashed #00ff88; padding: 25px; border-radius: 5px; box-shadow: inset 0 0 20px rgba(0, 255, 136, 0.1); }
-
-/* GRID ELEMENTS (Reuse and refinement) */
-.grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-.grid-item {
-    background: rgba(0, 0, 0, 0.8); border: 1px solid rgba(0, 255, 136, 0.3); 
-    padding: 25px 15px; border-radius: 5px; text-align: center; font-weight: bold; 
-    font-size: 1.1rem; letter-spacing: 1px; cursor: pointer; transition: 0.3s;
-    text-shadow: 0 0 5px #00ff88; color: #00ff88; box-sizing: border-box;
+.empresa-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    margin-bottom: 10px;
+    border: 2px solid rgba(0, 255, 136, 0.4);
+    background: #000;
+    transition: all 0.3s;
 }
-.grid-item:hover { background: #00ff88; color: #000; text-shadow: none; box-shadow: 0 0 20px #00ff88; transform: translateY(-5px); }
-.grid-item.active { background: #00d4ff; color: #000; text-shadow: none; border-color: #00d4ff; }
 
-/* --- SODHUPN PROFILE STYLES --- */
-.company-profile { display: none; }
-.company-profile.active { display: block; }
-.neon-subtitle { color: #00d4ff !important; font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);}
+.empresa-nick {
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: bold;
+    color: #00ff88;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+}
 
-.profile-hero { display: flex; align-items: center; gap: 30px; margin-bottom: 30px; background: rgba(0, 20, 10, 0.5); padding: 20px; border-radius: 10px; border: 1px solid rgba(0, 255, 136, 0.2);}
-.hero-image { width: 120px; height: 120px; border-radius: 50%; border: 3px solid #00ff88; object-fit: cover; filter: drop-shadow(0 0 10px #00ff88);}
-.hero-text { flex: 1; }
+/* Botões de Scroll Tematizados */
+.scroll-btn {
+    background: #001105;
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    position: absolute;
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(0,255,136,0.2);
+    font-size: 1.2rem;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-.description-block, .ecosystem-block, .roadmap-block, .upcoming-block { margin-bottom: 30px; padding: 20px; border-radius: 10px; background: rgba(0, 10, 5, 0.8); border: 1px solid rgba(0, 212, 255, 0.1); }
+.scroll-btn:hover {
+    background: #00ff88;
+    color: #000;
+    box-shadow: 0 0 20px #00ff88;
+    transform: scale(1.1);
+}
 
-.english-description { color: #d0d0d0; line-height: 1.6; font-size: 1.1rem; max-width: 700px;}
-
-.footprint-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; max-width: 500px; }
-.store-icon-box { background: #000; border: 1px solid rgba(0, 255, 136, 0.3); padding: 15px; border-radius: 5px; text-align: center;}
-.store-logo { width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;}
-.conceptual-logo { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 1.5rem; font-weight: bold; margin: 0 auto 5px auto; }
-.store-icon-box p { font-size: 0.9rem; color: #a0a0d0; margin: 0;}
-
-.meta-goal { font-size: 2rem; color: #ff0055; text-shadow: 0 0 15px #ff0055; font-weight: bold; margin: 10px 0;}
-
-.upcoming-item { position: relative; padding-top: 40px; border-style: dashed; }
-.upcoming-status { position: absolute; top: 10px; left: 10px; font-size: 0.8rem; letter-spacing: 1px; color: #00d4ff;}
+.scroll-btn.left { left: -20px; }
+.scroll-btn.right { right: -20px; }
