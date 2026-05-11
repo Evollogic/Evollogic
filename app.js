@@ -15,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // 🛡️ SEU IP EXATO AQUI 🛡️
-const ALLOWED_IP = "138.94.168.160"; 
+const ALLOWED_IP = "138.942.318.160"; 
 
 // --- AUDIO ENGINE ---
 let audioCtx;
