@@ -131,7 +131,7 @@
             background-size: cover;
             background-position: center;
             border-radius: 50%;
-            opacity: 0.04; /* Bem suave para não atrapalhar a leitura */
+            opacity: 0.04;
             z-index: -1;
             pointer-events: none;
         }
@@ -169,9 +169,31 @@
         .contact-email a { color: #38bdf8; text-decoration: none; font-weight: 600; transition: 0.3s; }
         .contact-email a:hover { color: #7dd3fc; }
 
-        /* Estilo para placeholder (quando nenhuma marca está selecionada) */
         .placeholder-text { text-align: center; color: #64748b; padding: 40px 0; }
         .placeholder-icon { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
+
+        /* ==========================================
+           MODERNO PLAYER DE VÍDEO (NOVO)
+           ========================================== */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Mantém a proporção 16:9 perfeita do YouTube */
+            height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: #000;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
 
     </style>
 </head>
@@ -192,6 +214,20 @@
                 </h2>
                 <div class="update-box">
                     <p>O ecossistema está em expansão. O roteiro de Maio já está ativo com a inclusão de novos recursos visuais para a Sodhupn. Nossa equipe continua otimizando a experiência do cliente em todas as frentes.</p>
+                </div>
+            </section>
+
+            <section class="dash-section">
+                <h2 class="section-title">
+                    Sodhupn TV <span class="badge">Em Destaque</span>
+                </h2>
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube.com/embed?listType=playlist&list=UUikhw5yi9tW7NjIaWG9KNoQ&autoplay=1&loop=1&mute=1" 
+                        title="Vídeos da Sodhupn" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
                 </div>
             </section>
 
@@ -227,7 +263,7 @@
                 </div>
             </section>
 
-            <section id="info-display-area">
+            <section class="dash-section" id="info-display-area" style="margin-bottom: 0;">
                 
                 <div class="company-details active" id="sodhupn-info">
                     <h2 class="brand-title">Sodhupn</h2>
@@ -285,7 +321,7 @@
             function move(direction) {
                 if (isTransitioning) return;
                 isTransitioning = true;
-                const cardWidth = 160; // tamanho do card (140) + gap (20)
+                const cardWidth = 160; 
                 
                 track.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
                 if(direction === 'next') {
