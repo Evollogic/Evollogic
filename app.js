@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-// 🔥 FIREBASE CREDENCIAIS (COLE AQUI) 🔥
+// 🔥 FIREBASE CREDENCIAIS (COLE AQUI DEPOIS) 🔥
 const firebaseConfig = {
     apiKey: "SUA_API_KEY",
     authDomain: "SEU_AUTH_DOMAIN",
@@ -18,14 +18,26 @@ const auth = getAuth(app);
 const ALLOWED_IP = "138.94.168.160";
 
 // --- AUDIO ENGINE (Sons Hacker) ---
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+// Só vai ser iniciado quando o usuário clicar em algo
+let audioCtx;
+
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
 function playTechSound(type) {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (!audioCtx) return; // Se não tem áudio iniciado, não faz nada e não trava o site
+    
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain); gain.connect(audioCtx.destination);
     
-    if (type === 'type') { // Som de teclado
+    if (type === 'type') { 
         osc.type = 'square'; osc.frequency.setValueAtTime(800 + Math.random()*200, audioCtx.currentTime);
         gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
@@ -65,7 +77,7 @@ function typeTerminal() {
         
         let typingInterval = setInterval(() => {
             p.innerHTML += text.charAt(charIndex);
-            playTechSound('type');
+            // Removido o som automático de teclado para não travar navegadores mobile
             charIndex++;
             if (charIndex === text.length) {
                 clearInterval(typingInterval);
@@ -74,12 +86,11 @@ function typeTerminal() {
             }
         }, 30); // Velocidade da digitação
     } else {
-        // Quando terminar de digitar, verifica o IP
         verifyIP();
     }
 }
 
-// Inicia a animação assim que a tela carrega
+// Inicia a animação logo que a tela carregar
 window.onload = () => {
     setTimeout(typeTerminal, 500);
 };
@@ -93,15 +104,16 @@ function verifyIP() {
     fetch('https://api.ipify.org?format=json')
         .then(res => res.json())
         .then(data => {
-            document.getElementById('terminal-boot').style.display = 'none'; // Esconde o terminal
-            
-            if (data.ip === ALLOWED_IP) {
-                document.getElementById('app-wrapper').style.display = 'block';
-                playTechSound('success');
-            } else {
-                document.getElementById('coming-soon-screen').style.display = 'block';
-                document.getElementById('transmission-prompt').style.display = 'block';
-            }
+            setTimeout(() => {
+                document.getElementById('terminal-boot').style.display = 'none'; 
+                
+                if (data.ip === ALLOWED_IP) {
+                    document.getElementById('app-wrapper').style.display = 'block';
+                } else {
+                    document.getElementById('coming-soon-screen').style.display = 'block';
+                    document.getElementById('transmission-prompt').style.display = 'block';
+                }
+            }, 1000); // Espera 1 segundo após descobrir o IP para dar um suspense
         })
         .catch(() => {
             document.getElementById('terminal-boot').style.display = 'none';
@@ -115,6 +127,7 @@ const bgMusic = document.getElementById('bg-music');
 const btnToggleMusic = document.getElementById('btn-toggle-music');
 
 document.getElementById('btn-accept-transmission').addEventListener('click', () => {
+    initAudio(); // Libera o áudio ao clicar
     playTechSound('success');
     document.getElementById('transmission-prompt').style.display = 'none';
     document.getElementById('coming-soon-content').style.display = 'block';
@@ -124,6 +137,7 @@ document.getElementById('btn-accept-transmission').addEventListener('click', () 
 });
 
 btnToggleMusic.addEventListener('click', () => {
+    initAudio();
     if (bgMusic.paused) {
         bgMusic.play();
         btnToggleMusic.innerText = "🔊 MUTE AUDIO";
@@ -147,6 +161,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 document.getElementById('btn-login').addEventListener('click', () => {
+    initAudio();
     playTechSound('type');
     const email = document.getElementById('email').value;
     const pass = document.getElementById('password').value;
@@ -160,6 +175,7 @@ document.getElementById('btn-login').addEventListener('click', () => {
 });
 
 document.getElementById('btn-logout').addEventListener('click', () => {
+    initAudio();
     playTechSound('type');
     signOut(auth);
 });
