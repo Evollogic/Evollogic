@@ -29,6 +29,42 @@
         .menu-btn:hover { background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; transform: scale(1.05); }
         .menu-btn span { display: block; width: 26px; height: 3px; background: #38bdf8; border-radius: 3px; transition: 0.3s; }
 
+        /* BOTÃO DE PERFIL (NOVO) */
+        .profile-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .profile-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .profile-btn:hover {
+            border-color: #38bdf8;
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
+        }
+        .profile-btn:hover img {
+            transform: scale(1.1);
+        }
+
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 998; opacity: 0; visibility: hidden; transition: 0.4s; }
         .sidebar-overlay.active { opacity: 1; visibility: visible; }
 
@@ -122,9 +158,16 @@
         <iframe src="side.html" class="sidebar-iframe" title="Menu Lateral"></iframe>
     </div>
 
+    <!-- BOTÃO HAMBÚRGUER (ESQUERDA) -->
     <button class="menu-btn" id="open-sidebar">
         <span></span><span></span><span></span>
     </button>
+
+    <!-- BOTÃO DE PERFIL/LOGIN (DIREITA) -->
+    <a href="login.html" class="profile-btn" title="Acessar Perfil">
+        <!-- Você pode trocar a URL da imagem abaixo pela que preferir -->
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Evollogic&backgroundColor=0f172a" alt="Avatar">
+    </a>
 
     <div id="app-wrapper">
         <div class="dashboard-container">
@@ -255,7 +298,7 @@
                 },
                 { 
                     text: "💰 Patrocinador Oficial: 50% de Desconto na GG Max!", 
-                    target: "sodhupn",  /* Vai manter selecionado Sodhupn ou pode por placeholder */
+                    target: "sodhupn",  
                     tvTitle: "AD TV", badgeText: "Patrocinado", isAd: true 
                 },
                 { 
@@ -268,17 +311,14 @@
             let scheduleIndex = 0;
             let autoRotateInterval;
 
-            // Função que muda a TV e o Carrossel juntos
             function triggerTvEvent(index) {
                 const currentData = tvSchedule[index];
 
-                // 1. Atualiza Letreiro e Título da TV
                 adTextDisplay.style.opacity = 0;
                 setTimeout(() => {
                     adTextDisplay.innerHTML = currentData.text;
                     adTextDisplay.style.opacity = 1;
 
-                    // Muda as cores e textos se for "AD TV" ou "Marca TV"
                     if (currentData.isAd) {
                         tvHeaderTitle.innerHTML = `${currentData.tvTitle} <span class="badge ad-style">${currentData.badgeText}</span>`;
                         adBadgeTag.textContent = "ANÚNCIO";
@@ -292,18 +332,15 @@
                     }
                 }, 400);
 
-                // 2. Marca a empresa no Carrossel
                 cards.forEach(c => c.classList.remove('active'));
                 let targetCard = document.querySelector(`.company-card[data-target="${currentData.target}"]`);
                 if (targetCard) targetCard.classList.add('active');
 
-                // 3. Atualiza a tela de Informações
                 details.forEach(d => d.classList.remove('active'));
                 let targetInfo = document.getElementById(`${currentData.target}-info`);
                 if (targetInfo) targetInfo.classList.add('active');
             }
 
-            // Loop automático a cada 7 segundos
             function startTvRotation() {
                 autoRotateInterval = setInterval(() => {
                     scheduleIndex = (scheduleIndex + 1) % tvSchedule.length;
@@ -311,18 +348,13 @@
                 }, 7000);
             }
 
-            // Inicia o sistema
             triggerTvEvent(0);
             startTvRotation();
 
-            // ========================================================
-            // SE O USUÁRIO CLICAR MANULMENTE NO CARROSSEL:
-            // ========================================================
             track.onclick = (e) => {
                 const card = e.target.closest('.company-card');
                 if (!card) return;
                 
-                // Pausa a rotação da TV temporariamente para não bugar o clique
                 clearInterval(autoRotateInterval);
 
                 cards.forEach(c => c.classList.remove('active'));
@@ -333,11 +365,9 @@
                 const targetInfo = document.getElementById(`${targetId}-info`) || document.getElementById('placeholder-info');
                 targetInfo.classList.add('active');
 
-                // Retorna a automação depois de 15 segundos sem clicar
                 setTimeout(startTvRotation, 15000); 
             };
 
-            // Setas do Carrossel (Apenas movimento visual)
             let isTransitioning = false;
             function move(direction) {
                 if (isTransitioning) return;
