@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evollogic - Central Hub</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        const MEU_IP = "138.94.168.160"; // SEU IP REAL
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => {
+                if (data.ip !== MEU_IP) {
+                    window.location.href = "index.html"; // Chuta de volta pra porta
+                }
+            })
+            .catch(() => window.location.href = "index.html");
+    </script>
+</head>
+<body class="crt">
+
+    <div id="stars"></div>
+
+    <div id="app-wrapper">
+        <div class="dashboard-container">
+            
+            <header style="margin-bottom: 40px; text-align: center;">
+                <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" style="width: 120px;">
+                <h1 style="color: #00ff88; letter-spacing: 3px; text-shadow: 0 0 10px #00ff88;">CENTRAL_HUB</h1>
+            </header>
+
+            <section class="dash-section">
+                <h2 class="section-title">> LATEST_POST</h2>
+                <div class="last-post-box">
+                    <p style="color: #00d4ff; font-weight: bold; margin-bottom: 10px;">[ TIMESTAMP: CURRENT_OPERATION ]</p>
+                    <p style="font-size: 1.1rem; line-height: 1.5; color: #d0d0d0;">
+                        System update: May Roadmap active. Seashare Stock beta deployed successfully. Hapiephone transmission channel initialized. Ecosystem scaling nominal. Operations expanding.
+                    </p>
+                </div>
+            </section>
+
+            <section class="dash-section">
+                <h2 class="section-title">> GETTING_TO_KNOW_US</h2>
+                
+                <div class="grid-container">
+                    <div class="grid-item">SODHUPN</div>
+                    <div class="grid-item">SEASHARE</div>
+                    <div class="grid-item">TOBUMP</div>
+                    <div class="grid-item">TOUP</div>
+                    <div class="grid-item">SCRIPARADOXALL</div>
+                    <div class="grid-item">YOUTUBE</div>
+                    <div class="grid-item">GRAVITY COIL</div>
+                    <div class="grid-item">1X1SCRIPTER</div>
+                    <div class="grid-item">HAPIEPHONE</div>
+                    <div class="grid-item">GG (GLIMPSE GAMES)</div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+</body>
+</html>
