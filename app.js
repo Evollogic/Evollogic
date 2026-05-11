@@ -77,7 +77,6 @@ const bootSequence = [
 let lineIndex = 0;
 
 function typeTerminal() {
-    // Só tenta rodar se o terminalText existir na página atual
     if (!terminalText) return; 
 
     if (lineIndex < bootSequence.length) {
@@ -134,11 +133,11 @@ function verifyIP() {
             
             setTimeout(() => {
                 if (data.ip === ALLOWED_IP) {
-                    let terminalBoot = document.getElementById('terminal-boot');
-                    let appWrapper = document.getElementById('app-wrapper');
-                    if (terminalBoot) terminalBoot.style.display = 'none';
-                    if (appWrapper) appWrapper.style.display = 'flex';
+                    // 🚀 AQUI ESTÁ A CORREÇÃO PRINCIPAL 🚀
+                    // Redireciona diretamente para a página do Hub
+                    window.location.href = "hub.html"; 
                 } else {
+                    // SE NÃO FOR O SEU IP: Trava na tela de música
                     let terminalBoot = document.getElementById('terminal-boot');
                     let comingSoon = document.getElementById('coming-soon-screen');
                     let transmissionPrompt = document.getElementById('transmission-prompt');
@@ -199,55 +198,5 @@ if (btnToggleMusic) {
             bgMusic.pause();
             e.target.innerText = "🔇 UNMUTE AUDIO";
         }
-    });
-}
-
-// ==========================================
-// 🏢 NAVEGAÇÃO DE EMPRESAS (HUB.HTML) - CARROSSEL 🏢
-// ==========================================
-const track = document.getElementById('track');
-const btnLeft = document.getElementById('btnLeft');
-const btnRight = document.getElementById('btnRight');
-
-if (btnLeft && btnRight && track) {
-    btnLeft.addEventListener('click', () => {
-        initAudio();
-        playEchoSound(); 
-        track.scrollBy({ left: -200, behavior: 'smooth' });
-    });
-
-    btnRight.addEventListener('click', () => {
-        initAudio();
-        playEchoSound(); 
-        track.scrollBy({ left: 200, behavior: 'smooth' });
-    });
-}
-
-// Lógica de clicar no card da empresa
-const empresaCards = document.querySelectorAll('.empresa-card');
-
-if (empresaCards.length > 0) {
-    empresaCards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            initAudio();
-            playEchoSound(); 
-            
-            const clickedCard = e.currentTarget;
-
-            document.querySelectorAll('.empresa-card').forEach(i => i.classList.remove('active'));
-            clickedCard.classList.add('active');
-            
-            const targetId = clickedCard.getAttribute('data-target');
-            
-            document.querySelectorAll('.company-profile').forEach(profile => profile.classList.remove('active'));
-            
-            const targetProfile = document.getElementById(`${targetId}-profile`);
-            if (targetProfile) {
-                targetProfile.classList.add('active');
-            } else {
-                let placeholder = document.getElementById('placeholder-profile');
-                if (placeholder) placeholder.classList.add('active');
-            }
-        });
     });
 }
