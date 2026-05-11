@@ -1,8 +1,9 @@
 // 🛡️ SEU IP REAL (Te leva pro Hub) 🛡️
+// Mudei para o seu IP real para você poder entrar e ver o novo Dashboard
 const ALLOWED_IP = "138.94.168.160"; 
 
 // ==========================================
-// 🎵 SINTETIZADOR DE ÁUDIO 🎵
+// 🎵 MOTOR DE ÁUDIO (SOM HACKER + ECO) 🎵
 // ==========================================
 let audioCtx;
 
@@ -14,15 +15,16 @@ function initAudio() {
     if (audioCtx.state === 'suspended') audioCtx.resume();
 }
 
+// Som de digitação do Terminal (Teclado mecânico rápido)
 function playTerminalTick() {
     if (!audioCtx || audioCtx.state !== 'running') return;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     
     osc.type = 'square';
-    osc.frequency.setValueAtTime(1500 + Math.random() * 500, audioCtx.currentTime); 
+    osc.frequency.setValueAtTime(1200 + Math.random() * 300, audioCtx.currentTime); 
     
-    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02); 
     
     osc.connect(gain);
@@ -32,24 +34,31 @@ function playTerminalTick() {
     osc.stop(audioCtx.currentTime + 0.02);
 }
 
+// Som Sci-Fi com ECO (Para o botão MUTE/UNMUTE e Navegação de Empresas)
 function playEchoSound() {
     if (!audioCtx || audioCtx.state !== 'running') return;
     
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    const delay = audioCtx.createDelay(); 
-    const feedback = audioCtx.createGain(); 
+    const delay = audioCtx.createDelay(); // Efeito de Eco
+    const feedback = audioCtx.createGain(); // Duração do Eco
 
-    delay.delayTime.value = 0.15; 
-    feedback.gain.value = 0.4;    
+    delay.delayTime.value = 0.15; // Velocidade da repetição
+    feedback.gain.value = 0.4;    // Intensidade da repetição
 
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    gain.connect(delay); delay.connect(audioCtx.destination);
-    delay.connect(feedback); feedback.connect(delay);
+    // Conectando os nós de áudio
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    gain.connect(delay);
+    delay.connect(audioCtx.destination);
+    delay.connect(feedback);
+    feedback.connect(delay);
 
+    // Frequência do som (Pew!)
     osc.type = 'sine';
     osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.2);
+    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
 
     gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
@@ -83,27 +92,31 @@ function typeTerminal() {
         
         let typingInterval = setInterval(() => {
             p.innerHTML += text.charAt(charIndex);
-            playTerminalTick(); 
+            playTerminalTick(); // Toca o clique do teclado
             charIndex++;
             
             if (charIndex === text.length) {
                 clearInterval(typingInterval);
                 lineIndex++;
-                setTimeout(typeTerminal, 300);
+                setTimeout(typeTerminal, 300); // Pausa entre linhas
             }
         }, 30);
     } else {
-        verifyIP();
+        verifyIP(); // Terminou de digitar? Verifica o IP!
     }
 }
 
-document.getElementById('btn-start-boot').addEventListener('click', () => {
-    initAudio(); 
-    playEchoSound(); 
-    document.getElementById('init-screen').style.display = 'none';
-    document.getElementById('terminal-boot').style.display = 'block';
-    setTimeout(typeTerminal, 500); 
-});
+// BOTÃO INICIAR SISTEMA (INDEX.HTML)
+const btnStartBoot = document.getElementById('btn-start-boot');
+if (btnStartBoot) {
+    btnStartBoot.addEventListener('click', () => {
+        initAudio(); 
+        playEchoSound(); 
+        document.getElementById('init-screen').style.display = 'none';
+        document.getElementById('terminal-boot').style.display = 'block';
+        setTimeout(typeTerminal, 500); 
+    });
+}
 
 // ==========================================
 // 🔍 VERIFICAÇÃO DE IP & REDIRECIONAMENTO 🔍
@@ -120,11 +133,9 @@ function verifyIP() {
             
             setTimeout(() => {
                 if (data.ip === ALLOWED_IP) {
-                    // SE FOR O SEU IP: Abre a página secreta do Hub!
-                    resultLine.innerHTML += `<br>> ACCESS GRANTED. REDIRECTING...`;
-                    setTimeout(() => {
-                        window.location.href = "hub.html";
-                    }, 800);
+                    // SE FOR O SEU IP: Abre o Dashboard
+                    document.getElementById('terminal-boot').style.display = 'none';
+                    document.getElementById('app-wrapper').style.display = 'flex';
                 } else {
                     // SE NÃO FOR O SEU IP: Trava na tela de música
                     document.getElementById('terminal-boot').style.display = 'none';
@@ -134,7 +145,7 @@ function verifyIP() {
             }, 1500); 
         })
         .catch(() => {
-            resultLine.innerHTML = `> NETWORK ERROR. ISOLATING CONNECTION.`;
+            resultLine.innerHTML = `> NETWORK FIREWALL DETECTED. BYPASSING...`;
             setTimeout(() => {
                 document.getElementById('terminal-boot').style.display = 'none';
                 document.getElementById('coming-soon-screen').style.display = 'block';
@@ -144,29 +155,65 @@ function verifyIP() {
 }
 
 // ==========================================
-// 🎵 MÚSICA DA TELA DE BLOQUEIO 🎵
+// 🎵 CONTROLE DE MÚSICA (INDEX.HTML) 🎵
 // ==========================================
 const bgMusic = document.getElementById('bg-music');
+const btnAcceptTransmission = document.getElementById('btn-accept-transmission');
+const btnToggleMusic = document.getElementById('btn-toggle-music');
 
-document.getElementById('btn-accept-transmission').addEventListener('click', () => {
-    initAudio();
-    playEchoSound();
-    document.getElementById('transmission-prompt').style.display = 'none';
-    document.getElementById('coming-soon-content').style.display = 'block';
-    
-    bgMusic.volume = 0.5; 
-    bgMusic.play().catch(e => console.log("Erro de áudio:", e));
-});
+if (btnAcceptTransmission) {
+    btnAcceptTransmission.addEventListener('click', () => {
+        initAudio();
+        playEchoSound();
+        document.getElementById('transmission-prompt').style.display = 'none';
+        document.getElementById('coming-soon-content').style.display = 'block';
+        
+        bgMusic.volume = 0.5; 
+        bgMusic.play().catch(e => console.log("Erro de áudio:", e));
+    });
+}
 
-document.getElementById('btn-toggle-music').addEventListener('click', (e) => {
-    initAudio();
-    playEchoSound();
-    
-    if (bgMusic.paused) {
-        bgMusic.play();
-        e.target.innerText = "🔊 MUTE AUDIO";
-    } else {
-        bgMusic.pause();
-        e.target.innerText = "🔇 UNMUTE AUDIO";
-    }
+if (btnToggleMusic) {
+    btnToggleMusic.addEventListener('click', (e) => {
+        initAudio();
+        playEchoSound(); // GERA O SOM DE ECO!
+        
+        if (bgMusic.paused) {
+            bgMusic.play();
+            e.target.innerText = "🔊 MUTE AUDIO";
+        } else {
+            bgMusic.pause();
+            e.target.innerText = "🔇 UNMUTE AUDIO";
+        }
+    });
+}
+
+// ==========================================
+// 🏢 NAVEGAÇÃO DE EMPRESAS (HUB.HTML) 🏢
+// ==========================================
+// Adiciona a lógica de troca de conteúdo e som de eco ao clicar na barra lateral
+document.querySelectorAll('.sidebar-companies .grid-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+        initAudio();
+        playEchoSound(); // O SOM DO ECO AQUI!
+        
+        // Remove a classe ativa de todos
+        document.querySelectorAll('.sidebar-companies .grid-item').forEach(i => i.classList.remove('active'));
+        // Adiciona a classe ativa no clicado
+        e.target.classList.add('active');
+        
+        const targetId = e.target.getAttribute('data-target');
+        
+        // Esconde todos os perfis
+        document.querySelectorAll('.company-profile').forEach(profile => profile.classList.remove('active'));
+        
+        // Mostra o perfil correspondente (por enquanto o default é Sodhupn, preparei o campo pra outros)
+        const targetProfile = document.getElementById(`${targetId}-profile`);
+        if (targetProfile) {
+            targetProfile.classList.add('active');
+        } else {
+            // Failsafe: se não tiver o perfil ainda, mostra o placeholder
+            document.getElementById('placeholder-profile').classList.add('active');
+        }
+    });
 });
