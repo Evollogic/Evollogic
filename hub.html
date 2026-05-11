@@ -29,7 +29,7 @@
         .menu-btn:hover { background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; transform: scale(1.05); }
         .menu-btn span { display: block; width: 26px; height: 3px; background: #38bdf8; border-radius: 3px; transition: 0.3s; }
 
-        /* BOTÃO DE PERFIL (NOVO) */
+        /* BOTÃO DE PERFIL (ATUALIZADO PARA ÍCONE MINIMALISTA) */
         .profile-btn {
             position: fixed;
             top: 25px;
@@ -46,14 +46,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             text-decoration: none;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
-        .profile-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .profile-btn svg {
+            width: 22px;
+            height: 22px;
             transition: transform 0.3s ease;
         }
         .profile-btn:hover {
@@ -61,7 +59,7 @@
             transform: scale(1.05) translateY(-2px);
             box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
         }
-        .profile-btn:hover img {
+        .profile-btn:hover svg {
             transform: scale(1.1);
         }
 
@@ -98,7 +96,7 @@
         .carousel-container { display: flex; gap: 20px; width: max-content; }
         
         .company-card { width: 140px; height: 160px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); flex-shrink: 0; padding: 10px; box-sizing: border-box; }
-        .company-card img { max-width: 70px; height: 70px; object-fit: cover; margin-bottom: 12px; transition: 0.3s; }
+        .company-card img { max-width: 70px; height: 70px; object-fit: cover; margin-bottom: 12px; transition: 0.3s; border-radius: 12px; }
         .company-card[data-target="sodhupn"] img { border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); }
         .company-card span { color: #94a3b8; font-size: 0.9rem; font-weight: 500; transition: 0.3s;}
         
@@ -120,7 +118,11 @@
         .meta-subtitle { color: #cbd5e1; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;}
         .meta-goal { font-size: 1.5rem; color: #818cf8; font-weight: 700; margin: 0;}
         .social-buttons-container { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; align-items: center; }
-        .social-btn { padding: 12px 24px; text-decoration: none; font-family: 'Poppins', sans-serif; border-radius: 12px; transition: 0.3s; font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; border: none; }
+        
+        .social-btn { padding: 12px 24px; text-decoration: none; font-family: 'Poppins', sans-serif; border-radius: 12px; transition: 0.3s; font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer; }
+        .primary-btn { background: #38bdf8; color: #020617; font-weight: 600; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2); }
+        .primary-btn:hover { background: #7dd3fc; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4); }
+        
         .discord-btn { background: #5865F2; color: #fff; }
         .discord-btn:hover { background: #4752C4; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4); }
         .insta-btn { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #fff; }
@@ -163,10 +165,12 @@
         <span></span><span></span><span></span>
     </button>
 
-    <!-- BOTÃO DE PERFIL/LOGIN (DIREITA) -->
+    <!-- BOTÃO DE PERFIL/LOGIN (DIREITA - COM NOVO ÍCONE MINIMALISTA) -->
     <a href="login.html" class="profile-btn" title="Acessar Perfil">
-        <!-- Você pode trocar a URL da imagem abaixo pela que preferir -->
-        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Evollogic&backgroundColor=0f172a" alt="Avatar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
     </a>
 
     <div id="app-wrapper">
@@ -205,8 +209,9 @@
                             <div class="company-card" data-target="seashare">
                                 <img src="https://i.imgur.com/31WnC6D.png" alt="Seashare"><span>Seashare</span>
                             </div>
+                            <!-- TOBUMP ATUALIZADO COM A IMAGEM FORNECIDA -->
                             <div class="company-card" data-target="tobump">
-                                <img src="https://i.imgur.com/31WnC6D.png" alt="ToBump"><span>ToBump</span>
+                                <img src="https://i.imgur.com/rYAY1TW.png" alt="ToBump" onerror="this.src='https://i.imgur.com/31WnC6D.png'"><span>ToBump</span>
                             </div>
                             <div class="company-card" data-target="toup">
                                 <img src="https://i.imgur.com/31WnC6D.png" alt="ToUp"><span>ToUp</span>
@@ -240,9 +245,22 @@
                     <p class="brand-desc">Ecossistema inovador de compartilhamento e recursos digitais.</p>
                 </div>
                 
+                <!-- SEÇÃO DO TOBUMP ATUALIZADA -->
                 <div class="company-details" id="tobump-info">
                     <h2 class="brand-title">ToBump</h2>
-                    <p class="brand-desc">Plataforma dedicada a impulsionar seus resultados no mercado de vendas.</p>
+                    <p class="brand-desc">Cresça seu servidor com bump 100% automático.</p>
+                    
+                    <div class="meta-container" style="margin-top: 15px;">
+                        <p style="color: #64748b; font-size: 0.95rem; font-style: italic; margin: 0;">
+                            💡 Aviso: No dashboard, em breve terá muito mais coisas!
+                        </p>
+                    </div>
+
+                    <div class="social-buttons-container">
+                        <a href="ToBump.html" class="social-btn primary-btn">
+                            Acessar Dashboard
+                        </a>
+                    </div>
                 </div>
 
                 <div class="company-details" id="toup-info">
