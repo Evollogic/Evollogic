@@ -1,1 +1,340 @@
-. 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evollogic - Login</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            color: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Efeito de brilho de fundo */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: -100px;
+            left: -100px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .login-container {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            box-sizing: border-box;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header img {
+            width: 80px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+
+        .login-header h1 {
+            font-size: 1.8rem;
+            margin: 0 0 5px 0;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .login-header p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Botões Sociais */
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+
+        .btn-discord {
+            background: rgba(88, 101, 242, 0.1);
+            color: #fff;
+            border-color: rgba(88, 101, 242, 0.3);
+        }
+
+        .btn-discord:hover {
+            background: #5865F2;
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-google {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-google:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .social-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Divisor */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .divider:not(:empty)::before { margin-right: 15px; }
+        .divider:not(:empty)::after { margin-left: 15px; }
+
+        /* Formulário */
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            color: #64748b;
+            width: 18px;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            padding: 14px 14px 14px 45px;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        .input-field:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: right;
+            color: #38bdf8;
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-top: 8px;
+            transition: 0.3s;
+        }
+
+        .forgot-password:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+
+        /* Botão Principal */
+        .submit-btn {
+            width: 100%;
+            background: #38bdf8;
+            color: #020617;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .submit-btn:hover {
+            background: #7dd3fc;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Registro */
+        .register-area {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+
+        .register-area a {
+            color: #38bdf8;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .register-area a:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        
+        <div class="login-header">
+            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic Logo">
+            <h1>Bem-vindo de volta</h1>
+            <p>Acesse seu painel Hub Central</p>
+        </div>
+
+        <div class="social-login">
+            <button class="social-btn btn-discord" type="button" onclick="loginWith('Discord')">
+                <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord" class="social-icon">
+                Discord
+            </button>
+            <button class="social-btn btn-google" type="button" onclick="loginWith('Google')">
+                <img src="https://cdn-icons-png.flaticon.com/512/300/300221.png" alt="Google" class="social-icon">
+                Google
+            </button>
+        </div>
+
+        <div class="divider">ou continue com e-mail</div>
+
+        <form id="loginForm">
+            
+            <div class="input-group">
+                <label for="email">E-mail ou Usuário</label>
+                <div class="input-wrapper">
+                    <i data-feather="user"></i>
+                    <input type="text" id="email" class="input-field" placeholder="exemplo@evollogic.com" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Senha</label>
+                <div class="input-wrapper">
+                    <i data-feather="lock"></i>
+                    <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+                </div>
+                <a href="#" class="forgot-password">Esqueci minha senha</a>
+            </div>
+
+            <button type="submit" class="submit-btn">Entrar na Conta</button>
+
+        </form>
+
+        <div class="register-area">
+            Ainda não tem acesso? <a href="register.html">Criar conta</a>
+        </div>
+
+    </div>
+
+    <script>
+        // Inicializa os ícones do Feather
+        feather.replace();
+
+        // Lógica de envio do formulário padrão
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.querySelector('.submit-btn');
+            const originalText = btn.innerHTML;
+            
+            // Efeito de carregamento
+            btn.innerHTML = 'Autenticando...';
+            btn.style.opacity = '0.8';
+            btn.style.pointerEvents = 'none';
+
+            // Simula um tempo de carregamento e redireciona de volta ao index (ou dashboard)
+            setTimeout(() => {
+                window.location.href = 'index.html'; // Altere para a página principal desejada
+            }, 1500);
+        });
+
+        // Lógica simulada para botões sociais
+        function loginWith(provider) {
+            alert(`Iniciando autenticação via ${provider}...`);
+            // Aqui você integraria a API do Firebase, NextAuth, ou o seu backend.
+        }
+    </script>
+</body>
+</html>
