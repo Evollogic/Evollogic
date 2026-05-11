@@ -17,18 +17,28 @@
             background: transparent;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* Empurra o conteúdo todo para baixo */
+            justify-content: flex-end; 
             height: 100vh;
             overflow: hidden;
         }
 
         /* ==========================================
-           ÁREA DE CONFIGURAÇÕES (LÁ EMBAIXO)
+           ÁREA INFERIOR (CONTA E CONFIGS)
            ========================================== */
         .bottom-section {
             padding: 20px;
             background: rgba(15, 23, 42, 0.5); 
             border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Linha divisória fina */
+        .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 5px 0;
         }
 
         /* Estilo base dos botões */
@@ -56,31 +66,96 @@
             color: #38bdf8;
         }
 
-        .settings-toggle {
-            justify-content: space-between; 
-        }
-
-        .settings-toggle-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .settings-toggle svg {
+        .menu-item svg {
             width: 20px;
             height: 20px;
             transition: transform 0.3s;
         }
 
-        .arrow-icon {
-            transition: transform 0.3s ease;
-        }
+        /* ==========================================
+           ÁREA DE CONTA (LOGIN / PERFIL)
+           ========================================== */
         
-        .settings-toggle.open .arrow-icon {
-            transform: rotate(180deg);
+        /* Botão de Entrar (Quando deslogado) */
+        .login-btn {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            justify-content: center; /* Centraliza o texto */
+            font-weight: 600;
+        }
+        .login-btn:hover {
+            background: #38bdf8;
+            color: #020617;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            transform: translateY(-2px);
         }
 
-        /* Sub-menu (Idioma e Deslogar) */
+        /* Perfil do Usuário (Quando logado) */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        /* Bolinha verde de Online */
+        .user-avatar::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border: 2px solid #0f172a;
+            border-radius: 50%;
+        }
+
+        .user-info-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .user-name { color: #f8fafc; font-weight: 600; font-size: 0.95rem; }
+        .user-status { color: #10b981; font-size: 0.8rem; }
+
+        /* Botão de Deslogar (Vermelho) */
+        .logout-btn {
+            color: #ef4444;
+            padding: 10px 15px;
+        }
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        /* ==========================================
+           CONFIGURAÇÕES & IDIOMAS
+           ========================================== */
+        .settings-toggle { justify-content: space-between; }
+        .settings-toggle-content { display: flex; align-items: center; gap: 15px; }
+        
+        .arrow-icon { transition: transform 0.3s ease; }
+        .settings-toggle.open .arrow-icon { transform: rotate(180deg); }
+
         .settings-dropdown {
             max-height: 0;
             overflow: hidden;
@@ -93,9 +168,18 @@
         }
 
         .settings-dropdown.open {
-            max-height: 150px; 
+            max-height: 250px; /* Aumentado para caber os idiomas */
             opacity: 1;
             margin-top: 10px;
+        }
+
+        .sub-menu-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 5px 0 5px 20px;
+            font-weight: 600;
         }
 
         .sub-menu-item {
@@ -110,27 +194,24 @@
             transition: 0.3s;
         }
 
-        .sub-menu-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-        }
+        .sub-menu-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+        .sub-menu-item svg { width: 16px; height: 16px; }
 
-        .sub-menu-item svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Botão específico de Deslogar */
-        .logout-btn:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-        }
+        /* Idioma Selecionado */
+        .active-lang { color: #38bdf8; font-weight: 600; }
+        .active-lang svg { color: #38bdf8; }
 
     </style>
 </head>
 <body>
 
     <div class="bottom-section">
+        
+        <div id="auth-container">
+            </div>
+
+        <div class="divider"></div>
+
         <button class="menu-item settings-toggle" id="settings-btn">
             <div class="settings-toggle-content">
                 <i data-feather="settings"></i> Configurações
@@ -139,12 +220,16 @@
         </button>
 
         <div class="settings-dropdown" id="settings-menu">
-            <a href="#" class="sub-menu-item">
-                <i data-feather="globe"></i> Idioma (PT-BR)
-            </a>
+            <div class="sub-menu-label">Idioma do Sistema</div>
             
-            <a href="#" class="sub-menu-item logout-btn">
-                <i data-feather="log-out"></i> Deslogar
+            <a href="#" class="sub-menu-item active-lang">
+                <i data-feather="check-circle"></i> Português (BR)
+            </a>
+            <a href="#" class="sub-menu-item">
+                <i data-feather="globe"></i> English (US)
+            </a>
+            <a href="#" class="sub-menu-item">
+                <i data-feather="globe"></i> Español (ES)
             </a>
         </div>
     </div>
@@ -153,7 +238,55 @@
         // Inicializa os ícones do Feather
         feather.replace();
 
-        // Lógica do menu sanfona (Acordeão) das Configurações
+        // ==========================================
+        // LÓGICA DE SIMULAÇÃO DE LOGIN
+        // ==========================================
+        
+        // Mude para "true" para testar como fica logado, ou "false" para deslogado.
+        let isLogged = false; 
+        const authContainer = document.getElementById('auth-container');
+
+        // Função que renderiza a área da conta dependendo do status
+        function renderAuthStatus() {
+            if (isLogged) {
+                // HTML de QUANDO ESTÁ LOGADO (Mostra Perfil e Botão Deslogar)
+                authContainer.innerHTML = `
+                    <div class="user-profile">
+                        <div class="user-avatar">S</div>
+                        <div class="user-info-text">
+                            <span class="user-name">Sodhupn Admin</span>
+                            <span class="user-status">Online</span>
+                        </div>
+                    </div>
+                    <button class="menu-item logout-btn" onclick="toggleLogin()" style="margin-top: 10px;">
+                        <i data-feather="log-out"></i> Sair da Conta
+                    </button>
+                `;
+            } else {
+                // HTML de QUANDO NÃO ESTÁ LOGADO (Mostra só o Botão de Entrar)
+                authContainer.innerHTML = `
+                    <button class="menu-item login-btn" onclick="toggleLogin()">
+                        <i data-feather="log-in"></i> Fazer Login
+                    </button>
+                `;
+            }
+            // Recarrega os ícones recém-criados
+            feather.replace();
+        }
+
+        // Função para simular o clique de entrar e sair
+        function toggleLogin() {
+            isLogged = !isLogged; // Inverte o status (se tava falso vira verdadeiro)
+            renderAuthStatus();   // Atualiza a tela
+        }
+
+        // Renderiza a primeira vez que a página carrega
+        renderAuthStatus();
+
+
+        // ==========================================
+        // LÓGICA DO MENU ACORDEÃO (CONFIGURAÇÕES)
+        // ==========================================
         const settingsBtn = document.getElementById('settings-btn');
         const settingsMenu = document.getElementById('settings-menu');
 
