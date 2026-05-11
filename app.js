@@ -1,19 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-const firebaseConfig = {
-    apiKey: "SUA_API_KEY",
-    authDomain: "SEU_AUTH_DOMAIN",
-    projectId: "SEU_PROJECT_ID",
-    storageBucket: "SEU_STORAGE_BUCKET",
-    messagingSenderId: "SEU_MESSAGING_ID",
-    appId: "SEU_APP_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// 🛡️ IP FALSO PARA VOCÊ TESTAR A TELA DO MUTE E DA MÚSICA 🛡️
+// 🛡️ IP FALSO PARA TESTAR A TELA DO MUTE E DA MÚSICA 🛡️
 const ALLOWED_IP = "0.0.0.0"; 
 
 // ==========================================
@@ -22,21 +10,26 @@ const ALLOWED_IP = "0.0.0.0";
 let audioCtx;
 
 function initAudio() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
 }
 
-// 1. Som de digitação do Terminal (Estilo Hollywood)
+// 1. Som de digitação do Terminal
 function playTerminalTick() {
     if (!audioCtx || audioCtx.state !== 'running') return;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     
     osc.type = 'square';
-    osc.frequency.setValueAtTime(1500 + Math.random() * 500, audioCtx.currentTime); // Tick agudo
+    osc.frequency.setValueAtTime(1500 + Math.random() * 500, audioCtx.currentTime); 
     
     gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02); // Bem curtinho
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02); 
     
     osc.connect(gain);
     gain.connect(audioCtx.destination);
@@ -51,14 +44,12 @@ function playEchoSound() {
     
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    const delay = audioCtx.createDelay(); // Criador do Eco
-    const feedback = audioCtx.createGain(); // Controla o tempo que o eco dura
+    const delay = audioCtx.createDelay(); 
+    const feedback = audioCtx.createGain(); 
 
-    // Configurando o Eco
-    delay.delayTime.value = 0.15; // Velocidade do eco
-    feedback.gain.value = 0.4;    // Intensidade do eco
+    delay.delayTime.value = 0.15; 
+    feedback.gain.value = 0.4;    
 
-    // Ligando os cabos virtuais (Oscilador -> Gain -> Saída + Eco)
     osc.connect(gain);
     gain.connect(audioCtx.destination);
     
@@ -67,7 +58,6 @@ function playEchoSound() {
     delay.connect(feedback);
     feedback.connect(delay);
 
-    // Configurando o som (Um "Pew" futurista)
     osc.type = 'sine';
     osc.frequency.setValueAtTime(800, audioCtx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.2);
@@ -104,7 +94,7 @@ function typeTerminal() {
         
         let typingInterval = setInterval(() => {
             p.innerHTML += text.charAt(charIndex);
-            playTerminalTick(); // TOCA O SOM DO TECLADO AQUI
+            playTerminalTick(); 
             charIndex++;
             
             if (charIndex === text.length) {
@@ -118,10 +108,10 @@ function typeTerminal() {
     }
 }
 
-// O BOTÃO INICIAL PARA LIBERAR O ÁUDIO E COMEÇAR O TERMINAL
+// O BOTÃO INICIAL
 document.getElementById('btn-start-boot').addEventListener('click', () => {
     initAudio(); 
-    playEchoSound(); // Toca o eco ao iniciar também pra dar um efeito legal
+    playEchoSound(); 
     document.getElementById('init-screen').style.display = 'none';
     document.getElementById('terminal-boot').style.display = 'block';
     setTimeout(typeTerminal, 500); 
@@ -150,6 +140,14 @@ function verifyIP() {
                     document.getElementById('transmission-prompt').style.display = 'block';
                 }
             }, 1500); 
+        })
+        .catch(() => {
+            resultLine.innerHTML = `> NETWORK ERROR. FALLBACK ENGAGED.`;
+            setTimeout(() => {
+                document.getElementById('terminal-boot').style.display = 'none';
+                document.getElementById('coming-soon-screen').style.display = 'block';
+                document.getElementById('transmission-prompt').style.display = 'block';
+            }, 1500);
         });
 }
 
@@ -159,6 +157,8 @@ function verifyIP() {
 const bgMusic = document.getElementById('bg-music');
 
 document.getElementById('btn-accept-transmission').addEventListener('click', () => {
+    initAudio();
+    playEchoSound();
     document.getElementById('transmission-prompt').style.display = 'none';
     document.getElementById('coming-soon-content').style.display = 'block';
     
@@ -166,10 +166,9 @@ document.getElementById('btn-accept-transmission').addEventListener('click', () 
     bgMusic.play().catch(e => console.log("Erro de áudio:", e));
 });
 
-// AQUI ESTÁ O BOTÃO DE MUTE/UNMUTE
 document.getElementById('btn-toggle-music').addEventListener('click', (e) => {
     initAudio();
-    playEchoSound(); // CHAMA O SOM COM ECO!
+    playEchoSound(); // O SOM DO ECO AQUI!
     
     if (bgMusic.paused) {
         bgMusic.play();
@@ -178,4 +177,63 @@ document.getElementById('btn-toggle-music').addEventListener('click', (e) => {
         bgMusic.pause();
         e.target.innerText = "🔇 UNMUTE AUDIO";
     }
+});
+
+// ==========================================
+// 🔥 FIREBASE (Blindado contra erros) 🔥
+// ==========================================
+let auth;
+try {
+    const firebaseConfig = {
+        apiKey: "SUA_API_KEY_AQUI", // Mesmo vazio, não vai travar o resto do site
+        authDomain: "SEU_AUTH_DOMAIN",
+        projectId: "SEU_PROJECT_ID",
+        storageBucket: "SEU_STORAGE_BUCKET",
+        messagingSenderId: "SEU_MESSAGING_ID",
+        appId: "SEU_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+        const loginScreen = document.getElementById('login-screen');
+        const secretHub = document.getElementById('secret-hub');
+        if (user) {
+            loginScreen.style.display = 'none';
+            secretHub.style.display = 'block';
+        } else {
+            loginScreen.style.display = 'block';
+            secretHub.style.display = 'none';
+        }
+    });
+
+} catch (error) {
+    console.error("Aviso: Firebase não configurado corretamente.", error);
+}
+
+document.getElementById('btn-login').addEventListener('click', () => {
+    initAudio();
+    playEchoSound();
+    
+    if(!auth) {
+        document.getElementById('error-message').innerText = "[!] FIREBASE OFFLINE";
+        document.getElementById('error-message').style.display = 'block';
+        return;
+    }
+
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('password').value;
+    
+    signInWithEmailAndPassword(auth, email, pass)
+        .catch(() => {
+            playEchoSound();
+            document.getElementById('error-message').style.display = 'block';
+        });
+});
+
+document.getElementById('btn-logout').addEventListener('click', () => {
+    initAudio();
+    playEchoSound();
+    if(auth) signOut(auth);
 });
