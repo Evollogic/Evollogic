@@ -1,8 +1,8 @@
-// 🛡️ IP FALSO PARA TESTE 🛡️
-const ALLOWED_IP = "0.0.0.0"; 
+// 🛡️ SEU IP REAL (Te leva pro Hub) 🛡️
+const ALLOWED_IP = "138.94.168.160"; 
 
 // ==========================================
-// 🎵 MOTOR DE ÁUDIO (SOM HACKER + ECO) 🎵
+// 🎵 SINTETIZADOR DE ÁUDIO 🎵
 // ==========================================
 let audioCtx;
 
@@ -11,21 +11,18 @@ function initAudio() {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         audioCtx = new AudioContext();
     }
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
 }
 
-// Som de digitação do Terminal (Teclado mecânico rápido)
 function playTerminalTick() {
     if (!audioCtx || audioCtx.state !== 'running') return;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     
     osc.type = 'square';
-    osc.frequency.setValueAtTime(1200 + Math.random() * 300, audioCtx.currentTime); 
+    osc.frequency.setValueAtTime(1500 + Math.random() * 500, audioCtx.currentTime); 
     
-    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02); 
     
     osc.connect(gain);
@@ -35,31 +32,24 @@ function playTerminalTick() {
     osc.stop(audioCtx.currentTime + 0.02);
 }
 
-// Som Sci-Fi com ECO (Para o botão MUTE/UNMUTE)
 function playEchoSound() {
     if (!audioCtx || audioCtx.state !== 'running') return;
     
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    const delay = audioCtx.createDelay(); // Efeito de Eco
-    const feedback = audioCtx.createGain(); // Duração do Eco
+    const delay = audioCtx.createDelay(); 
+    const feedback = audioCtx.createGain(); 
 
-    delay.delayTime.value = 0.15; // Velocidade da repetição
-    feedback.gain.value = 0.4;    // Intensidade da repetição
+    delay.delayTime.value = 0.15; 
+    feedback.gain.value = 0.4;    
 
-    // Conectando os nós de áudio
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    
-    gain.connect(delay);
-    delay.connect(audioCtx.destination);
-    delay.connect(feedback);
-    feedback.connect(delay);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    gain.connect(delay); delay.connect(audioCtx.destination);
+    delay.connect(feedback); feedback.connect(delay);
 
-    // Frequência do som (Pew!)
     osc.type = 'sine';
     osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
+    osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.2);
 
     gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
@@ -93,31 +83,30 @@ function typeTerminal() {
         
         let typingInterval = setInterval(() => {
             p.innerHTML += text.charAt(charIndex);
-            playTerminalTick(); // Toca o clique do teclado
+            playTerminalTick(); 
             charIndex++;
             
             if (charIndex === text.length) {
                 clearInterval(typingInterval);
                 lineIndex++;
-                setTimeout(typeTerminal, 300); // Pausa entre linhas
+                setTimeout(typeTerminal, 300);
             }
         }, 30);
     } else {
-        verifyIP(); // Terminou de digitar? Verifica o IP!
+        verifyIP();
     }
 }
 
-// BOTÃO INICIAR SISTEMA
 document.getElementById('btn-start-boot').addEventListener('click', () => {
     initAudio(); 
-    playEchoSound(); // Toca o eco para confirmar o clique
+    playEchoSound(); 
     document.getElementById('init-screen').style.display = 'none';
     document.getElementById('terminal-boot').style.display = 'block';
     setTimeout(typeTerminal, 500); 
 });
 
 // ==========================================
-// 🔍 VERIFICAÇÃO DE IP 🔍
+// 🔍 VERIFICAÇÃO DE IP & REDIRECIONAMENTO 🔍
 // ==========================================
 function verifyIP() {
     let resultLine = document.createElement("p");
@@ -130,18 +119,22 @@ function verifyIP() {
             resultLine.innerHTML = `> IP IDENTIFIED: ${data.ip}`;
             
             setTimeout(() => {
-                document.getElementById('terminal-boot').style.display = 'none';
-                
                 if (data.ip === ALLOWED_IP) {
-                    document.getElementById('app-wrapper').style.display = 'block';
+                    // SE FOR O SEU IP: Abre a página secreta do Hub!
+                    resultLine.innerHTML += `<br>> ACCESS GRANTED. REDIRECTING...`;
+                    setTimeout(() => {
+                        window.location.href = "hub.html";
+                    }, 800);
                 } else {
+                    // SE NÃO FOR O SEU IP: Trava na tela de música
+                    document.getElementById('terminal-boot').style.display = 'none';
                     document.getElementById('coming-soon-screen').style.display = 'block';
                     document.getElementById('transmission-prompt').style.display = 'block';
                 }
             }, 1500); 
         })
         .catch(() => {
-            resultLine.innerHTML = `> NETWORK FIREWALL DETECTED. BYPASSING...`;
+            resultLine.innerHTML = `> NETWORK ERROR. ISOLATING CONNECTION.`;
             setTimeout(() => {
                 document.getElementById('terminal-boot').style.display = 'none';
                 document.getElementById('coming-soon-screen').style.display = 'block';
@@ -151,11 +144,10 @@ function verifyIP() {
 }
 
 // ==========================================
-// 🎵 CONTROLE DE MÚSICA 🎵
+// 🎵 MÚSICA DA TELA DE BLOQUEIO 🎵
 // ==========================================
 const bgMusic = document.getElementById('bg-music');
 
-// Botão ACCEPT da transmissão
 document.getElementById('btn-accept-transmission').addEventListener('click', () => {
     initAudio();
     playEchoSound();
@@ -166,10 +158,9 @@ document.getElementById('btn-accept-transmission').addEventListener('click', () 
     bgMusic.play().catch(e => console.log("Erro de áudio:", e));
 });
 
-// Botão de MUTE / UNMUTE (COM O EFEITO DE ECO!)
 document.getElementById('btn-toggle-music').addEventListener('click', (e) => {
     initAudio();
-    playEchoSound(); // GERA O SOM DE ECO!
+    playEchoSound();
     
     if (bgMusic.paused) {
         bgMusic.play();
