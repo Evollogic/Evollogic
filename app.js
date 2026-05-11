@@ -67,7 +67,7 @@ btnToggleMusic.addEventListener('click', () => {
 });
 
 // --- IP PROTECTION (SEU IP EXATO) ---
-const ALLOWED_IP = "138.94.168.160"; 
+const ALLOWED_IP = ""; 
 
 fetch('https://api.ipify.org?format=json')
     .then(res => res.json())
