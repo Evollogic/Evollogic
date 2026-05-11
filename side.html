@@ -1,1 +1,205 @@
-. 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Menu</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            background: transparent; /* Pega o fundo do iframe da página mãe */
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Ocupa 100% da altura do iframe */
+            overflow: hidden;
+        }
+
+        /* Área dos links de cima */
+        .nav-menu {
+            flex: 1; /* Ocupa todo o espaço disponível, empurrando as configs pra baixo */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        /* Estilo base dos botões */
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: transparent;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+        }
+
+        .menu-item svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s;
+        }
+
+        .menu-item:hover svg {
+            transform: scale(1.1);
+        }
+
+        /* ==========================================
+           ÁREA DE CONFIGURAÇÕES (LÁ EMBAIXO)
+           ========================================== */
+        .bottom-section {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.5); /* Fundo um pouco mais escuro para destacar */
+        }
+
+        /* Botão principal de Configurações */
+        .settings-toggle {
+            justify-content: space-between; /* Afasta a seta pro lado direito */
+        }
+
+        .settings-toggle-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .arrow-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .settings-toggle.open .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Sub-menu (Idioma e Deslogar) */
+        .settings-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 0;
+        }
+
+        .settings-dropdown.open {
+            max-height: 150px; /* Altura suficiente para mostrar as opções */
+            opacity: 1;
+            margin-top: 10px;
+        }
+
+        .sub-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px 10px 45px; /* Espaço maior na esquerda pra dar efeito de hierarquia */
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+
+        .sub-menu-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .sub-menu-item svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Botão específico de Deslogar (Destacado em vermelho no hover) */
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        /* Custom Scrollbar minimalista */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    </style>
+</head>
+<body>
+
+    <div class="nav-menu">
+        <a href="#" class="menu-item active">
+            <i data-feather="grid"></i> Dashboard
+        </a>
+        <a href="#" class="menu-item">
+            <i data-feather="user"></i> Meu Perfil
+        </a>
+        <a href="#" class="menu-item">
+            <i data-feather="bell"></i> Notificações
+        </a>
+        <a href="#" class="menu-item">
+            <i data-feather="shopping-bag"></i> Minhas Compras
+        </a>
+        <a href="#" class="menu-item">
+            <i data-feather="message-circle"></i> Suporte
+        </a>
+    </div>
+
+    <div class="bottom-section">
+        <button class="menu-item settings-toggle" id="settings-btn">
+            <div class="settings-toggle-content">
+                <i data-feather="settings"></i> Configurações
+            </div>
+            <i data-feather="chevron-down" class="arrow-icon"></i>
+        </button>
+
+        <div class="settings-dropdown" id="settings-menu">
+            <a href="#" class="sub-menu-item">
+                <i data-feather="globe"></i> Idioma (PT-BR)
+            </a>
+            
+            <a href="#" class="sub-menu-item logout-btn">
+                <i data-feather="log-out"></i> Deslogar
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Inicializa os ícones do Feather
+        feather.replace();
+
+        // Lógica do menu sanfona (Acordeão) das Configurações
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsMenu = document.getElementById('settings-menu');
+
+        settingsBtn.addEventListener('click', () => {
+            // Alterna a classe 'open' para girar a setinha
+            settingsBtn.classList.toggle('open');
+            // Alterna a classe 'open' para expandir/esconder o menu
+            settingsMenu.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
