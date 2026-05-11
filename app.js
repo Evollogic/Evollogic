@@ -1,5 +1,4 @@
 // 🛡️ SEU IP REAL (Te leva pro Hub) 🛡️
-// Mudei para o seu IP real para você poder entrar e ver o novo Dashboard
 const ALLOWED_IP = "138.94.168.160"; 
 
 // ==========================================
@@ -15,7 +14,6 @@ function initAudio() {
     if (audioCtx.state === 'suspended') audioCtx.resume();
 }
 
-// Som de digitação do Terminal (Teclado mecânico rápido)
 function playTerminalTick() {
     if (!audioCtx || audioCtx.state !== 'running') return;
     const osc = audioCtx.createOscillator();
@@ -34,19 +32,17 @@ function playTerminalTick() {
     osc.stop(audioCtx.currentTime + 0.02);
 }
 
-// Som Sci-Fi com ECO (Para o botão MUTE/UNMUTE e Navegação de Empresas)
 function playEchoSound() {
     if (!audioCtx || audioCtx.state !== 'running') return;
     
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    const delay = audioCtx.createDelay(); // Efeito de Eco
-    const feedback = audioCtx.createGain(); // Duração do Eco
+    const delay = audioCtx.createDelay();
+    const feedback = audioCtx.createGain();
 
-    delay.delayTime.value = 0.15; // Velocidade da repetição
-    feedback.gain.value = 0.4;    // Intensidade da repetição
+    delay.delayTime.value = 0.15;
+    feedback.gain.value = 0.4;
 
-    // Conectando os nós de áudio
     osc.connect(gain);
     gain.connect(audioCtx.destination);
     
@@ -55,7 +51,6 @@ function playEchoSound() {
     delay.connect(feedback);
     feedback.connect(delay);
 
-    // Frequência do som (Pew!)
     osc.type = 'sine';
     osc.frequency.setValueAtTime(800, audioCtx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
@@ -68,7 +63,7 @@ function playEchoSound() {
 }
 
 // ==========================================
-// 💻 ANIMAÇÃO DO TERMINAL 💻
+// 💻 ANIMAÇÃO DO TERMINAL (INDEX.HTML) 💻
 // ==========================================
 const terminalText = document.getElementById('terminal-text');
 const bootSequence = [
@@ -82,6 +77,9 @@ const bootSequence = [
 let lineIndex = 0;
 
 function typeTerminal() {
+    // Só tenta rodar se o terminalText existir na página atual
+    if (!terminalText) return; 
+
     if (lineIndex < bootSequence.length) {
         let p = document.createElement("p");
         p.style.margin = "5px 0";
@@ -92,17 +90,17 @@ function typeTerminal() {
         
         let typingInterval = setInterval(() => {
             p.innerHTML += text.charAt(charIndex);
-            playTerminalTick(); // Toca o clique do teclado
+            playTerminalTick(); 
             charIndex++;
             
             if (charIndex === text.length) {
                 clearInterval(typingInterval);
                 lineIndex++;
-                setTimeout(typeTerminal, 300); // Pausa entre linhas
+                setTimeout(typeTerminal, 300); 
             }
         }, 30);
     } else {
-        verifyIP(); // Terminou de digitar? Verifica o IP!
+        verifyIP(); 
     }
 }
 
@@ -112,8 +110,11 @@ if (btnStartBoot) {
     btnStartBoot.addEventListener('click', () => {
         initAudio(); 
         playEchoSound(); 
-        document.getElementById('init-screen').style.display = 'none';
-        document.getElementById('terminal-boot').style.display = 'block';
+        let initScreen = document.getElementById('init-screen');
+        let terminalBoot = document.getElementById('terminal-boot');
+        
+        if(initScreen) initScreen.style.display = 'none';
+        if(terminalBoot) terminalBoot.style.display = 'block';
         setTimeout(typeTerminal, 500); 
     });
 }
@@ -124,7 +125,7 @@ if (btnStartBoot) {
 function verifyIP() {
     let resultLine = document.createElement("p");
     resultLine.style.margin = "5px 0";
-    terminalText.appendChild(resultLine);
+    if (terminalText) terminalText.appendChild(resultLine);
 
     fetch('https://api.ipify.org?format=json')
         .then(res => res.json())
@@ -133,23 +134,31 @@ function verifyIP() {
             
             setTimeout(() => {
                 if (data.ip === ALLOWED_IP) {
-                    // SE FOR O SEU IP: Abre o Dashboard
-                    document.getElementById('terminal-boot').style.display = 'none';
-                    document.getElementById('app-wrapper').style.display = 'flex';
+                    let terminalBoot = document.getElementById('terminal-boot');
+                    let appWrapper = document.getElementById('app-wrapper');
+                    if (terminalBoot) terminalBoot.style.display = 'none';
+                    if (appWrapper) appWrapper.style.display = 'flex';
                 } else {
-                    // SE NÃO FOR O SEU IP: Trava na tela de música
-                    document.getElementById('terminal-boot').style.display = 'none';
-                    document.getElementById('coming-soon-screen').style.display = 'block';
-                    document.getElementById('transmission-prompt').style.display = 'block';
+                    let terminalBoot = document.getElementById('terminal-boot');
+                    let comingSoon = document.getElementById('coming-soon-screen');
+                    let transmissionPrompt = document.getElementById('transmission-prompt');
+                    
+                    if (terminalBoot) terminalBoot.style.display = 'none';
+                    if (comingSoon) comingSoon.style.display = 'block';
+                    if (transmissionPrompt) transmissionPrompt.style.display = 'block';
                 }
             }, 1500); 
         })
         .catch(() => {
             resultLine.innerHTML = `> NETWORK FIREWALL DETECTED. BYPASSING...`;
             setTimeout(() => {
-                document.getElementById('terminal-boot').style.display = 'none';
-                document.getElementById('coming-soon-screen').style.display = 'block';
-                document.getElementById('transmission-prompt').style.display = 'block';
+                let terminalBoot = document.getElementById('terminal-boot');
+                let comingSoon = document.getElementById('coming-soon-screen');
+                let transmissionPrompt = document.getElementById('transmission-prompt');
+                
+                if (terminalBoot) terminalBoot.style.display = 'none';
+                if (comingSoon) comingSoon.style.display = 'block';
+                if (transmissionPrompt) transmissionPrompt.style.display = 'block';
             }, 1500);
         });
 }
@@ -165,23 +174,28 @@ if (btnAcceptTransmission) {
     btnAcceptTransmission.addEventListener('click', () => {
         initAudio();
         playEchoSound();
-        document.getElementById('transmission-prompt').style.display = 'none';
-        document.getElementById('coming-soon-content').style.display = 'block';
+        let prompt = document.getElementById('transmission-prompt');
+        let content = document.getElementById('coming-soon-content');
         
-        bgMusic.volume = 0.5; 
-        bgMusic.play().catch(e => console.log("Erro de áudio:", e));
+        if(prompt) prompt.style.display = 'none';
+        if(content) content.style.display = 'block';
+        
+        if(bgMusic) {
+            bgMusic.volume = 0.5; 
+            bgMusic.play().catch(e => console.log("Erro de áudio:", e));
+        }
     });
 }
 
 if (btnToggleMusic) {
     btnToggleMusic.addEventListener('click', (e) => {
         initAudio();
-        playEchoSound(); // GERA O SOM DE ECO!
+        playEchoSound(); 
         
-        if (bgMusic.paused) {
+        if (bgMusic && bgMusic.paused) {
             bgMusic.play();
             e.target.innerText = "🔊 MUTE AUDIO";
-        } else {
+        } else if (bgMusic) {
             bgMusic.pause();
             e.target.innerText = "🔇 UNMUTE AUDIO";
         }
@@ -189,31 +203,51 @@ if (btnToggleMusic) {
 }
 
 // ==========================================
-// 🏢 NAVEGAÇÃO DE EMPRESAS (HUB.HTML) 🏢
+// 🏢 NAVEGAÇÃO DE EMPRESAS (HUB.HTML) - CARROSSEL 🏢
 // ==========================================
-// Adiciona a lógica de troca de conteúdo e som de eco ao clicar na barra lateral
-document.querySelectorAll('.sidebar-companies .grid-item').forEach(item => {
-    item.addEventListener('click', (e) => {
+const track = document.getElementById('track');
+const btnLeft = document.getElementById('btnLeft');
+const btnRight = document.getElementById('btnRight');
+
+if (btnLeft && btnRight && track) {
+    btnLeft.addEventListener('click', () => {
         initAudio();
-        playEchoSound(); // O SOM DO ECO AQUI!
-        
-        // Remove a classe ativa de todos
-        document.querySelectorAll('.sidebar-companies .grid-item').forEach(i => i.classList.remove('active'));
-        // Adiciona a classe ativa no clicado
-        e.target.classList.add('active');
-        
-        const targetId = e.target.getAttribute('data-target');
-        
-        // Esconde todos os perfis
-        document.querySelectorAll('.company-profile').forEach(profile => profile.classList.remove('active'));
-        
-        // Mostra o perfil correspondente (por enquanto o default é Sodhupn, preparei o campo pra outros)
-        const targetProfile = document.getElementById(`${targetId}-profile`);
-        if (targetProfile) {
-            targetProfile.classList.add('active');
-        } else {
-            // Failsafe: se não tiver o perfil ainda, mostra o placeholder
-            document.getElementById('placeholder-profile').classList.add('active');
-        }
+        playEchoSound(); 
+        track.scrollBy({ left: -200, behavior: 'smooth' });
     });
-});
+
+    btnRight.addEventListener('click', () => {
+        initAudio();
+        playEchoSound(); 
+        track.scrollBy({ left: 200, behavior: 'smooth' });
+    });
+}
+
+// Lógica de clicar no card da empresa
+const empresaCards = document.querySelectorAll('.empresa-card');
+
+if (empresaCards.length > 0) {
+    empresaCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            initAudio();
+            playEchoSound(); 
+            
+            const clickedCard = e.currentTarget;
+
+            document.querySelectorAll('.empresa-card').forEach(i => i.classList.remove('active'));
+            clickedCard.classList.add('active');
+            
+            const targetId = clickedCard.getAttribute('data-target');
+            
+            document.querySelectorAll('.company-profile').forEach(profile => profile.classList.remove('active'));
+            
+            const targetProfile = document.getElementById(`${targetId}-profile`);
+            if (targetProfile) {
+                targetProfile.classList.add('active');
+            } else {
+                let placeholder = document.getElementById('placeholder-profile');
+                if (placeholder) placeholder.classList.add('active');
+            }
+        });
+    });
+}
