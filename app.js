@@ -1,5 +1,5 @@
 // 🛡️ SEU IP REAL (Te leva pro Hub) 🛡️
-const ALLOWED_IP = "138.94.168.160"; 
+const ALLOWED_IP = "45.71.211.101"; 
 
 // ==========================================
 // 🎵 MOTOR DE ÁUDIO (SOM HACKER + ECO) 🎵
