@@ -20,6 +20,106 @@
             overflow-x: hidden;
         }
 
+        /* ==========================================
+           MENU LATERAL (SIDEBAR) & BOTÃO HAMBÚRGUER
+           ========================================== */
+        
+        /* Botão de Menu (3 traços) */
+        .menu-btn {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 100;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .menu-btn:hover { 
+            background: rgba(56, 189, 248, 0.15); 
+            border-color: #38bdf8;
+            transform: scale(1.05);
+        }
+        
+        .menu-btn span {
+            display: block;
+            width: 26px;
+            height: 3px;
+            background: #38bdf8;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+
+        /* Fundo escuro quando o menu abre (Overlay) */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        .sidebar-overlay.active { opacity: 1; visibility: visible; }
+
+        /* Aba Lateral (Sidebar) */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -350px; /* Escondida fora da tela inicialmente */
+            width: 320px;
+            max-width: 85vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            z-index: 999;
+            transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar.active { left: 0; }
+
+        .sidebar-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .sidebar-title { margin: 0; color: #f8fafc; font-size: 1.2rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .sidebar-title img { width: 30px; }
+
+        .close-btn {
+            background: none; border: none; color: #94a3b8; font-size: 2rem; 
+            cursor: pointer; transition: 0.3s; line-height: 1;
+        }
+        .close-btn:hover { color: #ef4444; transform: scale(1.1) rotate(90deg); }
+
+        /* O Iframe que chama o side.html */
+        .sidebar-iframe {
+            flex: 1;
+            width: 100%;
+            border: none;
+            background: transparent;
+        }
+
+
+        /* ==========================================
+           RESTANTE DO ESTILO PRINCIPAL
+           ========================================== */
         .header-logo { width: 140px; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
         .title-text { 
             font-size: 2.2rem; margin: 10px 0; font-weight: 700; 
@@ -30,9 +130,8 @@
         .subtitle { color: #94a3b8; font-size: 1rem; margin-top: -10px; font-weight: 300; }
 
         #app-wrapper { width: 100%; min-height: 100vh; display: flex; justify-content: center; padding: 40px 0; box-sizing: border-box; }
-        .dashboard-container { width: 90%; max-width: 1000px; z-index: 10; position: relative; }
+        .dashboard-container { width: 90%; max-width: 1000px; z-index: 10; position: relative; padding-top: 20px;}
         
-        /* Estilo moderno de cartão (Glassmorphism) */
         .dash-section { 
             margin-bottom: 40px; text-align: left; 
             background: rgba(30, 41, 59, 0.4); 
@@ -48,22 +147,15 @@
             display: flex; align-items: center; gap: 10px;
         }
         
-        /* Badge para Destaque */
         .badge {
             background: rgba(56, 189, 248, 0.1); color: #38bdf8;
             padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
             border: 1px solid rgba(56, 189, 248, 0.2);
         }
 
-        .update-box {
-            background: rgba(15, 23, 42, 0.5); padding: 20px; border-radius: 12px;
-            border-left: 4px solid #38bdf8;
-        }
+        .update-box { background: rgba(15, 23, 42, 0.5); padding: 20px; border-radius: 12px; border-left: 4px solid #38bdf8; }
         .update-box p { color: #cbd5e1; margin: 0; line-height: 1.6; font-size: 1rem; }
         
-        /* ==========================================
-           CARROSSEL MODERNO
-           ========================================== */
         .carousel-wrapper { display: flex; align-items: center; gap: 15px; position: relative; width: 100%; }
         
         .scroll-btn { 
@@ -77,63 +169,34 @@
         .carousel-container { display: flex; gap: 20px; width: max-content; }
         
         .company-card {
-            width: 140px; height: 160px;
-            background: rgba(15, 23, 42, 0.6); 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            border-radius: 16px;
+            width: 140px; height: 160px; background: rgba(15, 23, 42, 0.6); 
+            border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             flex-shrink: 0; padding: 10px; box-sizing: border-box;
         }
         
-        .company-card img { 
-            max-width: 70px; height: 70px; object-fit: cover; 
-            margin-bottom: 12px; transition: 0.3s;
-        }
-
-        /* Deixando a logo da Sodhupn redonda no card */
-        .company-card[data-target="sodhupn"] img {
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.1);
-        }
-        
+        .company-card img { max-width: 70px; height: 70px; object-fit: cover; margin-bottom: 12px; transition: 0.3s; }
+        .company-card[data-target="sodhupn"] img { border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); }
         .company-card span { color: #94a3b8; font-size: 0.9rem; font-weight: 500; }
         
-        /* Efeito ao selecionar a marca */
-        .company-card.active { 
-            background: rgba(56, 189, 248, 0.1); 
-            border-color: #38bdf8; 
-            transform: translateY(-5px); 
-            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15); 
-        }
+        .company-card.active { background: rgba(56, 189, 248, 0.1); border-color: #38bdf8; transform: translateY(-5px); box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15); }
         .company-card.active span { color: #38bdf8; font-weight: 600; }
         .company-card.active img { transform: scale(1.1); }
 
-        /* ==========================================
-           ÁREA DE INFORMAÇÕES
-           ========================================== */
         #info-display-area { 
             background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); 
-            padding: 40px; border-radius: 20px; min-height: 280px; 
-            text-align: left; position: relative; overflow: hidden;
+            padding: 40px; border-radius: 20px; min-height: 280px; text-align: left; position: relative; overflow: hidden;
         }
         
         .company-details { display: none; position: relative; z-index: 5; }
         .company-details.active { display: block; animation: fadeIn 0.5s ease-out; }
 
-        /* Imagem redonda de fundo suave da Sodhupn */
         #sodhupn-info::before {
-            content: "";
-            position: absolute;
-            top: 50%; right: 5%; transform: translateY(-50%);
-            width: 300px; height: 300px;
-            background-image: url('https://i.imgur.com/igeI5LA.png');
-            background-size: cover;
-            background-position: center;
-            border-radius: 50%;
-            opacity: 0.04;
-            z-index: -1;
-            pointer-events: none;
+            content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%);
+            width: 300px; height: 300px; background-image: url('https://i.imgur.com/igeI5LA.png');
+            background-size: cover; background-position: center; border-radius: 50%;
+            opacity: 0.04; z-index: -1; pointer-events: none;
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -145,7 +208,6 @@
         .meta-subtitle { color: #cbd5e1; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;}
         .meta-goal { font-size: 1.5rem; color: #818cf8; font-weight: 700; margin: 0;}
 
-        /* BOTÕES SOCIAIS E CONTATO */
         .social-buttons-container { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; align-items: center; }
         
         .social-btn {
@@ -153,10 +215,8 @@
             border-radius: 12px; transition: 0.3s; font-weight: 500; font-size: 0.95rem;
             display: flex; align-items: center; gap: 8px; border: none;
         }
-
         .discord-btn { background: #5865F2; color: #fff; }
         .discord-btn:hover { background: #4752C4; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4); }
-
         .insta-btn { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #fff; }
         .insta-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4); filter: brightness(1.1); }
 
@@ -172,32 +232,34 @@
         .placeholder-text { text-align: center; color: #64748b; padding: 40px 0; }
         .placeholder-icon { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
 
-        /* ==========================================
-           MODERNO PLAYER DE VÍDEO (NOVO)
-           ========================================== */
         .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* Mantém a proporção 16:9 perfeita do YouTube */
-            height: 0;
-            overflow: hidden;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            background: #000;
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+            border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #000;
         }
-        
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
     </style>
 </head>
 <body>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">
+                <img src="https://i.imgur.com/31WnC6D.png" alt="Logo"> Hub Menu
+            </h3>
+            <button class="close-btn" id="close-sidebar">&times;</button>
+        </div>
+        <iframe src="side.html" class="sidebar-iframe" title="Menu Lateral"></iframe>
+    </div>
+
+    <button class="menu-btn" id="open-sidebar" aria-label="Abrir Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 
     <div id="app-wrapper">
         <div class="dashboard-container">
@@ -307,6 +369,23 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Lógica do Menu Lateral (Sidebar)
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const openBtn = document.getElementById('open-sidebar');
+            const closeBtn = document.getElementById('close-sidebar');
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+
+            openBtn.addEventListener('click', toggleSidebar);
+            closeBtn.addEventListener('click', toggleSidebar);
+            overlay.addEventListener('click', toggleSidebar);
+
+
+            // Lógica do Carrossel
             const track = document.getElementById('company-carousel');
             const details = document.querySelectorAll('.company-details');
             let isTransitioning = false;
