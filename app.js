@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-// 🔥 FIREBASE CREDENCIAIS (COLE AQUI SUAS CHAVES) 🔥
+// 🔥 FIREBASE CREDENCIAIS 🔥
 const firebaseConfig = {
     apiKey: "SUA_API_KEY",
     authDomain: "SEU_AUTH_DOMAIN",
@@ -14,39 +14,104 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// --- AUDIO ENGINE (Sons de UI) ---
+// 🛡️ SEU IP EXATO AQUI 🛡️
+const ALLOWED_IP = "138.94.168.160"; 
+
+// --- AUDIO ENGINE (Para botões e cliques) ---
 let audioCtx;
-
 function initAudio() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
 }
-
 function playBeep(freq = 400, type = 'square', duration = 0.1) {
     if (!audioCtx) return;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
+    osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + duration);
 }
 
-// --- BACKGROUND MUSIC LOGIC ---
+// --- TERMINAL BOOT ANIMATION ---
+const terminalText = document.getElementById('terminal-text');
+const bootSequence = [
+    "EVOLLOGIC_OS v1.0",
+    "INITIALIZING SECURE KERNEL...",
+    "MOUNTING VIRTUAL DRIVES... [OK]",
+    "ESTABLISHING PROTOCOLS... [OK]",
+    "> RESOLVING INCOMING IP ADDRESS..."
+];
+
+let lineIndex = 0;
+
+function typeTerminal() {
+    if (lineIndex < bootSequence.length) {
+        let p = document.createElement("p");
+        p.style.margin = "5px 0";
+        terminalText.appendChild(p);
+        
+        let text = bootSequence[lineIndex];
+        let charIndex = 0;
+        
+        let typingInterval = setInterval(() => {
+            p.innerHTML += text.charAt(charIndex);
+            charIndex++;
+            if (charIndex === text.length) {
+                clearInterval(typingInterval);
+                lineIndex++;
+                setTimeout(typeTerminal, 300); // Pausa antes de digitar a próxima linha
+            }
+        }, 20); // Velocidade de digitação
+    } else {
+        // Quando terminar de digitar, aciona a verificação de IP
+        verifyIP();
+    }
+}
+
+// Inicia o terminal assim que o site carrega
+window.onload = () => {
+    setTimeout(typeTerminal, 500);
+};
+
+// --- VERIFICAÇÃO DE IP ---
+function verifyIP() {
+    let resultLine = document.createElement("p");
+    resultLine.style.margin = "5px 0";
+    terminalText.appendChild(resultLine);
+
+    fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(data => {
+            resultLine.innerHTML = `> IP IDENTIFIED: ${data.ip}`;
+            
+            setTimeout(() => {
+                document.getElementById('terminal-boot').style.display = 'none';
+                
+                // SE O IP FOR O SEU: Mostra a tela de Login
+                if (data.ip === ALLOWED_IP) {
+                    document.getElementById('app-wrapper').style.display = 'block';
+                } 
+                // SE FOR OUTRA PESSOA: Mostra a Transmissão e bloqueia
+                else {
+                    document.getElementById('coming-soon-screen').style.display = 'block';
+                    document.getElementById('transmission-prompt').style.display = 'block';
+                }
+            }, 1000); // Dá 1 segundo para a pessoa ler o próprio IP na tela
+        })
+        .catch(() => {
+            document.getElementById('terminal-boot').style.display = 'none';
+            document.getElementById('coming-soon-screen').style.display = 'block';
+            document.getElementById('transmission-prompt').style.display = 'block';
+        });
+}
+
+// --- BACKGROUND MUSIC & TRANSMISSION LOGIC ---
 const bgMusic = document.getElementById('bg-music');
 const btnToggleMusic = document.getElementById('btn-toggle-music');
 
-// Quando o botão "ACCEPT" for clicado na tela de transmissão
 document.getElementById('btn-accept-transmission').addEventListener('click', () => {
-    initAudio(); // Libera o som de interface
+    initAudio(); 
     playBeep(600, 'sine', 0.2); 
     document.getElementById('transmission-prompt').style.display = 'none';
     document.getElementById('coming-soon-content').style.display = 'block';
@@ -55,8 +120,8 @@ document.getElementById('btn-accept-transmission').addEventListener('click', () 
     bgMusic.play().catch(e => console.log("Audio play blocked by browser:", e));
 });
 
-// Botão para mutar/desmutar a música
 btnToggleMusic.addEventListener('click', () => {
+    initAudio();
     if (bgMusic.paused) {
         bgMusic.play();
         btnToggleMusic.innerText = "🔊 MUTE AUDIO";
@@ -65,31 +130,6 @@ btnToggleMusic.addEventListener('click', () => {
         btnToggleMusic.innerText = "🔇 UNMUTE AUDIO";
     }
 });
-
-// --- IP PROTECTION (SEU IP EXATO) ---
-const ALLOWED_IP = ""; 
-
-fetch('https://api.ipify.org?format=json')
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById('loading-screen').style.display = 'none';
-        
-        // SE O IP FOR O SEU: Mostra a tela de Login
-        if (data.ip === ALLOWED_IP) {
-            document.getElementById('app-wrapper').style.display = 'block';
-        } 
-        // SE FOR OUTRA PESSOA: Mostra a Transmissão + Música
-        else {
-            document.getElementById('coming-soon-screen').style.display = 'block';
-            document.getElementById('transmission-prompt').style.display = 'block';
-        }
-    })
-    .catch(() => {
-        // Se der erro de rede, joga para a tela de transmissão por segurança
-        document.getElementById('loading-screen').style.display = 'none';
-        document.getElementById('coming-soon-screen').style.display = 'block';
-        document.getElementById('transmission-prompt').style.display = 'block';
-    });
 
 // --- FIREBASE LOGIC ---
 onAuthStateChanged(auth, (user) => {
