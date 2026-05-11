@@ -39,7 +39,7 @@
         .section-title { border-bottom: 2px solid rgba(0, 255, 136, 0.5); padding-bottom: 10px; font-size: 1.5rem; margin-bottom: 20px; text-transform: uppercase; color: #00ff88; }
         
         /* ==========================================
-           NOVO CARROSSEL (Animação Fluida + UI Corner)
+           CARROSSEL
            ========================================== */
         .carousel-wrapper { display: flex; align-items: center; gap: 15px; position: relative; width: 100%; }
         
@@ -51,32 +51,23 @@
         }
         .scroll-btn:hover { background: #00ff88; color: #000; box-shadow: 0 0 20px #00ff88; transform: scale(1.05); }
         
-        /* Viewport esconde o que sai da tela */
         .carousel-viewport { overflow: hidden; width: 100%; padding: 20px 0; }
-        
-        /* O Container que desliza */
         .carousel-container { display: flex; gap: 20px; width: max-content; }
         
-        /* Estilo UI Corner Quadrado */
         .company-card {
-            width: 150px; height: 150px; /* Quadrado um pouco maior */
+            width: 150px; height: 150px;
             background: rgba(0, 10, 5, 0.8); 
             border: 1px solid rgba(0, 255, 136, 0.3); 
-            border-radius: 12px; /* Menos arredondado para parecer mais quadrado */
+            border-radius: 12px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: 0 8px 15px rgba(0,0,0,0.5);
-            flex-shrink: 0;
-            padding: 10px;
-            box-sizing: border-box;
+            flex-shrink: 0; padding: 10px; box-sizing: border-box;
         }
         
         .company-card img { 
-            max-width: 80px; /* Limita a largura sem quebrar a proporção */
-            height: 70px;    /* Limita a altura */
-            object-fit: contain; /* Garante que a imagem se ajuste perfeitamente */
-            margin-bottom: 12px; 
-            filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.6)); transition: all 0.3s;
+            max-width: 80px; height: 70px; object-fit: contain; 
+            margin-bottom: 12px; filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.6)); transition: all 0.3s;
         }
         
         .company-card span { 
@@ -84,7 +75,6 @@
             letter-spacing: 1.5px; text-transform: uppercase; pointer-events: none; transition: all 0.3s;
         }
         
-        /* Card em Destaque */
         .company-card.active { 
             background: rgba(0, 255, 136, 0.15); border-color: #00ff88; 
             transform: scale(1.1); box-shadow: 0 0 25px rgba(0, 255, 136, 0.4); 
@@ -93,14 +83,82 @@
         .company-card.active span { color: #00ff88; text-shadow: 0 0 10px #00ff88; }
 
         /* Área de Info */
-        #info-display-area { background: rgba(0, 5, 2, 0.9); border: 1px dashed #00d4ff; padding: 30px; border-radius: 15px; min-height: 200px; text-align: left; }
-        .company-details { display: none; }
+        #info-display-area { 
+            background: rgba(0, 5, 2, 0.9); border: 1px dashed #00d4ff; 
+            padding: 30px; border-radius: 15px; min-height: 250px; 
+            text-align: left; position: relative; overflow: hidden; /* Importante para a imagem de fundo não sair */
+        }
+        
+        .company-details { display: none; position: relative; z-index: 2; }
         .company-details.active { display: block; animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); filter: blur(2px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+
+        /* NOVO: Imagem Transparente de Fundo para Sodhupn */
+        #sodhupn-info::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%; /* Tamanho da imagem de fundo */
+            height: 100%;
+            background-image: url('https://i.imgur.com/igeI5LA.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.05; /* Transparência suave */
+            z-index: -1;
+            pointer-events: none; /* Para não atrapalhar o clique nos botões */
+            filter: drop-shadow(0 0 30px #00ff88) grayscale(50%); /* Efeito de brilho no fundo */
+        }
 
         .neon-subtitle { color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px; border-bottom: 1px solid rgba(0, 212, 255, 0.3); padding-bottom: 10px; text-transform: uppercase;}
         .english-description { color: #d0d0d0; line-height: 1.6; font-size: 1.1rem;}
         .meta-goal { font-size: 1.8rem; color: #ff0055; text-shadow: 0 0 10px #ff0055; font-weight: bold; margin: 10px 0;}
+
+        /* NOVO: Estilos para os Botões Sociais */
+        .social-buttons-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .discord-btn {
+            color: #5865F2; border: 1px solid #5865F2; background: rgba(88, 101, 242, 0.1);
+        }
+        .discord-btn:hover {
+            background: #5865F2; color: #fff; box-shadow: 0 0 15px #5865F2; transform: translateY(-3px);
+        }
+
+        .insta-btn {
+            color: #E1306C; border: 1px solid #E1306C; background: rgba(225, 48, 108, 0.1);
+        }
+        .insta-btn:hover {
+            background: #E1306C; color: #fff; box-shadow: 0 0 15px #E1306C; transform: translateY(-3px);
+        }
+
+        .contact-info {
+            margin-top: 20px; color: #00ff88; font-size: 1.1rem; background: rgba(0, 255, 136, 0.1); 
+            display: inline-block; padding: 8px 15px; border-radius: 5px; border: 1px dotted rgba(0, 255, 136, 0.5);
+        }
+        .contact-info a { color: #fff; text-decoration: none; transition: 0.3s; }
+        .contact-info a:hover { color: #00d4ff; text-shadow: 0 0 8px #00d4ff;}
+
     </style>
 </head>
 <body class="crt">
@@ -134,7 +192,7 @@
                     <div class="carousel-viewport">
                         <div class="carousel-container" id="company-carousel">
                             <div class="company-card active" data-target="sodhupn">
-                                <img src="https://i.imgur.com/WXcnLKE.png" alt="Sodhupn">
+                                <img src="https://i.imgur.com/igeI5LA.png" alt="Sodhupn">
                                 <span>Sodhupn</span>
                             </div>
                             <div class="company-card" data-target="seashare">
@@ -155,7 +213,7 @@
                             </div>
 
                             <div class="company-card" data-target="sodhupn">
-                                <img src="https://i.imgur.com/WXcnLKE.png" alt="Sodhupn">
+                                <img src="https://i.imgur.com/igeI5LA.png" alt="Sodhupn">
                                 <span>Sodhupn</span>
                             </div>
                             <div class="company-card" data-target="seashare">
@@ -190,6 +248,15 @@
                     <h3 class="neon-subtitle" style="margin-top: 20px;">Vision 2026 Metas</h3>
                     <p class="meta-goal">14 STORES UNIFIED</p>
                     <p style="color: #a0a0d0;">Our goal is to expand to 14 active stores by the end of 2026, launching our official website and a centralized marketplace hub soon.</p>
+                    
+                    <div class="contact-info">
+                        📧 Contact: <a href="mailto:Sodhupn@gmail.com">Sodhupn@gmail.com</a>
+                    </div>
+
+                    <div class="social-buttons-container">
+                        <a href="#" class="social-btn discord-btn">👾 DISCORD</a>
+                        <a href="#" class="social-btn insta-btn">📸 INSTAGRAM</a>
+                    </div>
                 </div>
 
                 <div class="company-details" id="placeholder-info">
@@ -209,9 +276,8 @@
 
             let autoPlayInterval;
             const TEMPO_ROTACAO = 3000; // 3 Segundos
-            let isTransitioning = false; // Trava para não bugar a animação se clicar rápido demais
+            let isTransitioning = false; 
 
-            // Atualiza a tela de informações embaixo
             function mostrarInfo(card) {
                 const targetId = card.getAttribute('data-target');
                 details.forEach(detail => detail.classList.remove('active'));
@@ -224,17 +290,14 @@
                 }
             }
 
-            // Move Suavemente para a Esquerda (Efeito de Loop Infinito Perfeito)
             function moveRight() {
                 if (isTransitioning) return;
                 isTransitioning = true;
 
-                // Calcula o tamanho exato de um card + o gap
                 const cardWidth = cards[0].offsetWidth + 20; 
                 track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)';
                 track.style.transform = `translateX(-${cardWidth}px)`;
 
-                // Acha o card ativo atual e passa a coroa para o próximo
                 let currentActive = document.querySelector('.company-card.active');
                 if (currentActive) currentActive.classList.remove('active');
                 
@@ -244,30 +307,26 @@
                 nextActive.classList.add('active');
                 mostrarInfo(nextActive);
 
-                // Quando a animação terminar, movemos o HTML de forma invisível
                 setTimeout(() => {
-                    track.appendChild(track.firstElementChild); // Joga o primeiro pro final
-                    track.style.transition = 'none'; // Tira animação
-                    track.style.transform = 'translateX(0)'; // Reseta posição
-                    cards = Array.from(document.querySelectorAll('.company-card')); // Atualiza Array
+                    track.appendChild(track.firstElementChild); 
+                    track.style.transition = 'none'; 
+                    track.style.transform = 'translateX(0)'; 
+                    cards = Array.from(document.querySelectorAll('.company-card')); 
                     isTransitioning = false;
-                }, 500); // 500ms é o tempo da transição no CSS
+                }, 500); 
             }
 
-            // Move Suavemente para a Direita (Voltar)
             function moveLeft() {
                 if (isTransitioning) return;
                 isTransitioning = true;
 
                 const cardWidth = cards[0].offsetWidth + 20;
                 
-                // Pega o último lá de trás e joga pra frente instantaneamente invisível
                 track.insertBefore(track.lastElementChild, track.firstElementChild);
                 track.style.transition = 'none';
                 track.style.transform = `translateX(-${cardWidth}px)`;
                 cards = Array.from(document.querySelectorAll('.company-card'));
 
-                // Atualiza o Ativo
                 let currentActive = document.querySelector('.company-card.active');
                 if (currentActive) currentActive.classList.remove('active');
                 
@@ -277,7 +336,6 @@
                 prevActive.classList.add('active');
                 mostrarInfo(prevActive);
 
-                // Força o navegador a renderizar o pulo antes de animar o deslize
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
                         track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)';
@@ -287,9 +345,6 @@
                 });
             }
 
-            // ==========================================
-            // GERENCIAMENTO DE LOOP E CLIQUES
-            // ==========================================
             function iniciarAutoPlay() {
                 clearInterval(autoPlayInterval);
                 autoPlayInterval = setInterval(moveRight, TEMPO_ROTACAO);
@@ -301,7 +356,6 @@
 
             iniciarAutoPlay();
 
-            // Setas manuais
             document.getElementById('scroll-right').addEventListener('click', (e) => {
                 e.stopPropagation();
                 pausarAutoPlay();
@@ -314,7 +368,6 @@
                 moveLeft();
             });
 
-            // Clique nos Cards
             document.querySelector('.carousel-viewport').addEventListener('click', (e) => {
                 const card = e.target.closest('.company-card');
                 if (!card) return;
@@ -322,13 +375,11 @@
                 e.stopPropagation();
                 pausarAutoPlay();
                 
-                // Apenas destaca visualmente o que o usuário clicou
                 document.querySelectorAll('.company-card').forEach(c => c.classList.remove('active'));
                 card.classList.add('active');
                 mostrarInfo(card);
             });
 
-            // Retoma Loop se clicar fora
             document.addEventListener('click', () => {
                 iniciarAutoPlay();
             });
