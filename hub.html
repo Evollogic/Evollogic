@@ -59,24 +59,29 @@
         
         /* Estilo UI Corner Quadrado */
         .company-card {
-            width: 140px; height: 140px; /* Quadrado perfeito */
+            width: 150px; height: 150px; /* Quadrado um pouco maior */
             background: rgba(0, 10, 5, 0.8); 
-            border: 1px solid rgba(0, 255, 136, 0.2); 
-            border-radius: 20px; /* UI Corner Suave */
+            border: 1px solid rgba(0, 255, 136, 0.3); 
+            border-radius: 12px; /* Menos arredondado para parecer mais quadrado */
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: 0 8px 15px rgba(0,0,0,0.5);
             flex-shrink: 0;
+            padding: 10px;
+            box-sizing: border-box;
         }
         
         .company-card img { 
-            width: 55px; height: 55px; object-fit: contain; margin-bottom: 12px; 
+            max-width: 80px; /* Limita a largura sem quebrar a proporção */
+            height: 70px;    /* Limita a altura */
+            object-fit: contain; /* Garante que a imagem se ajuste perfeitamente */
+            margin-bottom: 12px; 
             filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.6)); transition: all 0.3s;
         }
         
         .company-card span { 
-            color: rgba(0, 255, 136, 0.7); font-weight: bold; font-size: 0.95rem; 
-            letter-spacing: 2px; text-transform: uppercase; pointer-events: none; transition: all 0.3s;
+            color: rgba(0, 255, 136, 0.7); font-weight: bold; font-size: 1rem; 
+            letter-spacing: 1.5px; text-transform: uppercase; pointer-events: none; transition: all 0.3s;
         }
         
         /* Card em Destaque */
@@ -107,13 +112,13 @@
             
             <header style="text-align: center; margin-bottom: 40px;">
                 <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="header-logo">
-                <h1 class="title-text">CENTRAL_HUB</h1>
+                <h1 class="title-text">CENTRAL HUB</h1>
             </header>
 
             <section class="dash-section">
-                <h2 class="section-title">> LATEST_POST</h2>
+                <h2 class="section-title">> LATEST POST</h2>
                 <div style="background: rgba(0,0,0,0.5); padding: 15px; border-left: 3px solid #00d4ff; border-radius: 8px;">
-                    <p style="color: #00d4ff; font-weight: bold; margin-bottom: 10px; margin-top:0;">[ TIMESTAMP: CURRENT_OPERATION ]</p>
+                    <p style="color: #00d4ff; font-weight: bold; margin-bottom: 10px; margin-top:0;">[ TIMESTAMP: CURRENT OPERATION ]</p>
                     <p style="font-size: 1.1rem; line-height: 1.5; color: #d0d0d0; margin-bottom:0;">
                         System update: May Roadmap active. Sodhupn ecosystem expansion verified. Network footprint scaling. Architect present.
                     </p>
@@ -121,7 +126,7 @@
             </section>
 
             <section class="dash-section">
-                <h2 class="section-title">> GETTING_TO_KNOW_US</h2>
+                <h2 class="section-title">> GETTING TO KNOW US</h2>
                 
                 <div class="carousel-wrapper">
                     <button id="scroll-left" class="scroll-btn">&#10094;</button>
@@ -178,17 +183,17 @@
 
             <section id="info-display-area">
                 <div class="company-details active" id="sodhupn-info">
-                    <h2 class="neon-subtitle">Ecosystem_Overview: Sodhupn</h2>
+                    <h2 class="neon-subtitle">Ecosystem Overview: Sodhupn</h2>
                     <p class="english-description">
                         Sodhupn is a dedicated product sales store, currently operating across 3 major marketplaces (GG Max, Eldorado, and Desapego Games). We are committed to providing a secure and top-tier shopping experience.
                     </p>
-                    <h3 class="neon-subtitle" style="margin-top: 20px;">Vision_2026_Metas</h3>
-                    <p class="meta-goal">14 STORES_UNIFIED</p>
+                    <h3 class="neon-subtitle" style="margin-top: 20px;">Vision 2026 Metas</h3>
+                    <p class="meta-goal">14 STORES UNIFIED</p>
                     <p style="color: #a0a0d0;">Our goal is to expand to 14 active stores by the end of 2026, launching our official website and a centralized marketplace hub soon.</p>
                 </div>
 
                 <div class="company-details" id="placeholder-info">
-                    <h2 class="neon-subtitle" style="color: #ff0055;">SYSTEM_LOCKED</h2>
+                    <h2 class="neon-subtitle" style="color: #ff0055;">SYSTEM LOCKED</h2>
                     <p style="color: #a0a0d0;">Select a valid subsystem from the network carousel to load its specific operational data.</p>
                 </div>
             </section>
