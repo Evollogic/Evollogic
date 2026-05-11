@@ -22,12 +22,29 @@
 
     <div id="stars"></div>
 
-    <div id="app-wrapper">
-        <div class="dashboard-container">
+    <div id="hub-wrapper" class="dashboard-wrapper">
+        
+        <nav class="sidebar-companies">
+            <h3 class="section-title">> COMPANY_NETWORKS</h3>
+            <div class="company-list-scroll">
+                <div class="grid-item active" data-target="sodhupn">Sodhupn</div>
+                <div class="grid-item" data-target="seashare">Seashare</div>
+                <div class="grid-item" data-target="tobump">ToBump</div>
+                <div class="grid-item" data-target="toup">ToUp</div>
+                <div class="grid-item" data-target="scriparadoxall">Scriparadoxall</div>
+                <div class="grid-item" data-target="youtube">YouTube</div>
+                <div class="grid-item" data-target="gravity_coil">Gravity Coil</div>
+                <div class="grid-item" data-target="1x1scripter">1x1Scripter</div>
+                <div class="grid-item" data-target="hapiephone">Hapiephone</div>
+                <div class="grid-item" data-target="gg">GG (Glimpse Games)</div>
+            </div>
+        </nav>
+
+        <main class="main-content-area">
             
-            <header style="margin-bottom: 40px; text-align: center;">
-                <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" style="width: 120px;">
-                <h1 style="color: #00ff88; letter-spacing: 3px; text-shadow: 0 0 10px #00ff88;">CENTRAL_HUB</h1>
+            <header class="hub-header">
+                <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="header-logo">
+                <h1 class="glitch" data-text="CENTRAL_HUB">CENTRAL_HUB</h1>
             </header>
 
             <section class="dash-section">
@@ -35,26 +52,76 @@
                 <div class="last-post-box">
                     <p style="color: #00d4ff; font-weight: bold; margin-bottom: 10px;">[ TIMESTAMP: CURRENT_OPERATION ]</p>
                     <p style="font-size: 1.1rem; line-height: 1.5; color: #d0d0d0;">
-                        System update: May Roadmap active. Seashare Stock beta deployed successfully. Hapiephone transmission channel initialized. Ecosystem scaling nominal. Operations expanding.
+                        System update: May Roadmap active. Sodhupn ecosystem expansion verified. Gravity Coil subsystem stabilizing. Network footprint scaling. Architect present.
                     </p>
                 </div>
             </section>
 
-            <section class="dash-section">
-                <h2 class="section-title">> GETTING_TO_KNOW_US</h2>
+            <section class="dash-section profile-section" id="profile-content">
+                <h2 class="section-title">> CONHECENDO NOIS (GETTING TO KNOW US)</h2>
                 
-                <div class="grid-container">
-                    <div class="grid-item">SODHUPN</div>
-                    <div class="grid-item">SEASHARE</div>
-                    <div class="grid-item">TOBUMP</div>
-                    <div class="grid-item">TOUP</div>
-                    <div class="grid-item">SCRIPARADOXALL</div>
-                    <div class="grid-item">YOUTUBE</div>
-                    <div class="grid-item">GRAVITY COIL</div>
-                    <div class="grid-item">1X1SCRIPTER</div>
-                    <div class="grid-item">HAPIEPHONE</div>
-                    <div class="grid-item">GG (GLIMPSE GAMES)</div>
+                <div class="company-profile active" id="sodhupn-profile">
+                    
+                    <div class="profile-hero">
+                        <img src="https://i.imgur.com/WXcnLKE.png" alt="Sodhupn Profile" class="hero-image">
+                        <div class="hero-text">
+                            <h1 style="color: #00ff88; margin: 0; text-shadow: 0 0 15px #00ff88;">Sodhupn</h1>
+                            <p class="neon-subtitle">Your Trusted Shopping Destination</p>
+                        </div>
+                    </div>
+
+                    <div class="description-block">
+                        <h3 class="neon-subtitle">Ecosystem_Overview</h3>
+                        <p class="english-description">
+                            Sodhupn is our dedicated premiere sales platform, crafting a wide-ranging, secure product ecosystem. We are committed to unifying your shopping experiences, ensuring trust and excellence across multiple digital storefronts.
+                        </p>
+                    </div>
+
+                    <div class="ecosystem-block">
+                        <h3 class="neon-subtitle">Current_Footprint [3 STORES]</h3>
+                        <div class="footprint-grid">
+                            <div class="store-icon-box">
+                                <img src="image_2.png" alt="GG Max Conceptual Store" class="store-logo">
+                                <p>GG_MAX</p>
+                            </div>
+                            <div class="store-icon-box">
+                                <div class="conceptual-logo" style="background-color: #f7b731;">E</div>
+                                <p>ELDORADO</p>
+                            </div>
+                            <div class="store-icon-box">
+                                <img src="image_4.png" alt="Desapego Games Conceptual Store" class="store-logo">
+                                <p>DESAPEGO_GAMES</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="roadmap-block message-card">
+                        <h3 class="neon-subtitle">Vision_2026_Metas</h3>
+                        <p class="meta-goal">14 STORES_UNIFIED</p>
+                        <p style="color: #a0a0d0; line-height: 1.5;">By the end of 2026, the Sodhupn ecosystem aims to have expanded and unified 14 conceptual and digital storefronts, creating a comprehensive market network.</p>
+                    </div>
+
+                    <div class="upcoming-block">
+                        <h3 class="neon-subtitle">Centralization_Phase</h3>
+                        <div class="grid-container">
+                            <div class="grid-item upcoming-item">
+                                <span class="upcoming-status glitch-text" data-text="COMING SOON">COMING SOON</span>
+                                OFFICIAL_WEBSITE
+                            </div>
+                            <div class="grid-item upcoming-item">
+                                <span class="upcoming-status glitch-text" data-text="COMING SOON">COMING SOON</span>
+                                MARKETPLACE_HUB
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
+                <div class="company-profile" id="placeholder-profile">
+                    <h1 style="color: #ff0055; text-shadow: 0 0 10px #ff0055; margin-top: 50px;">SUBSYSTEM_ sealed</h1>
+                    <p style="color: #a0a0d0;">(This profile is currently locked or under development.)</p>
+                </div>
+
             </section>
 
         </div>
