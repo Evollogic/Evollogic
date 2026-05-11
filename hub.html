@@ -9,7 +9,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
         body { 
-            background-color: #02050a; /* Fundo super escuro, quase preto */
+            background-color: #02050a; 
             color: #00ff88; 
             font-family: 'Share Tech Mono', monospace; 
             text-align: center; margin: 0; min-height: 100vh;
@@ -38,25 +38,60 @@
         .dash-section { margin-bottom: 50px; text-align: left; background: rgba(0, 15, 5, 0.85); padding: 25px; border-radius: 10px; border: 1px solid rgba(0, 255, 136, 0.3); box-shadow: 0 0 20px rgba(0,0,0,0.8);}
         .section-title { border-bottom: 2px solid rgba(0, 255, 136, 0.5); padding-bottom: 10px; font-size: 1.5rem; margin-bottom: 20px; text-transform: uppercase; color: #00ff88; }
         
-        /* Carrossel */
+        /* ==========================================
+           NOVO CARROSSEL (Animação Fluida + UI Corner)
+           ========================================== */
         .carousel-wrapper { display: flex; align-items: center; gap: 15px; position: relative; width: 100%; }
-        .scroll-btn { background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid #00ff88; border-radius: 5px; font-size: 1.5rem; padding: 10px 15px; cursor: pointer; transition: 0.3s; z-index: 10; }
-        .scroll-btn:hover { background: #00ff88; color: #000; box-shadow: 0 0 15px #00ff88; }
-        .carousel-container { display: flex; overflow-x: hidden; scroll-behavior: smooth; gap: 20px; padding: 10px 5px; flex: 1; }
         
-        .company-card {
-            min-width: 130px; background: rgba(0, 0, 0, 0.8); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 10px; padding: 20px 10px;
-            display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s;
+        .scroll-btn { 
+            background: rgba(0, 255, 136, 0.05); color: #00ff88; border: 1px solid #00ff88; 
+            border-radius: 12px; font-size: 1.5rem; padding: 15px; cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 10; 
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
         }
-        .company-card img { width: 60px; height: 60px; object-fit: contain; margin-bottom: 15px; filter: drop-shadow(0 0 5px rgba(0, 255, 136, 0.5)); }
-        .company-card span { color: #00ff88; font-weight: bold; font-size: 0.9rem; letter-spacing: 1px; }
-        .company-card:hover, .company-card.active { background: rgba(0, 255, 136, 0.2); border-color: #00ff88; transform: translateY(-5px); box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
+        .scroll-btn:hover { background: #00ff88; color: #000; box-shadow: 0 0 20px #00ff88; transform: scale(1.05); }
+        
+        /* Viewport esconde o que sai da tela */
+        .carousel-viewport { overflow: hidden; width: 100%; padding: 20px 0; }
+        
+        /* O Container que desliza */
+        .carousel-container { display: flex; gap: 20px; width: max-content; }
+        
+        /* Estilo UI Corner Quadrado */
+        .company-card {
+            width: 140px; height: 140px; /* Quadrado perfeito */
+            background: rgba(0, 10, 5, 0.8); 
+            border: 1px solid rgba(0, 255, 136, 0.2); 
+            border-radius: 20px; /* UI Corner Suave */
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+        
+        .company-card img { 
+            width: 55px; height: 55px; object-fit: contain; margin-bottom: 12px; 
+            filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.6)); transition: all 0.3s;
+        }
+        
+        .company-card span { 
+            color: rgba(0, 255, 136, 0.7); font-weight: bold; font-size: 0.95rem; 
+            letter-spacing: 2px; text-transform: uppercase; pointer-events: none; transition: all 0.3s;
+        }
+        
+        /* Card em Destaque */
+        .company-card.active { 
+            background: rgba(0, 255, 136, 0.15); border-color: #00ff88; 
+            transform: scale(1.1); box-shadow: 0 0 25px rgba(0, 255, 136, 0.4); 
+        }
+        .company-card.active img { filter: drop-shadow(0 0 15px #00ff88) brightness(1.2); transform: scale(1.1); }
+        .company-card.active span { color: #00ff88; text-shadow: 0 0 10px #00ff88; }
 
         /* Área de Info */
-        #info-display-area { background: rgba(0, 5, 2, 0.9); border: 1px dashed #00d4ff; padding: 30px; border-radius: 10px; min-height: 200px; text-align: left; }
+        #info-display-area { background: rgba(0, 5, 2, 0.9); border: 1px dashed #00d4ff; padding: 30px; border-radius: 15px; min-height: 200px; text-align: left; }
         .company-details { display: none; }
         .company-details.active { display: block; animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); filter: blur(2px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
 
         .neon-subtitle { color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px; border-bottom: 1px solid rgba(0, 212, 255, 0.3); padding-bottom: 10px; text-transform: uppercase;}
         .english-description { color: #d0d0d0; line-height: 1.6; font-size: 1.1rem;}
@@ -77,7 +112,7 @@
 
             <section class="dash-section">
                 <h2 class="section-title">> LATEST_POST</h2>
-                <div style="background: rgba(0,0,0,0.5); padding: 15px; border-left: 3px solid #00d4ff;">
+                <div style="background: rgba(0,0,0,0.5); padding: 15px; border-left: 3px solid #00d4ff; border-radius: 8px;">
                     <p style="color: #00d4ff; font-weight: bold; margin-bottom: 10px; margin-top:0;">[ TIMESTAMP: CURRENT_OPERATION ]</p>
                     <p style="font-size: 1.1rem; line-height: 1.5; color: #d0d0d0; margin-bottom:0;">
                         System update: May Roadmap active. Sodhupn ecosystem expansion verified. Network footprint scaling. Architect present.
@@ -91,26 +126,49 @@
                 <div class="carousel-wrapper">
                     <button id="scroll-left" class="scroll-btn">&#10094;</button>
                     
-                    <div class="carousel-container" id="company-carousel">
-                        <div class="company-card active" data-target="sodhupn">
-                            <img src="https://i.imgur.com/WXcnLKE.png" alt="Sodhupn">
-                            <span>Sodhupn</span>
-                        </div>
-                        <div class="company-card" data-target="seashare">
-                            <img src="https://i.imgur.com/31WnC6D.png" alt="Seashare">
-                            <span>Seashare</span>
-                        </div>
-                        <div class="company-card" data-target="tobump">
-                            <img src="https://i.imgur.com/31WnC6D.png" alt="ToBump">
-                            <span>ToBump</span>
-                        </div>
-                        <div class="company-card" data-target="toup">
-                            <img src="https://i.imgur.com/31WnC6D.png" alt="ToUp">
-                            <span>ToUp</span>
-                        </div>
-                        <div class="company-card" data-target="scriparadoxall">
-                            <img src="https://i.imgur.com/31WnC6D.png" alt="Scriparadoxall">
-                            <span>Scriparadoxall</span>
+                    <div class="carousel-viewport">
+                        <div class="carousel-container" id="company-carousel">
+                            <div class="company-card active" data-target="sodhupn">
+                                <img src="https://i.imgur.com/WXcnLKE.png" alt="Sodhupn">
+                                <span>Sodhupn</span>
+                            </div>
+                            <div class="company-card" data-target="seashare">
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="Seashare">
+                                <span>Seashare</span>
+                            </div>
+                            <div class="company-card" data-target="tobump">
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="ToBump">
+                                <span>ToBump</span>
+                            </div>
+                            <div class="company-card" data-target="toup">
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="ToUp">
+                                <span>ToUp</span>
+                            </div>
+                            <div class="company-card" data-target="scriparadoxall">
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="Scriparadoxall">
+                                <span>Scripard</span>
+                            </div>
+
+                            <div class="company-card" data-target="sodhupn">
+                                <img src="https://i.imgur.com/WXcnLKE.png" alt="Sodhupn">
+                                <span>Sodhupn</span>
+                            </div>
+                            <div class="company-card" data-target="seashare">
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="Seashare">
+                                <span>Seashare</span>
+                            </div>
+                            <div class="company-card" data-target="tobump">
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="ToBump">
+                                <span>ToBump</span>
+                            </div>
+                            <div class="company-card" data-target="toup">
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="ToUp">
+                                <span>ToUp</span>
+                            </div>
+                            <div class="company-card" data-target="scriparadoxall">
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="Scriparadoxall">
+                                <span>Scripard</span>
+                            </div>
                         </div>
                     </div>
                     
@@ -140,33 +198,134 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const carousel = document.getElementById('company-carousel');
-            const cards = document.querySelectorAll('.company-card');
+            const track = document.getElementById('company-carousel');
+            let cards = Array.from(document.querySelectorAll('.company-card'));
             const details = document.querySelectorAll('.company-details');
 
-            document.getElementById('scroll-left').addEventListener('click', () => {
-                carousel.scrollBy({ left: -150, behavior: 'smooth' });
-            });
+            let autoPlayInterval;
+            const TEMPO_ROTACAO = 3000; // 3 Segundos
+            let isTransitioning = false; // Trava para não bugar a animação se clicar rápido demais
 
-            document.getElementById('scroll-right').addEventListener('click', () => {
-                carousel.scrollBy({ left: 150, behavior: 'smooth' });
-            });
+            // Atualiza a tela de informações embaixo
+            function mostrarInfo(card) {
+                const targetId = card.getAttribute('data-target');
+                details.forEach(detail => detail.classList.remove('active'));
+                
+                const targetDetail = document.getElementById(`${targetId}-info`);
+                if (targetDetail) {
+                    targetDetail.classList.add('active');
+                } else {
+                    document.getElementById('placeholder-info').classList.add('active');
+                }
+            }
 
-            cards.forEach(card => {
-                card.addEventListener('click', () => {
-                    cards.forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
+            // Move Suavemente para a Esquerda (Efeito de Loop Infinito Perfeito)
+            function moveRight() {
+                if (isTransitioning) return;
+                isTransitioning = true;
 
-                    const targetId = card.getAttribute('data-target');
-                    details.forEach(detail => detail.classList.remove('active'));
+                // Calcula o tamanho exato de um card + o gap
+                const cardWidth = cards[0].offsetWidth + 20; 
+                track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                track.style.transform = `translateX(-${cardWidth}px)`;
 
-                    const targetDetail = document.getElementById(`${targetId}-info`);
-                    if (targetDetail) {
-                        targetDetail.classList.add('active');
-                    } else {
-                        document.getElementById('placeholder-info').classList.add('active');
-                    }
+                // Acha o card ativo atual e passa a coroa para o próximo
+                let currentActive = document.querySelector('.company-card.active');
+                if (currentActive) currentActive.classList.remove('active');
+                
+                let nextActive = currentActive ? currentActive.nextElementSibling : track.firstElementChild;
+                if (!nextActive) nextActive = track.firstElementChild;
+                
+                nextActive.classList.add('active');
+                mostrarInfo(nextActive);
+
+                // Quando a animação terminar, movemos o HTML de forma invisível
+                setTimeout(() => {
+                    track.appendChild(track.firstElementChild); // Joga o primeiro pro final
+                    track.style.transition = 'none'; // Tira animação
+                    track.style.transform = 'translateX(0)'; // Reseta posição
+                    cards = Array.from(document.querySelectorAll('.company-card')); // Atualiza Array
+                    isTransitioning = false;
+                }, 500); // 500ms é o tempo da transição no CSS
+            }
+
+            // Move Suavemente para a Direita (Voltar)
+            function moveLeft() {
+                if (isTransitioning) return;
+                isTransitioning = true;
+
+                const cardWidth = cards[0].offsetWidth + 20;
+                
+                // Pega o último lá de trás e joga pra frente instantaneamente invisível
+                track.insertBefore(track.lastElementChild, track.firstElementChild);
+                track.style.transition = 'none';
+                track.style.transform = `translateX(-${cardWidth}px)`;
+                cards = Array.from(document.querySelectorAll('.company-card'));
+
+                // Atualiza o Ativo
+                let currentActive = document.querySelector('.company-card.active');
+                if (currentActive) currentActive.classList.remove('active');
+                
+                let prevActive = currentActive ? currentActive.previousElementSibling : track.lastElementChild;
+                if (!prevActive) prevActive = track.lastElementChild;
+                
+                prevActive.classList.add('active');
+                mostrarInfo(prevActive);
+
+                // Força o navegador a renderizar o pulo antes de animar o deslize
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                        track.style.transform = 'translateX(0)';
+                        setTimeout(() => { isTransitioning = false; }, 500);
+                    });
                 });
+            }
+
+            // ==========================================
+            // GERENCIAMENTO DE LOOP E CLIQUES
+            // ==========================================
+            function iniciarAutoPlay() {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = setInterval(moveRight, TEMPO_ROTACAO);
+            }
+
+            function pausarAutoPlay() {
+                clearInterval(autoPlayInterval);
+            }
+
+            iniciarAutoPlay();
+
+            // Setas manuais
+            document.getElementById('scroll-right').addEventListener('click', (e) => {
+                e.stopPropagation();
+                pausarAutoPlay();
+                moveRight();
+            });
+
+            document.getElementById('scroll-left').addEventListener('click', (e) => {
+                e.stopPropagation();
+                pausarAutoPlay();
+                moveLeft();
+            });
+
+            // Clique nos Cards
+            document.querySelector('.carousel-viewport').addEventListener('click', (e) => {
+                const card = e.target.closest('.company-card');
+                if (!card) return;
+                
+                e.stopPropagation();
+                pausarAutoPlay();
+                
+                // Apenas destaca visualmente o que o usuário clicou
+                document.querySelectorAll('.company-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                mostrarInfo(card);
+            });
+
+            // Retoma Loop se clicar fora
+            document.addEventListener('click', () => {
+                iniciarAutoPlay();
             });
         });
     </script>
