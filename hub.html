@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evollogic - Central Hub</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="style.css?v=3.0">
     
     <script>
         const MEU_IP = "138.94.168.160"; 
         fetch('https://api.ipify.org?format=json')
             .then(res => res.json())
             .then(data => {
-                if (data.ip !== MEU_IP) window.location.href = "index.html"; 
+                // Se o IP não for o seu, ele avisa em vez de deixar a tela preta
+                if (data.ip !== MEU_IP) {
+                    alert("⚠️ MODO DEBUG: Seu IP atual é " + data.ip + ". Como é diferente da chave de segurança, o sistema iria te expulsar agora. Bloqueio desativado temporariamente para você testar o visual.");
+                    // window.location.href = "index.html"; <-- Comentado para não expulsar
+                }
             })
-            .catch(() => window.location.href = "index.html");
+            .catch(() => console.log("Modo offline / Erro na API de IP"));
     </script>
 </head>
 <body class="crt">
@@ -128,6 +133,6 @@
         </div>
     </div>
 
-    <script src="hub.js"></script>
+    <script src="hub.js?v=3.0"></script>
 </body>
 </html>
