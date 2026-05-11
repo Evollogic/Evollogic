@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-// 🔥 FIREBASE CREDENCIAIS 🔥
+// 🔥 FIREBASE CREDENCIAIS (Preencha aqui de novo) 🔥
 const firebaseConfig = {
     apiKey: "SUA_API_KEY",
     authDomain: "SEU_AUTH_DOMAIN",
@@ -17,7 +17,7 @@ const auth = getAuth(app);
 // 🛡️ SEU IP EXATO AQUI 🛡️
 const ALLOWED_IP = "138.94.168.160"; 
 
-// --- AUDIO ENGINE (Para botões e cliques) ---
+// --- AUDIO ENGINE ---
 let audioCtx;
 function initAudio() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -60,16 +60,15 @@ function typeTerminal() {
             if (charIndex === text.length) {
                 clearInterval(typingInterval);
                 lineIndex++;
-                setTimeout(typeTerminal, 300); // Pausa antes de digitar a próxima linha
+                setTimeout(typeTerminal, 300); 
             }
-        }, 20); // Velocidade de digitação
+        }, 20); 
     } else {
-        // Quando terminar de digitar, aciona a verificação de IP
-        verifyIP();
+        verifyIP(); // Chama o IP após terminar de digitar
     }
 }
 
-// Inicia o terminal assim que o site carrega
+// Inicia a animação assim que a tela abre
 window.onload = () => {
     setTimeout(typeTerminal, 500);
 };
@@ -86,27 +85,27 @@ function verifyIP() {
             resultLine.innerHTML = `> IP IDENTIFIED: ${data.ip}`;
             
             setTimeout(() => {
+                // Esconde o terminal
                 document.getElementById('terminal-boot').style.display = 'none';
                 
-                // SE O IP FOR O SEU: Mostra a tela de Login
+                // Redireciona de acordo com o IP
                 if (data.ip === ALLOWED_IP) {
                     document.getElementById('app-wrapper').style.display = 'block';
-                } 
-                // SE FOR OUTRA PESSOA: Mostra a Transmissão e bloqueia
-                else {
+                } else {
                     document.getElementById('coming-soon-screen').style.display = 'block';
                     document.getElementById('transmission-prompt').style.display = 'block';
                 }
-            }, 1000); // Dá 1 segundo para a pessoa ler o próprio IP na tela
+            }, 1000); 
         })
         .catch(() => {
+            // Em caso de falha de rede
             document.getElementById('terminal-boot').style.display = 'none';
             document.getElementById('coming-soon-screen').style.display = 'block';
             document.getElementById('transmission-prompt').style.display = 'block';
         });
 }
 
-// --- BACKGROUND MUSIC & TRANSMISSION LOGIC ---
+// --- BACKGROUND MUSIC & TRANSMISSION ---
 const bgMusic = document.getElementById('bg-music');
 const btnToggleMusic = document.getElementById('btn-toggle-music');
 
@@ -117,7 +116,7 @@ document.getElementById('btn-accept-transmission').addEventListener('click', () 
     document.getElementById('coming-soon-content').style.display = 'block';
     
     bgMusic.volume = 0.5; 
-    bgMusic.play().catch(e => console.log("Audio play blocked by browser:", e));
+    bgMusic.play().catch(e => console.log("Audio block:", e));
 });
 
 btnToggleMusic.addEventListener('click', () => {
@@ -131,7 +130,7 @@ btnToggleMusic.addEventListener('click', () => {
     }
 });
 
-// --- FIREBASE LOGIC ---
+// --- FIREBASE AUTH ---
 onAuthStateChanged(auth, (user) => {
     const loginScreen = document.getElementById('login-screen');
     const secretHub = document.getElementById('secret-hub');
