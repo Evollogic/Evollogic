@@ -29,7 +29,7 @@
         .menu-btn:hover { background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; transform: scale(1.05); }
         .menu-btn span { display: block; width: 26px; height: 3px; background: #38bdf8; border-radius: 3px; transition: 0.3s; }
 
-        /* BOTÃO DE PERFIL (ATUALIZADO PARA ÍCONE MINIMALISTA) */
+        /* BOTÃO DE PERFIL */
         .profile-btn {
             position: fixed;
             top: 25px;
@@ -155,18 +155,18 @@
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h3 class="sidebar-title"><img src="https://i.imgur.com/31WnC6D.png" alt="Logo"> Hub Menu</h3>
-            <button class="close-btn" id="close-sidebar">&times;</button>
+            <button class="close-btn" id="close-sidebar" class="hover-sfx click-sfx">&times;</button>
         </div>
         <iframe src="side.html" class="sidebar-iframe" title="Menu Lateral"></iframe>
     </div>
 
-    <!-- BOTÃO HAMBÚRGUER (ESQUERDA) -->
-    <button class="menu-btn" id="open-sidebar">
+    <!-- BOTÃO HAMBÚRGUER -->
+    <button class="menu-btn hover-sfx click-sfx" id="open-sidebar">
         <span></span><span></span><span></span>
     </button>
 
-    <!-- BOTÃO DE PERFIL/LOGIN (DIREITA - COM NOVO ÍCONE MINIMALISTA) -->
-    <a href="login.html" class="profile-btn" title="Acessar Perfil">
+    <!-- BOTÃO DE PERFIL -->
+    <a href="login.html" class="profile-btn hover-sfx click-sfx" title="Acessar Perfil">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
@@ -200,28 +200,27 @@
             <section class="dash-section">
                 <h2 class="section-title">Nossas Marcas</h2>
                 <div class="carousel-wrapper">
-                    <button id="scroll-left" class="scroll-btn">&#10094;</button>
+                    <button id="scroll-left" class="scroll-btn hover-sfx slide-sfx">&#10094;</button>
                     <div class="carousel-viewport">
                         <div class="carousel-container" id="company-carousel">
-                            <div class="company-card active" data-target="sodhupn">
+                            <div class="company-card active hover-sfx click-sfx" data-target="sodhupn">
                                 <img src="https://i.imgur.com/igeI5LA.png" alt="Sodhupn"><span>Sodhupn</span>
                             </div>
-                            <div class="company-card" data-target="seashare">
+                            <div class="company-card hover-sfx click-sfx" data-target="seashare">
                                 <img src="https://i.imgur.com/31WnC6D.png" alt="Seashare"><span>Seashare</span>
                             </div>
-                            <!-- TOBUMP ATUALIZADO COM A IMAGEM FORNECIDA -->
-                            <div class="company-card" data-target="tobump">
+                            <div class="company-card hover-sfx click-sfx" data-target="tobump">
                                 <img src="https://i.imgur.com/rYAY1TW.png" alt="ToBump" onerror="this.src='https://i.imgur.com/31WnC6D.png'"><span>ToBump</span>
                             </div>
-                            <div class="company-card" data-target="toup">
+                            <div class="company-card hover-sfx click-sfx" data-target="toup">
                                 <img src="https://i.imgur.com/31WnC6D.png" alt="ToUp"><span>ToUp</span>
                             </div>
-                            <div class="company-card" data-target="scriparadoxall">
+                            <div class="company-card hover-sfx click-sfx" data-target="scriparadoxall">
                                 <img src="https://i.imgur.com/31WnC6D.png" alt="Scripard"><span>Scripard</span>
                             </div>
                         </div>
                     </div>
-                    <button id="scroll-right" class="scroll-btn">&#10095;</button>
+                    <button id="scroll-right" class="scroll-btn hover-sfx slide-sfx">&#10095;</button>
                 </div>
             </section>
 
@@ -234,9 +233,9 @@
                         <h3 class="meta-subtitle">Nossa Visão para 2026</h3><p class="meta-goal">Unificação de 14 Lojas</p>
                     </div>
                     <div class="social-buttons-container">
-                        <div class="contact-email">📧 Contato: <a href="mailto:Sodhupn@gmail.com">Sodhupn@gmail.com</a></div>
-                        <a href="#" class="social-btn discord-btn"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" class="social-icon">Discord</a>
-                        <a href="https://www.instagram.com/sodhupn?igsh=MWF5cGkyNjZkMGQwMQ==" class="social-btn insta-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="social-icon" style="filter: brightness(0) invert(1);">Instagram</a>
+                        <div class="contact-email hover-sfx click-sfx">📧 Contato: <a href="mailto:Sodhupn@gmail.com">Sodhupn@gmail.com</a></div>
+                        <a href="#" class="social-btn discord-btn hover-sfx click-sfx"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" class="social-icon">Discord</a>
+                        <a href="https://www.instagram.com/sodhupn?igsh=MWF5cGkyNjZkMGQwMQ==" class="social-btn insta-btn hover-sfx click-sfx"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="social-icon" style="filter: brightness(0) invert(1);">Instagram</a>
                     </div>
                 </div>
 
@@ -245,20 +244,24 @@
                     <p class="brand-desc">Ecossistema inovador de compartilhamento e recursos digitais.</p>
                 </div>
                 
-                <!-- SEÇÃO DO TOBUMP ATUALIZADA -->
                 <div class="company-details" id="tobump-info">
                     <h2 class="brand-title">ToBump</h2>
-                    <p class="brand-desc">Cresça seu servidor com bump 100% automático.</p>
+                    <p class="brand-desc">Cresça seu servidor com bump 100% automático. O bot faz o auto bump direto no dashboard!</p>
                     
-                    <div class="meta-container" style="margin-top: 15px;">
-                        <p style="color: #64748b; font-size: 0.95rem; font-style: italic; margin: 0;">
+                    <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump Auto Bump Dashboard" style="width: 100%; max-width: 450px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 15px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.4); object-fit: cover;">
+                    
+                    <div class="meta-container" style="margin-top: 10px;">
+                        <p style="color: #e2e8f0; font-size: 1.05rem; font-weight: 500; margin-bottom: 8px;">
+                            Para adicionar, aperte no botão abaixo.
+                        </p>
+                        <p style="color: #64748b; font-size: 0.90rem; font-style: italic; margin: 0;">
                             💡 Aviso: No dashboard, em breve terá muito mais coisas!
                         </p>
                     </div>
 
                     <div class="social-buttons-container">
-                        <a href="ToBump.html" class="social-btn primary-btn">
-                            Acessar Dashboard
+                        <a href="ToBump.html" class="social-btn primary-btn hover-sfx click-sfx" style="padding: 14px 28px; font-size: 1.05rem;">
+                            Adicionar ao Servidor
                         </a>
                     </div>
                 </div>
@@ -283,12 +286,48 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+            // ========================================================
+            // SISTEMA DE EFEITOS SONOROS (SFX)
+            // ========================================================
+            const sfx = {
+                hover: new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'),
+                click: new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'),
+                slide: new Audio('https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3')
+            };
+
+            // Ajuste de volume para ficar elegante
+            sfx.hover.volume = 0.15;
+            sfx.click.volume = 0.3;
+            sfx.slide.volume = 0.2;
+
+            function playSound(type) {
+                let sound = sfx[type].cloneNode(); // Permite tocar sons simultâneos
+                sound.volume = sfx[type].volume;
+                // O catch evita erros no console caso o usuário não tenha interagido com a página ainda
+                sound.play().catch(() => {}); 
+            }
+
+            // Adicionando eventos de som aos elementos
+            document.querySelectorAll('.hover-sfx').forEach(el => {
+                el.addEventListener('mouseenter', () => playSound('hover'));
+            });
+            document.querySelectorAll('.click-sfx').forEach(el => {
+                el.addEventListener('click', () => playSound('click'));
+            });
+            document.querySelectorAll('.slide-sfx').forEach(el => {
+                el.addEventListener('click', () => playSound('slide'));
+            });
+
+
+            // ========================================================
             // SIDEBAR
+            // ========================================================
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
             document.getElementById('open-sidebar').onclick = () => { sidebar.classList.add('active'); overlay.classList.add('active'); }
             document.getElementById('close-sidebar').onclick = () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); }
-            overlay.onclick = () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); }
+            overlay.onclick = () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); playSound('slide'); }
 
             // ========================================================
             // LÓGICA MESTRA DA TV + ANÚNCIOS + CARROSSEL
@@ -302,28 +341,11 @@
             const details = document.querySelectorAll('.company-details');
             const cards = document.querySelectorAll('.company-card');
 
-            // Fila de Programação da TV e do Letreiro
             const tvSchedule = [
-                { 
-                    text: "🔥 Novidade: O novo sistema da Sodhupn já está no ar!", 
-                    target: "sodhupn", 
-                    tvTitle: "Sodhupn TV", badgeText: "Em Destaque", isAd: false 
-                },
-                { 
-                    text: "🌊 Conheça a Seashare e expanda seus horizontes.", 
-                    target: "seashare", 
-                    tvTitle: "Seashare TV", badgeText: "Ecossistema", isAd: false 
-                },
-                { 
-                    text: "💰 Patrocinador Oficial: 50% de Desconto na GG Max!", 
-                    target: "sodhupn",  
-                    tvTitle: "AD TV", badgeText: "Patrocinado", isAd: true 
-                },
-                { 
-                    text: "🚀 ToBump: A ferramenta para impulsionar suas vendas.", 
-                    target: "tobump", 
-                    tvTitle: "ToBump TV", badgeText: "Em Alta", isAd: false 
-                }
+                { text: "🔥 Novidade: O novo sistema da Sodhupn já está no ar!", target: "sodhupn", tvTitle: "Sodhupn TV", badgeText: "Em Destaque", isAd: false },
+                { text: "🌊 Conheça a Seashare e expanda seus horizontes.", target: "seashare", tvTitle: "Seashare TV", badgeText: "Ecossistema", isAd: false },
+                { text: "💰 Patrocinador Oficial: 50% de Desconto na GG Max!", target: "sodhupn", tvTitle: "AD TV", badgeText: "Patrocinado", isAd: true },
+                { text: "🚀 ToBump: A ferramenta para impulsionar suas vendas.", target: "tobump", tvTitle: "ToBump TV", badgeText: "Em Alta", isAd: false }
             ];
 
             let scheduleIndex = 0;
