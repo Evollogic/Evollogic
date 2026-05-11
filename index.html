@@ -6,57 +6,57 @@
     <title>Evollogic - Restricted Access</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="crt">
 
     <div id="stars"></div>
 
-    <div id="loading-screen">
-        <p>> INITIALIZING_ENCRYPTION...</p>
+    <div id="terminal-boot">
+        <div id="terminal-text"></div>
+        <span class="cursor">_</span>
     </div>
 
-    <div id="coming-soon-screen">
+    <div id="coming-soon-screen" style="display: none;">
         
         <div id="transmission-prompt">
-            <h2 style="color: #00d4ff; letter-spacing: 3px;">> INCOMING TRANSMISSION...</h2>
-            <button id="btn-accept-transmission" style="width: auto; padding: 15px 40px; margin-top: 20px; font-size: 1.2rem;">ACCEPT</button>
+            <h2 style="color: #00d4ff; letter-spacing: 3px; font-size: clamp(1.2rem, 4vw, 2rem);">> INCOMING TRANSMISSION...</h2>
+            <button id="btn-accept-transmission" class="cyber-btn">ACCEPT</button>
         </div>
 
-        <div id="coming-soon-content">
+        <div id="coming-soon-content" style="display: none;">
             <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="main-logo">
-            <h1 style="letter-spacing: 5px; font-size: 2.5rem;">BUILDER WORLDS</h1>
+            <h1 class="title-text">BUILDER WORLDS</h1>
             <div class="message-card">
-                <p style="font-size: 1.2rem; line-height: 1.6; color: #a0a0d0;">
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #a0a0d0; margin-bottom: 20px;">
                     The portals are currently under maintenance. <br>
                     Exclusive access for the creation team only.
                 </p>
                 <p class="glitch-text">COMING THIS MONTH</p>
             </div>
-            <button id="btn-toggle-music">🔊 MUTE AUDIO</button>
+            <button id="btn-toggle-music" class="cyber-btn-small">🔊 MUTE AUDIO</button>
         </div>
 
-        <audio id="bg-music" loop>
+        <audio id="bg-music" loop style="display: none !important; width: 0; height: 0; visibility: hidden;">
             <source src="Menu Suspenso.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
         </audio>
 
     </div>
 
-    <div id="app-wrapper">
+    <div id="app-wrapper" style="display: none;">
         <div id="login-screen" class="login-box">
-            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" style="width: 180px; margin-bottom: 10px;">
-            <h2 style="color: #00d4ff; margin-bottom: 20px;">ADMIN_PANEL</h2>
+            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" style="width: 150px; margin-bottom: 10px;">
+            <h2 style="color: #00d4ff; margin-bottom: 20px; font-size: 1.5rem; letter-spacing: 2px;">ADMIN_PANEL</h2>
             
             <input type="email" id="email" placeholder="DECRYPT_EMAIL"><br>
             <input type="password" id="password" placeholder="SECURITY_KEY"><br>
-            <button id="btn-login">ACCESS SYSTEM</button>
+            <button id="btn-login" class="cyber-btn" style="width: 100%;">ACCESS SYSTEM</button>
             
-            <p id="error-message" style="color: #ff0055; display: none; margin-top: 15px; font-weight: bold;">[!] ACCESS_DENIED</p>
+            <p id="error-message" style="color: #ff0055; display: none; margin-top: 15px; font-weight: bold; text-shadow: 0 0 5px #ff0055;">[!] ACCESS_DENIED</p>
         </div>
 
         <div id="secret-hub" style="display:none;">
-            <h1 style="color: #00ff88;">SYSTEM ONLINE</h1>
+            <h1 style="color: #00ff88; text-shadow: 0 0 10px #00ff88;">SYSTEM ONLINE</h1>
             <p>Welcome back, Architect.</p>
-            <button id="btn-logout" style="background: #ff0055; color: #fff; width: auto; padding: 10px 40px;">SHUTDOWN</button>
+            <button id="btn-logout" class="cyber-btn" style="background: transparent; border-color: #ff0055; color: #ff0055; margin-top: 20px;">SHUTDOWN</button>
         </div>
     </div>
 
