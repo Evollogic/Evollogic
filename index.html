@@ -58,6 +58,18 @@
             background: #00ff88; box-shadow: 0 0 25px #00ff88; 
             transform: scale(1.05); 
         }
+
+        /* Music Toggle Button Specific Style */
+        #btn-toggle-music {
+            width: auto;
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            border: 1px solid #00d4ff;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            margin-top: 30px;
+        }
+        #btn-toggle-music:hover { background: #00d4ff; color: #000; }
         
         /* MAGIC LOGO ANIMATION */
         @keyframes logoFloat {
@@ -74,6 +86,8 @@
         }
 
         #coming-soon-screen { display: none; }
+        #transmission-prompt { display: none; }
+        #coming-soon-content { display: none; }
         #app-wrapper { display: none; }
         #loading-screen { color: #00d4ff; font-size: 1.5rem; letter-spacing: 5px; animation: blink 1s infinite; }
 
@@ -84,6 +98,8 @@
             padding: 20px;
             border-top: 1px solid rgba(0, 212, 255, 0.3);
             margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .glitch-text {
@@ -102,15 +118,30 @@
     </div>
 
     <div id="coming-soon-screen">
-        <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="main-logo">
-        <h1 style="letter-spacing: 5px; font-size: 2.5rem;">BUILDER WORLDS</h1>
-        <div class="message-card">
-            <p style="font-size: 1.2rem; line-height: 1.6; color: #a0a0d0;">
-                The portals are currently under maintenance. <br>
-                Exclusive access for the creation team only.
-            </p>
-            <p class="glitch-text">COMING THIS MONTH</p>
+        
+        <div id="transmission-prompt">
+            <h2 style="color: #00d4ff; letter-spacing: 3px;">> INCOMING TRANSMISSION...</h2>
+            <button id="btn-accept-transmission" style="width: auto; padding: 15px 40px; margin-top: 20px; font-size: 1.2rem;">ACCEPT</button>
         </div>
+
+        <div id="coming-soon-content">
+            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="main-logo">
+            <h1 style="letter-spacing: 5px; font-size: 2.5rem;">BUILDER WORLDS</h1>
+            <div class="message-card">
+                <p style="font-size: 1.2rem; line-height: 1.6; color: #a0a0d0;">
+                    The portals are currently under maintenance. <br>
+                    Exclusive access for the creation team only.
+                </p>
+                <p class="glitch-text">COMING THIS MONTH</p>
+            </div>
+            <button id="btn-toggle-music">🔊 MUTE AUDIO</button>
+        </div>
+
+        <audio id="bg-music" loop>
+            <source src="Menu Suspenso.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
     </div>
 
     <div id="app-wrapper">
@@ -148,7 +179,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // --- AUDIO ENGINE ---
+        // --- AUDIO ENGINE (BEEPS) ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playBeep(freq = 400, type = 'square', duration = 0.1) {
@@ -165,6 +196,30 @@
             osc.stop(audioCtx.currentTime + duration);
         }
 
+        // --- BACKGROUND MUSIC LOGIC ---
+        const bgMusic = document.getElementById('bg-music');
+        const btnToggleMusic = document.getElementById('btn-toggle-music');
+        
+        document.getElementById('btn-accept-transmission').addEventListener('click', () => {
+            playBeep(600, 'sine', 0.2); // Cool interaction sound
+            document.getElementById('transmission-prompt').style.display = 'none';
+            document.getElementById('coming-soon-content').style.display = 'block';
+            
+            // Start the background music
+            bgMusic.volume = 0.5; // Starts at 50% volume
+            bgMusic.play().catch(e => console.log("Audio play blocked by browser:", e));
+        });
+
+        btnToggleMusic.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                btnToggleMusic.innerText = "🔊 MUTE AUDIO";
+            } else {
+                bgMusic.pause();
+                btnToggleMusic.innerText = "🔇 UNMUTE AUDIO";
+            }
+        });
+
         // --- IP PROTECTION ---
         const ALLOWED_IP = "COLOQUE_SEU_IP_AQUI"; 
 
@@ -176,7 +231,14 @@
                     document.getElementById('app-wrapper').style.display = 'block';
                 } else {
                     document.getElementById('coming-soon-screen').style.display = 'block';
+                    document.getElementById('transmission-prompt').style.display = 'block';
                 }
+            })
+            .catch(() => {
+                // Failsafe in case the API goes down
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('coming-soon-screen').style.display = 'block';
+                document.getElementById('transmission-prompt').style.display = 'block';
             });
 
         // --- FIREBASE LOGIC ---
