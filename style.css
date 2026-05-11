@@ -15,30 +15,25 @@ body {
 }
 
 #stars {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: radial-gradient(circle at center, #0b0b2a 0%, #050510 100%);
     z-index: -1;
 }
 
-/* Efeito TV de Tubo nas bordas (Opcional, dá o tom Hacker) */
 .crt::before {
     content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
     z-index: 100; background-size: 100% 2px; pointer-events: none;
 }
 
-/* TERMINAL DE BOOT */
 #terminal-boot {
-    text-align: left;
-    width: 90%; max-width: 600px;
+    text-align: left; width: 90%; max-width: 600px;
     font-size: clamp(1rem, 4vw, 1.2rem);
     color: #00ff88; text-shadow: 0 0 5px #00ff88;
 }
 .cursor { animation: blink 1s infinite; }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-/* Elementos Visuais e Responsividade */
 .login-box { 
     background: rgba(10, 10, 40, 0.85); 
     border: 1px solid #00d4ff; padding: 30px; 
@@ -75,8 +70,7 @@ input:focus { box-shadow: 0 0 15px rgba(0, 212, 255, 0.5); }
 
 .main-logo {
     width: 200px; max-width: 60%;
-    animation: logoFloat 5s ease-in-out infinite;
-    margin-bottom: 15px;
+    animation: logoFloat 5s ease-in-out infinite; margin-bottom: 15px;
 }
 @keyframes logoFloat {
     0% { transform: translateY(0px); filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3)); }
@@ -85,8 +79,7 @@ input:focus { box-shadow: 0 0 15px rgba(0, 212, 255, 0.5); }
 }
 
 .title-text {
-    letter-spacing: 5px; 
-    font-size: clamp(1.8rem, 6vw, 2.5rem); /* Fica menor em telas pequenas */
+    letter-spacing: 5px; font-size: clamp(1.8rem, 6vw, 2.5rem); 
     margin: 10px 0; text-shadow: 0 0 10px #00d4ff; color: #00d4ff;
 }
 
