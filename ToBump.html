@@ -22,7 +22,6 @@
             position: relative;
         }
 
-        /* EFEITOS DE LUZ NO FUNDO */
         .bg-glow {
             position: absolute;
             width: 600px;
@@ -46,7 +45,6 @@
             pointer-events: none;
         }
 
-        /* NAVEGAÇÃO */
         nav {
             width: 100%;
             padding: 20px 40px;
@@ -80,7 +78,6 @@
             transform: translateX(-5px);
         }
 
-        /* CONTAINER PRINCIPAL */
         .hero-section {
             display: flex;
             flex-direction: column;
@@ -101,7 +98,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* LOGO AJUSTADA PARA A IMAGEM EXATA */
         .hero-logo {
             width: 100%;
             max-width: 280px;
@@ -146,7 +142,6 @@
             line-height: 1.6;
         }
 
-        /* CONTAINER DE BOTÕES */
         .action-buttons {
             display: flex;
             gap: 20px;
@@ -155,7 +150,6 @@
             flex-wrap: wrap;
         }
 
-        /* BOTÃO PRINCIPAL (DESTAQUE ABSOLUTO) */
         .add-bot-btn {
             display: flex;
             align-items: center;
@@ -206,7 +200,6 @@
             height: 28px;
         }
 
-        /* BOTÃO SECUNDÁRIO (SUPORTE/PREMIUM) */
         .support-btn {
             display: flex;
             align-items: center;
@@ -232,7 +225,6 @@
             color: #38bdf8;
         }
 
-        /* GRID DE RECURSOS */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -289,7 +281,6 @@
             border: 1px solid rgba(234, 179, 8, 0.3);
         }
 
-        /* RESPONSIVIDADE */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             .features-grid { grid-template-columns: 1fr; }
@@ -305,54 +296,53 @@
 
     <nav>
         <a href="index.html" class="back-btn hover-sfx click-sfx">
-            <i data-feather="arrow-left"></i> Voltar ao Hub
+            <i data-feather="arrow-left"></i> <span data-i18n="back_hub">Voltar ao Hub</span>
         </a>
     </nav>
 
     <div class="hero-section">
         <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump Logo" class="hero-logo">
         
-        <div class="tagline">Evollogic Ecosystem</div>
-        <h1>Automatize. Cresça.<br>Domine.</h1>
+        <div class="tagline" data-i18n="tagline">Evollogic Ecosystem</div>
         
-        <p class="desc">
+        <h1 data-i18n="h1_title">Automatize. Cresça.<br>Domine.</h1>
+        
+        <p class="desc" data-i18n="desc">
             Cresça seu servidor com bump 100% automático. O bot faz todo o trabalho pesado direto pelo dashboard para você focar apenas em receber novos membros.
         </p>
 
         <div class="action-buttons">
-            <!-- Botão Adicionar Bot -->
             <a href="https://discord.com/oauth2/authorize?client_id=1482736655210385530&permissions=8&integration_type=0&scope=bot" target="_blank" class="add-bot-btn hover-sfx click-sfx">
                 <svg class="discord-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="#fff">
                     <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a67.58,67.58,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.31,60,73.31,53s5-12.74,11.43-12.74S96.2,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
                 </svg>
-                Adicionar ao Servidor
+                <span data-i18n="add_bot">Adicionar ao Servidor</span>
             </a>
 
-            <!-- Botão Suporte / Premium -->
             <a href="https://discord.gg/pgVwsD5czA" target="_blank" class="support-btn hover-sfx click-sfx">
                 <i data-feather="headphones"></i>
-                Comprar Premium / Suporte
+                <span data-i18n="support_premium">Comprar Premium / Suporte</span>
             </a>
         </div>
 
         <div class="features-grid">
             <div class="feature-card hover-sfx">
                 <i data-feather="zap" class="feature-icon"></i>
-                <h3>100% Automático</h3>
-                <p>Configure uma vez no dashboard e deixe o bot trabalhar. Seu servidor ganha visibilidade 24/7 sem esforço manual.</p>
+                <h3 data-i18n="feat1_title">100% Automático</h3>
+                <p data-i18n="feat1_desc">Configure uma vez no dashboard e deixe o bot trabalhar. Seu servidor ganha visibilidade 24/7 sem esforço manual.</p>
             </div>
             
             <div class="feature-card hover-sfx">
                 <i data-feather="layers" class="feature-icon"></i>
-                <h3>Dashboard Completo</h3>
-                <p>Acompanhe métricas, ajuste os horários de bump e gerencie tudo por uma interface simples e moderna.</p>
+                <h3 data-i18n="feat2_title">Dashboard Completo</h3>
+                <p data-i18n="feat2_desc">Acompanhe métricas, ajuste os horários de bump e gerencie tudo por uma interface simples e moderna.</p>
             </div>
 
             <div class="feature-card hover-sfx">
                 <i data-feather="trending-up" class="feature-icon"></i>
-                <h3>Futuro Garantido</h3>
-                <p>Estamos apenas começando. A Evollogic está preparando um ecossistema completo para impulsionar suas comunidades.</p>
-                <div class="coming-soon-badge">MUITO MAIS EM BREVE</div>
+                <h3 data-i18n="feat3_title">Futuro Garantido</h3>
+                <p data-i18n="feat3_desc">Estamos apenas começando. A Evollogic está preparando um ecossistema completo para impulsionar suas comunidades.</p>
+                <div class="coming-soon-badge" data-i18n="coming_soon">MUITO MAIS EM BREVE</div>
             </div>
         </div>
 
@@ -360,6 +350,82 @@
 
     <script>
         feather.replace();
+
+        const translations = {
+            PT: {
+                back_hub: "Voltar ao Hub",
+                tagline: "Ecossistema Evollogic",
+                h1_title: "Automatize. Cresça.<br>Domine.",
+                desc: "Cresça seu servidor com bump 100% automático. O bot faz todo o trabalho pesado direto pelo dashboard para você focar apenas em receber novos membros.",
+                add_bot: "Adicionar ao Servidor",
+                support_premium: "Comprar Premium / Suporte",
+                feat1_title: "100% Automático",
+                feat1_desc: "Configure uma vez no dashboard e deixe o bot trabalhar. Seu servidor ganha visibilidade 24/7 sem esforço manual.",
+                feat2_title: "Dashboard Completo",
+                feat2_desc: "Acompanhe métricas, ajuste os horários de bump e gerencie tudo por uma interface simples e moderna.",
+                feat3_title: "Futuro Garantido",
+                feat3_desc: "Estamos apenas começando. A Evollogic está preparando um ecossistema completo para impulsionar suas comunidades.",
+                coming_soon: "MUITO MAIS EM BREVE"
+            },
+            EN: {
+                back_hub: "Back to Hub",
+                tagline: "Evollogic Ecosystem",
+                h1_title: "Automate. Grow.<br>Dominate.",
+                desc: "Grow your server with 100% automatic bumping. The bot does all the heavy lifting directly from the dashboard so you can focus solely on welcoming new members.",
+                add_bot: "Add to Server",
+                support_premium: "Buy Premium / Support",
+                feat1_title: "100% Automatic",
+                feat1_desc: "Set it up once in the dashboard and let the bot work. Your server gains 24/7 visibility with no manual effort.",
+                feat2_title: "Complete Dashboard",
+                feat2_desc: "Track metrics, adjust bump schedules, and manage everything through a simple, modern interface.",
+                feat3_title: "Guaranteed Future",
+                feat3_desc: "We are just getting started. Evollogic is preparing a complete ecosystem to boost your communities.",
+                coming_soon: "MUCH MORE COMING SOON"
+            },
+            ES: {
+                back_hub: "Volver al Hub",
+                tagline: "Ecosistema Evollogic",
+                h1_title: "Automatiza. Crece.<br>Domina.",
+                desc: "Haz crecer tu servidor con bump 100% automático. El bot hace todo el trabajo pesado directamente desde el dashboard para que te enfoques solo en recibir nuevos miembros.",
+                add_bot: "Añadir al Servidor",
+                support_premium: "Comprar Premium / Soporte",
+                feat1_title: "100% Automático",
+                feat1_desc: "Configúralo una vez en el dashboard y deja que el bot trabaje. Tu servidor gana visibilidad 24/7 sin esfuerzo manual.",
+                feat2_title: "Dashboard Completo",
+                feat2_desc: "Realiza un seguimiento de las métricas, ajusta los horarios de bump y gestiona todo a través de una interfaz simple y moderna.",
+                feat3_title: "Futuro Garantizado",
+                feat3_desc: "Apenas estamos comenzando. Evollogic está preparando un ecosistema completo para impulsar tus comunidades.",
+                coming_soon: "MUCHO MÁS MUY PRONTO"
+            }
+        };
+
+        let currentLang = localStorage.getItem('userLanguage');
+
+        if (!currentLang) {
+            const browserLang = (navigator.language || navigator.userLanguage).substring(0, 2).toUpperCase();
+            currentLang = ['PT', 'EN', 'ES'].includes(browserLang) ? browserLang : 'EN';
+            localStorage.setItem('userLanguage', currentLang);
+        }
+
+        function applyTranslations(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTranslations(currentLang);
+
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'userLanguage') {
+                    currentLang = e.newValue || 'EN';
+                    applyTranslations(currentLang);
+                }
+            });
+        });
 
         const sfx = {
             hover: new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'),
