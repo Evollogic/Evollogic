@@ -301,6 +301,71 @@
             text-decoration: underline;
         }
 
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #0f172a;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            color: #f8fafc;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-content h2 { margin-top: 0; color: #38bdf8; font-size: 1.4rem; }
+        .modal-body { 
+            max-height: 60vh; 
+            overflow-y: auto; 
+            margin-bottom: 20px; 
+            font-size: 0.9rem; 
+            color: #cbd5e1; 
+            line-height: 1.6; 
+            padding-right: 10px; 
+        }
+        
+        .modal-body::-webkit-scrollbar { width: 6px; }
+        .modal-body::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .modal-body::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
+        
+        .modal-close-btn {
+            background: rgba(56, 189, 248, 0.1); 
+            color: #38bdf8; 
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-family: 'Poppins', sans-serif; 
+            font-weight: 500; 
+            transition: 0.3s; 
+            width: 100%;
+        }
+
+        .modal-close-btn:hover { background: #38bdf8; color: #020617; }
+
         @media (max-width: 480px) {
             .form-row { flex-direction: column; gap: 0; }
         }
@@ -384,9 +449,9 @@
                 <input type="checkbox" id="terms" required>
                 <label for="terms">
                     <span data-i18n="terms_1">Eu concordo com os</span> 
-                    <a href="#" data-i18n="terms_2">Termos de Serviço</a> 
+                    <a href="#" id="link-terms" data-i18n="terms_2">Termos de Serviço</a> 
                     <span data-i18n="terms_3">e a</span> 
-                    <a href="#" data-i18n="terms_4">Política de Privacidade</a>.
+                    <a href="#" id="link-privacy" data-i18n="terms_4">Política de Privacidade</a>.
                 </label>
             </div>
 
@@ -401,6 +466,14 @@
             <a href="login.html" data-i18n="do_login">Faça Login</a>
         </div>
 
+    </div>
+
+    <div id="infoModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="modalTitle">Título</h2>
+            <div class="modal-body" id="modalBody">Conteúdo aqui...</div>
+            <button class="modal-close-btn" onclick="closeModal()">Fechar</button>
+        </div>
     </div>
 
     <script>
@@ -435,7 +508,12 @@
                 req_len: "Mínimo 8 caracteres",
                 req_up: "Pelo menos 1 letra maiúscula",
                 req_spec: "Pelo menos 1 caractere especial (@$!%*?&)",
-                req_match: "As senhas coincidem"
+                req_match: "As senhas coincidem",
+                modal_terms_title: "Termos de Serviço",
+                modal_terms_text: "Ao criar uma conta na Evollogic, você concorda em utilizar nossos serviços de forma responsável e de acordo com as leis vigentes. Reservamo-nos o direito de suspender contas que violem nossas diretrizes de segurança ou tentem burlar nossos sistemas.",
+                modal_privacy_title: "Política de Privacidade",
+                modal_privacy_text: "A Evollogic leva sua privacidade a sério. Seus dados pessoais e senhas são armazenados com criptografia de ponta a ponta. Não compartilhamos suas informações com terceiros sem o seu consentimento explícito.",
+                modal_close: "Fechar"
             },
             EN: {
                 page_title: "Evollogic - Create Account",
@@ -465,7 +543,12 @@
                 req_len: "Minimum 8 characters",
                 req_up: "At least 1 uppercase letter",
                 req_spec: "At least 1 special character (@$!%*?&)",
-                req_match: "Passwords match"
+                req_match: "Passwords match",
+                modal_terms_title: "Terms of Service",
+                modal_terms_text: "By creating an account with Evollogic, you agree to use our services responsibly and in accordance with applicable laws. We reserve the right to suspend accounts that violate our security guidelines or attempt to bypass our systems.",
+                modal_privacy_title: "Privacy Policy",
+                modal_privacy_text: "Evollogic takes your privacy seriously. Your personal data and passwords are stored with end-to-end encryption. We do not share your information with third parties without your explicit consent.",
+                modal_close: "Close"
             },
             ES: {
                 page_title: "Evollogic - Crear Cuenta",
@@ -495,16 +578,22 @@
                 req_len: "Mínimo 8 caracteres",
                 req_up: "Al menos 1 letra mayúscula",
                 req_spec: "Al menos 1 carácter especial (@$!%*?&)",
-                req_match: "Las contraseñas coinciden"
+                req_match: "Las contraseñas coinciden",
+                modal_terms_title: "Términos de Servicio",
+                modal_terms_text: "Al crear una cuenta en Evollogic, aceptas utilizar nuestros servicios de forma responsable y de acuerdo con las leyes aplicables. Nos reservamos el derecho de suspender cuentas que violen nuestras pautas de seguridad o intenten eludir nuestros sistemas.",
+                modal_privacy_title: "Política de Privacidad",
+                modal_privacy_text: "Evollogic se toma muy en serio tu privacidad. Tus datos personales y contraseñas se almacenan con encriptación de extremo a extremo. No compartimos tu información con terceros sin tu consentimiento explícito.",
+                modal_close: "Cerrar"
             }
         };
 
-        let currentLang = localStorage.getItem('userLanguage');
+        window.translations = translations;
+        window.currentLang = localStorage.getItem('userLanguage');
 
-        if (!currentLang) {
+        if (!window.currentLang) {
             const browserLang = (navigator.language || navigator.userLanguage).substring(0, 2).toUpperCase();
-            currentLang = ['PT', 'EN', 'ES'].includes(browserLang) ? browserLang : 'EN';
-            localStorage.setItem('userLanguage', currentLang);
+            window.currentLang = ['PT', 'EN', 'ES'].includes(browserLang) ? browserLang : 'EN';
+            localStorage.setItem('userLanguage', window.currentLang);
         }
 
         function applyTranslations(lang) {
@@ -526,7 +615,7 @@
         function showAlert(messageKey, isError = true) {
             const alertBox = document.getElementById('alertBox');
             alertBox.style.display = 'block';
-            alertBox.innerHTML = translations[currentLang][messageKey] || messageKey;
+            alertBox.innerHTML = translations[window.currentLang][messageKey] || messageKey;
             
             if (isError) {
                 alertBox.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
@@ -540,7 +629,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            applyTranslations(currentLang);
+            applyTranslations(window.currentLang);
             
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('error')) {
@@ -552,8 +641,8 @@
 
             window.addEventListener('storage', (e) => {
                 if (e.key === 'userLanguage') {
-                    currentLang = e.newValue || 'EN';
-                    applyTranslations(currentLang);
+                    window.currentLang = e.newValue || 'EN';
+                    applyTranslations(window.currentLang);
                 }
             });
         });
@@ -620,7 +709,7 @@
             const alertBox = document.getElementById('alertBox');
             
             alertBox.style.display = 'none';
-            btn.innerHTML = translations[currentLang].registering;
+            btn.innerHTML = translations[window.currentLang].registering;
             btn.style.opacity = '0.8';
             btn.style.pointerEvents = 'none';
 
@@ -638,13 +727,14 @@
             const baseUrl = 'https://evollogic-backend-production.up.railway.app';
 
             if (provider === 'Discord') {
-                btnDiscord.innerHTML = translations[currentLang].registering || "Autenticando...";
+                btnDiscord.innerHTML = translations[window.currentLang].registering || "Autenticando...";
                 window.location.href = `${baseUrl}/api/auth/discord/register`;
             } else if (provider === 'Google') {
-                btnGoogle.innerHTML = translations[currentLang].registering || "Autenticando...";
+                btnGoogle.innerHTML = translations[window.currentLang].registering || "Autenticando...";
                 window.location.href = `${baseUrl}/api/auth/google/register`;
             }
         }
     </script>
+    <script src="terms.js"></script>
 </body>
 </html>
