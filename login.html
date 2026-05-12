@@ -355,7 +355,8 @@
                 invalid_account: "Conta inválida. O usuário não foi encontrado.",
                 wrong_password: "A senha está incorreta.",
                 server_error: "Erro no servidor. Tente novamente mais tarde.",
-                login_success: "Login realizado com sucesso! Redirecionando..."
+                login_success: "Login realizado com sucesso! Redirecionando...",
+                account_not_found: "Nenhuma conta encontrada com este Discord. Por favor, crie uma conta primeiro."
             },
             EN: {
                 page_title: "Evollogic - Login",
@@ -374,7 +375,8 @@
                 invalid_account: "Invalid account. User not found.",
                 wrong_password: "The password is incorrect.",
                 server_error: "Server error. Please try again later.",
-                login_success: "Login successful! Redirecting..."
+                login_success: "Login successful! Redirecting...",
+                account_not_found: "No account found with this Discord. Please create an account first."
             },
             ES: {
                 page_title: "Evollogic - Iniciar Sesión",
@@ -393,7 +395,8 @@
                 invalid_account: "Cuenta inválida. Usuario no encontrado.",
                 wrong_password: "La contraseña es incorrecta.",
                 server_error: "Error del servidor. Inténtalo de nuevo más tarde.",
-                login_success: "¡Inicio de sesión exitoso! Redirigiendo..."
+                login_success: "¡Inicio de sesión exitoso! Redirigiendo...",
+                account_not_found: "No se encontró cuenta con este Discord. Por favor, crea una cuenta primero."
             }
         };
 
@@ -452,8 +455,17 @@
             const urlParams = new URLSearchParams(window.location.search);
             const loginStatus = urlParams.get('login');
             const userToken = urlParams.get('token');
+            const errorStatus = urlParams.get('error');
 
-            if (loginStatus === 'success' && userToken) {
+            // Verifica se houve erro de conta não encontrada via Discord
+            if (errorStatus === 'account_not_found') {
+                // Limpa a URL para remover os parâmetros
+                window.history.replaceState({}, document.title, window.location.pathname);
+                // Exibe o alerta de erro
+                showAlert('account_not_found', true);
+            }
+            // Verifica se o login foi um sucesso
+            else if (loginStatus === 'success' && userToken) {
                 // 1. Salva o token para manter o usuário logado
                 localStorage.setItem('evollogic_auth_token', userToken);
 
