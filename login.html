@@ -18,7 +18,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden; /* Evita vazamento horizontal */
+            overflow-y: auto;   /* Permite rolar para baixo no celular */
+            padding: 20px;      /* Dá um respiro nas bordas do celular */
+            box-sizing: border-box;
             position: relative;
         }
 
@@ -179,11 +182,14 @@
             align-items: center;
         }
 
-        .input-wrapper i {
+        /* CORREÇÃO DOS ÍCONES AQUI */
+        .input-wrapper i,
+        .input-wrapper svg {
             position: absolute;
             left: 15px;
             color: #64748b;
             width: 18px;
+            z-index: 2; /* Garante o ícone na frente */
         }
 
         .input-field {
@@ -273,7 +279,6 @@
             <p data-i18n="p_access">Acesse o seu ecossistema no Hub Central</p>
         </div>
 
-        <!-- Alerta Dinâmico para erros do Banco de Dados -->
         <div id="alertBox" class="alert-box"></div>
 
         <div class="social-login">
