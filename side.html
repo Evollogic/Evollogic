@@ -35,100 +35,8 @@
             backdrop-filter: blur(10px);
         }
 
-        .divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.08);
-            margin: 2px 0;
-        }
-
         /* ==========================================
-           ÁREA DE CONTA (LOGIN / PERFIL) - CORRIGIDO
-           ========================================== */
-        
-        .login-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Agora fica perfeitamente no centro */
-            gap: 10px;
-            padding: 14px;
-            background: #38bdf8;
-            color: #020617;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
-        }
-
-        .login-btn:hover {
-            background: #7dd3fc;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
-        .user-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #38bdf8, #818cf8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: bold;
-            font-size: 1.2rem;
-            position: relative;
-        }
-
-        .user-avatar::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 12px;
-            height: 12px;
-            background: #10b981;
-            border: 2px solid #0f172a;
-            border-radius: 50%;
-        }
-
-        .user-info-text { display: flex; flex-direction: column; }
-        .user-name { color: #f8fafc; font-weight: 600; font-size: 0.95rem; line-height: 1.2;}
-        .user-status { color: #10b981; font-size: 0.75rem; font-weight: 500; }
-
-        .logout-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 12px;
-            background: transparent;
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: 10px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 100%;
-        }
-        .logout-btn:hover { background: rgba(239, 68, 68, 0.1); color: #f87171; }
-
-        /* ==========================================
-           NOVO SELETOR DE IDIOMAS (PILLS MODERNO)
+           SELETOR DE IDIOMAS (PILLS MODERNO)
            ========================================== */
         
         .setting-row {
@@ -176,18 +84,16 @@
 
     <div class="bottom-section">
         
-        <div id="auth-container"></div>
-
-        <div class="divider"></div>
-
         <div class="setting-row">
             <div class="setting-label">
-                <i data-feather="globe" style="width: 18px;"></i> Idioma
+                <!-- Isolamos o texto em um span com a tag data-i18n -->
+                <i data-feather="globe" style="width: 18px;"></i> 
+                <span data-i18n="lang_label">Idioma</span>
             </div>
             <div class="lang-selector">
-                <div class="lang-pill active" onclick="changeLang(this)">PT</div>
-                <div class="lang-pill" onclick="changeLang(this)">EN</div>
-                <div class="lang-pill" onclick="changeLang(this)">ES</div>
+                <div class="lang-pill" data-lang="PT" onclick="changeLang(this)">PT</div>
+                <div class="lang-pill" data-lang="EN" onclick="changeLang(this)">EN</div>
+                <div class="lang-pill" data-lang="ES" onclick="changeLang(this)">ES</div>
             </div>
         </div>
 
@@ -196,48 +102,73 @@
     <script>
         feather.replace();
 
-        // LÓGICA DE LOGIN (Perfeitamente Alinhado)
-        let isLogged = false; 
-        const authContainer = document.getElementById('auth-container');
-
-        function renderAuthStatus() {
-            if (isLogged) {
-                authContainer.innerHTML = `
-                    <div class="user-profile">
-                        <div class="user-avatar">S</div>
-                        <div class="user-info-text">
-                            <span class="user-name">Sodhupn Admin</span>
-                            <span class="user-status">Online</span>
-                        </div>
-                    </div>
-                    <button class="logout-btn" onclick="toggleLogin()" style="margin-top: 12px;">
-                        <i data-feather="log-out" style="width: 18px;"></i> Sair da Conta
-                    </button>
-                `;
-            } else {
-                authContainer.innerHTML = `
-                    <button class="login-btn" onclick="toggleLogin()">
-                        <i data-feather="log-in" style="width: 20px;"></i> Fazer Login
-                    </button>
-                `;
+        // ==========================================
+        // DICIONÁRIO DE TRADUÇÕES
+        // ==========================================
+        const translations = {
+            PT: {
+                lang_label: "Idioma"
+            },
+            EN: {
+                lang_label: "Language"
+            },
+            ES: {
+                lang_label: "Idioma" // Em espanhol também é "Idioma"
             }
-            feather.replace();
+        };
+
+        // Função que aplica a tradução na página
+        function applyTranslations(lang) {
+            // Pega todos os elementos que têm o atributo data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                // Pega a chave da tradução (ex: 'lang_label')
+                const key = element.getAttribute('data-i18n');
+                
+                // Se a chave existir no nosso dicionário para o idioma escolhido, troca o texto
+                if (translations[lang] && translations[lang][key]) {
+                    element.innerText = translations[lang][key];
+                }
+            });
         }
 
-        function toggleLogin() {
-            isLogged = !isLogged;
-            renderAuthStatus();
-        }
+        // ==========================================
+        // LÓGICA DO IDIOMA COM LOCALSTORAGE
+        // ==========================================
 
-        renderAuthStatus(); 
-
-        // LÓGICA DO NOVO IDIOMA
         function changeLang(element) {
             // Remove a classe active de todos
             document.querySelectorAll('.lang-pill').forEach(el => el.classList.remove('active'));
             // Adiciona no que foi clicado
             element.classList.add('active');
+
+            // Pega o idioma selecionado e salva no localStorage do navegador
+            const selectedLang = element.getAttribute('data-lang');
+            localStorage.setItem('userLanguage', selectedLang);
+
+            // Aplica a tradução imediatamente ao clicar
+            applyTranslations(selectedLang);
         }
+
+        function loadSavedLanguage() {
+            // Verifica se tem idioma salvo. Se não tiver, usa 'PT' como padrão.
+            const savedLang = localStorage.getItem('userLanguage') || 'PT';
+            
+            // Procura o botão (pill) correspondente ao idioma salvo
+            const targetPill = document.querySelector(`.lang-pill[data-lang="${savedLang}"]`);
+            
+            if (targetPill) {
+                // Ativa o botão correto visualmente
+                document.querySelectorAll('.lang-pill').forEach(el => el.classList.remove('active'));
+                targetPill.classList.add('active');
+            }
+
+            // Aplica a tradução salva ao carregar a página
+            applyTranslations(savedLang);
+        }
+
+        // Executa a função de carregar assim que a página é carregada
+        document.addEventListener('DOMContentLoaded', loadSavedLanguage);
+
     </script>
 </body>
 </html>
