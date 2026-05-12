@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evollogic - Meu Perfil</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        :root {
+            --bg-dark: #020617;
+            --bg-card: rgba(30, 41, 59, 0.6);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #38bdf8;
+            --primary-hover: #7dd3fc;
+            --danger: #f87171;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, var(--bg-dark) 100%);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Efeito de brilho de fundo */
+        body::before {
+            content: '';
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, rgba(0,0,0,0) 70%);
+            top: -200px;
+            right: -200px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* =============================
+           MENU LATERAL (SIDEBAR)
+        ============================= */
+        .sidebar {
+            width: 260px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-glass);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            z-index: 10;
+            height: 100vh;
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            padding-left: 10px;
+        }
+
+        .brand img {
+            width: 40px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .brand h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-link i {
+            width: 20px;
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            color: var(--danger);
+        }
+
+        .logout-btn:hover {
+            background: rgba(248, 113, 113, 0.1);
+            color: #fca5a5;
+        }
+
+        /* =============================
+           ÁREA PRINCIPAL
+        ============================= */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            z-index: 1;
+            box-sizing: border-box;
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            margin: 5px 0 0 0;
+        }
+
+        /* =============================
+           CARTÃO DE PERFIL
+        ============================= */
+        .profile-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .profile-banner {
+            height: 150px;
+            background: linear-gradient(90deg, #0284c7 0%, #38bdf8 100%);
+            position: relative;
+        }
+
+        .profile-info {
+            padding: 20px 30px 30px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: -60px; /* Puxa o conteúdo para cima do banner */
+        }
+
+        .user-details {
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--bg-dark);
+            background: #1e293b;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .user-text h2 {
+            margin: 0 0 5px 0;
+            font-size: 1.6rem;
+            color: #fff;
+        }
+
+        .user-text p {
+            margin: 0;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .edit-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            color: var(--text-main);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .edit-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* =============================
+           GRADE DE ESTATÍSTICAS
+        ============================= */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .stat-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.4rem;
+        }
+
+        .stat-info p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 20px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                border-right: none;
+                border-bottom: 1px solid var(--border-glass);
+            }
+            .brand { margin-bottom: 0; }
+            .nav-menu { display: none; /* Em um projeto real, faria um menu hambúrguer aqui */ }
+            .main-content { padding: 20px; }
+            .profile-info { flex-direction: column; align-items: center; text-align: center; margin-top: -70px; }
+            .user-details { flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic Logo">
+            <h2>Evollogic</h2>
+        </div>
+
+        <ul class="nav-menu">
+            <li>
+                <a href="#" class="nav-link">
+                    <i data-feather="grid"></i> Hub Central
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link active">
+                    <i data-feather="user"></i> Meu Perfil
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link">
+                    <i data-feather="shield"></i> Segurança
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link">
+                    <i data-feather="settings"></i> Configurações
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link logout-btn" onclick="logout()">
+                    <i data-feather="log-out"></i> Sair da conta
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        
+        <div class="page-header">
+            <h1>Visão Geral</h1>
+            <p>Gerencie suas informações pessoais e segurança.</p>
+        </div>
+
+        <div class="profile-card">
+            <div class="profile-banner"></div>
+            <div class="profile-info">
+                
+                <div class="user-details">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Foto do Usuário" class="user-avatar" id="userPhoto">
+                    
+                    <div class="user-text">
+                        <h2 id="userName">Carregando usuário...</h2>
+                        <p><i data-feather="mail" style="width: 14px;"></i> <span id="userEmail">carregando@email.com</span></p>
+                    </div>
+                </div>
+
+                <button class="edit-btn">
+                    <i data-feather="edit-2" style="width: 16px;"></i> Editar Perfil
+                </button>
+
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i data-feather="star"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Plano Free</h3>
+                    <p>Status da Assinatura</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i data-feather="calendar"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="joinDate">Maio 2026</h3>
+                    <p>Membro desde</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i data-feather="activity"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Online</h3>
+                    <p>Status do Sistema</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Inicializa os ícones do Feather
+        feather.replace();
+
+        // SIMULAÇÃO DE VERIFICAÇÃO DE LOGIN
+        document.addEventListener('DOMContentLoaded', () => {
+            // Aqui você checaria se o usuário tem o token de acesso salvo
+            const userToken = localStorage.getItem('evollogic_auth_token');
+
+            /* Descomente isso quando for ligar com o backend pra valer
+            if (!userToken) {
+                // Se não tem token, expulsa de volta pro login
+                window.location.href = 'index.html';
+                return;
+            }
+            */
+
+            // Simulação de dados vindos do backend (Você trocaria isso por um fetch na sua API)
+            const mockUserData = {
+                name: "João Silva",
+                email: "joao.silva@evollogic.com",
+                photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Joao"
+            };
+
+            // Preenche os dados na tela
+            document.getElementById('userName').textContent = mockUserData.name;
+            document.getElementById('userEmail').textContent = mockUserData.email;
+            document.getElementById('userPhoto').src = mockUserData.photo;
+        });
+
+        // Função de Logout
+        function logout() {
+            if(confirm("Tem certeza que deseja sair?")) {
+                localStorage.removeItem('evollogic_auth_token');
+                window.location.href = 'index.html'; // Volta pra tela de login
+            }
+        }
+    </script>
+</body>
+</html>
