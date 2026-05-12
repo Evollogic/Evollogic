@@ -8,7 +8,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        /* O fundo principal virou preto profundo para dar contraste com a tela curvada */
         body { 
             background: #000; 
             color: #f8fafc; 
@@ -18,18 +17,14 @@
             min-height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             overflow-x: hidden;
-            perspective: 1200px; /* Prepara o ambiente 3D */
+            perspective: 1200px; 
         }
 
-        /* ==========================================
-           EFEITO DE MONITOR CURVO 3D (NOVO)
-           ========================================== */
         .screen-curve-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; /* Deixa você clicar através da sombra */
+            pointer-events: none; 
             z-index: 9999;
-            /* Sombreamento nas bordas que cria a curvatura */
             background: radial-gradient(circle at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.75) 120%);
             box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.9);
         }
@@ -39,14 +34,12 @@
             min-height: 100vh; 
             display: flex; justify-content: center; padding: 40px 0; box-sizing: border-box; 
             background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
-            /* Dobra a tela levemente no eixo X para dar profundidade */
             transform: rotateX(1.5deg) scale(0.98); 
             transform-style: preserve-3d;
             border-radius: 20px;
             box-shadow: 0 0 50px rgba(56, 189, 248, 0.1);
         }
 
-        /* SIDEBAR E BOTAO HAMBURGUER */
         .menu-btn {
             position: fixed; top: 25px; left: 25px; background: rgba(30, 41, 59, 0.6);
             backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.1);
@@ -56,7 +49,6 @@
         .menu-btn:hover { background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; transform: scale(1.05); }
         .menu-btn span { display: block; width: 26px; height: 3px; background: #38bdf8; border-radius: 3px; transition: 0.3s; }
 
-        /* BOTÃO DE PERFIL */
         .profile-btn {
             position: fixed; top: 25px; right: 25px; width: 46px; height: 46px;
             border-radius: 50%; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(8px);
@@ -80,7 +72,6 @@
         .close-btn:hover { color: #ef4444; transform: scale(1.1) rotate(90deg); }
         .sidebar-iframe { flex: 1; width: 100%; height: calc(100vh - 70px); border: none; background: transparent; }
 
-        /* HEADER E LAYOUT GERAL */
         .header-logo { width: 140px; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
         .title-text { font-size: 2.2rem; margin: 10px 0; font-weight: 700; background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .subtitle { color: #94a3b8; font-size: 1rem; margin-top: -10px; font-weight: 300; }
@@ -93,16 +84,14 @@
         
         .badge.ad-style { background: rgba(234, 179, 8, 0.1); color: #eab308; border-color: rgba(234, 179, 8, 0.3); }
 
-        /* CARROSSEL */
         .carousel-wrapper { display: flex; align-items: center; gap: 15px; position: relative; width: 100%; }
         .scroll-btn { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 1.2rem; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; }
         .scroll-btn:hover { background: #38bdf8; color: #fff; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4); transform: scale(1.05); }
-        .carousel-viewport { overflow: hidden; width: 100%; padding: 20px 0; perspective: 800px; } /* Perspectiva no carrossel */
+        .carousel-viewport { overflow: hidden; width: 100%; padding: 20px 0; perspective: 800px; } 
         .carousel-container { display: flex; gap: 20px; width: max-content; }
         
         .company-card { width: 140px; height: 160px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); flex-shrink: 0; padding: 10px; box-sizing: border-box; }
         
-        /* Ajuste nas imagens para o ToBump ficar bonito */
         .company-card img { max-width: 65px; height: 65px; object-fit: contain; margin-bottom: 12px; transition: 0.3s; border-radius: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
         
         .company-card[data-target="sodhupn"] img { border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); }
@@ -112,12 +101,10 @@
         .company-card.active span { color: #38bdf8; font-weight: 600; }
         .company-card.active img { transform: scale(1.15); }
 
-        /* INFO AREA */
         #info-display-area { background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 20px; min-height: 280px; text-align: left; position: relative; overflow: hidden; }
         .company-details { display: none; position: relative; z-index: 5; }
         .company-details.active { display: block; animation: fadeIn 0.5s ease-out; }
         
-        /* EFEITO DE MARCA D'ÁGUA PARA SODHUPN E TOBUMP */
         #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('https://i.imgur.com/igeI5LA.png'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
         
         #tobump-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 230px; background-image: url('https://i.imgur.com/vqPh35y.png'); background-size: cover; background-position: center; border-radius: 16px; opacity: 0.07; z-index: -1; pointer-events: none; }
@@ -146,7 +133,6 @@
         .placeholder-text { text-align: center; color: #64748b; padding: 40px 0; }
         .placeholder-icon { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
 
-        /* TV & ANUNCIOS */
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #000; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
@@ -223,7 +209,7 @@
                             </div>
                             
                             <div class="company-card hover-sfx click-sfx" data-target="tobump">
-                                <img src="https://img.icons8.com/nolan/96/combo-chart.png" alt="ToBump"><span>ToBump</span>
+                                <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump"><span>ToBump</span>
                             </div>
 
                             <div class="company-card hover-sfx click-sfx" data-target="toup">
@@ -301,9 +287,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // ========================================================
-            // SISTEMA DE EFEITOS SONOROS (SFX)
-            // ========================================================
             const sfx = {
                 hover: new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'),
                 click: new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'),
@@ -330,18 +313,12 @@
                 el.addEventListener('click', () => playSound('slide'));
             });
 
-            // ========================================================
-            // SIDEBAR
-            // ========================================================
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
             document.getElementById('open-sidebar').onclick = () => { sidebar.classList.add('active'); overlay.classList.add('active'); }
             document.getElementById('close-sidebar').onclick = () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); }
             overlay.onclick = () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); playSound('slide'); }
 
-            // ========================================================
-            // LÓGICA MESTRA DA TV + ANÚNCIOS + CARROSSEL
-            // ========================================================
             const tvHeaderTitle = document.getElementById('tv-header-title');
             const adContainerBox = document.getElementById('ad-container-box');
             const adBadgeTag = document.getElementById('ad-badge-tag');
