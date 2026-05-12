@@ -101,11 +101,15 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* LOGO AJUSTADA PARA A IMAGEM EXATA */
         .hero-logo {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             animation: float 4s ease-in-out infinite;
         }
 
@@ -269,7 +273,7 @@
     </nav>
 
     <div class="hero-section">
-        <img src="https://img.icons8.com/nolan/96/combo-chart.png" alt="ToBump Logo" class="hero-logo">
+        <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump Logo" class="hero-logo">
         
         <div class="tagline">Evollogic Ecosystem</div>
         <h1>Automatize. Cresça.<br>Domine.</h1>
@@ -309,10 +313,8 @@
     </div>
 
     <script>
-        // Inicializa os ícones do Feather
         feather.replace();
 
-        // SISTEMA DE EFEITOS SONOROS (Mesmo do Hub para consistência)
         const sfx = {
             hover: new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'),
             click: new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3')
