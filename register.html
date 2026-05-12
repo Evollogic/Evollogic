@@ -205,6 +205,36 @@
             transition: 0.3s;
         }
 
+        .password-requirements {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .req-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .req-item svg {
+            width: 14px;
+            height: 14px;
+            color: #64748b;
+        }
+
+        .req-item.valid {
+            color: #34d399;
+        }
+
+        .req-item.valid svg {
+            color: #34d399;
+        }
+
         .terms-group {
             display: flex;
             align-items: flex-start;
@@ -283,8 +313,6 @@
             <p data-i18n="p_join">Junte-se ao ecossistema Evollogic</p>
         </div>
 
-        <div id="alertBox" class="alert-box"></div>
-
         <div class="social-login">
             <button class="social-btn btn-discord" type="button" onclick="registerWith('Discord')">
                 <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord" class="social-icon">
@@ -334,6 +362,21 @@
                 </div>
             </div>
 
+            <div class="password-requirements">
+                <div class="req-item" id="req-length">
+                    <i data-feather="circle"></i> <span data-i18n="req_len">Mínimo 8 caracteres</span>
+                </div>
+                <div class="req-item" id="req-upper">
+                    <i data-feather="circle"></i> <span data-i18n="req_up">Pelo menos 1 letra maiúscula</span>
+                </div>
+                <div class="req-item" id="req-special">
+                    <i data-feather="circle"></i> <span data-i18n="req_spec">Pelo menos 1 caractere especial (@$!%*?&)</span>
+                </div>
+                <div class="req-item" id="req-match">
+                    <i data-feather="circle"></i> <span data-i18n="req_match">As senhas coincidem</span>
+                </div>
+            </div>
+
             <div class="terms-group">
                 <input type="checkbox" id="terms" required>
                 <label for="terms">
@@ -343,6 +386,8 @@
                     <a href="#" data-i18n="terms_4">Política de Privacidade</a>.
                 </label>
             </div>
+
+            <div id="alertBox" class="alert-box"></div>
 
             <button type="submit" class="submit-btn" id="submitBtn" data-i18n="btn_register">Criar Conta Agora</button>
 
@@ -381,10 +426,15 @@
                 err_pass_match: "As senhas não coincidem.",
                 err_pass_length: "A senha deve ter pelo menos 8 caracteres.",
                 err_pass_special: "A senha deve conter pelo menos 1 caractere especial (@$!%*?&).",
+                err_pass_upper: "A senha deve conter pelo menos 1 letra maiúscula.",
                 err_pass_contains_name: "A senha não pode conter seu nome de usuário.",
                 err_pass_contains_email: "A senha não pode conter o seu e-mail.",
                 registering: "Criando conta...",
-                reg_success: "Conta criada com sucesso! Redirecionando para o login..."
+                reg_success: "Conta criada com sucesso! Redirecionando para o login...",
+                req_len: "Mínimo 8 caracteres",
+                req_up: "Pelo menos 1 letra maiúscula",
+                req_spec: "Pelo menos 1 caractere especial (@$!%*?&)",
+                req_match: "As senhas coincidem"
             },
             EN: {
                 page_title: "Evollogic - Create Account",
@@ -408,10 +458,15 @@
                 err_pass_match: "Passwords do not match.",
                 err_pass_length: "Password must be at least 8 characters long.",
                 err_pass_special: "Password must contain at least 1 special character (@$!%*?&).",
+                err_pass_upper: "Password must contain at least 1 uppercase letter.",
                 err_pass_contains_name: "Password cannot contain your username.",
                 err_pass_contains_email: "Password cannot contain your email.",
                 registering: "Creating account...",
-                reg_success: "Account created successfully! Redirecting to login..."
+                reg_success: "Account created successfully! Redirecting to login...",
+                req_len: "Minimum 8 characters",
+                req_up: "At least 1 uppercase letter",
+                req_spec: "At least 1 special character (@$!%*?&)",
+                req_match: "Passwords match"
             },
             ES: {
                 page_title: "Evollogic - Crear Cuenta",
@@ -435,10 +490,15 @@
                 err_pass_match: "Las contraseñas no coinciden.",
                 err_pass_length: "La contraseña debe tener al menos 8 caracteres.",
                 err_pass_special: "La contraseña debe contener al menos 1 carácter especial (@$!%*?&).",
+                err_pass_upper: "La contraseña debe contener al menos 1 letra mayúscula.",
                 err_pass_contains_name: "La contraseña no puede contener tu nombre de usuario.",
                 err_pass_contains_email: "La contraseña no puede contener tu correo.",
                 registering: "Creando cuenta...",
-                reg_success: "¡Cuenta creada con éxito! Redirigiendo al inicio de sesión..."
+                reg_success: "¡Cuenta creada con éxito! Redirigiendo al inicio de sesión...",
+                req_len: "Mínimo 8 caracteres",
+                req_up: "Al menos 1 letra mayúscula",
+                req_spec: "Al menos 1 carácter especial (@$!%*?&)",
+                req_match: "Las contraseñas coinciden"
             }
         };
 
@@ -492,6 +552,40 @@
             }
         }
 
+        const passInput = document.getElementById('password');
+        const confirmInput = document.getElementById('confirm-password');
+
+        function updateIcon(elementId, isValid) {
+            const el = document.getElementById(elementId);
+            const icon = el.querySelector('svg');
+            
+            if (isValid) {
+                el.classList.add('valid');
+                if(icon) icon.outerHTML = feather.icons['check-circle'].toSvg();
+            } else {
+                el.classList.remove('valid');
+                if(icon) icon.outerHTML = feather.icons['circle'].toSvg();
+            }
+        }
+
+        function validatePasswordLive() {
+            const val = passInput.value;
+            const confirmVal = confirmInput.value;
+
+            const hasLength = val.length >= 8;
+            const hasUpper = /[A-Z]/.test(val);
+            const hasSpecial = /[@$!%*?&]/.test(val);
+            const isMatch = val.length > 0 && val === confirmVal;
+
+            updateIcon('req-length', hasLength);
+            updateIcon('req-upper', hasUpper);
+            updateIcon('req-special', hasSpecial);
+            updateIcon('req-match', isMatch);
+        }
+
+        passInput.addEventListener('input', validatePasswordLive);
+        confirmInput.addEventListener('input', validatePasswordLive);
+
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -506,6 +600,10 @@
 
             if(password.length < 8) {
                 return showAlert('err_pass_length', true);
+            }
+
+            if(!/[A-Z]/.test(password)) {
+                return showAlert('err_pass_upper', true);
             }
 
             const specialCharRegex = /[@$!%*?&]/;
