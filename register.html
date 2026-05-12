@@ -25,7 +25,6 @@
             box-sizing: border-box;
         }
 
-        /* Efeito de brilho de fundo */
         body::before {
             content: '';
             position: absolute;
@@ -82,7 +81,6 @@
             margin: 0;
         }
 
-        /* Alertas de Erro/Sucesso */
         .alert-box {
             display: none;
             padding: 12px;
@@ -94,7 +92,6 @@
             animation: slideUp 0.3s ease;
         }
 
-        /* Botões Sociais */
         .social-login {
             display: flex;
             gap: 15px;
@@ -126,7 +123,6 @@
 
         .social-icon { width: 18px; height: 18px; }
 
-        /* Divisor */
         .divider {
             display: flex;
             align-items: center;
@@ -145,7 +141,6 @@
         .divider:not(:empty)::before { margin-right: 15px; }
         .divider:not(:empty)::after { margin-left: 15px; }
 
-        /* Formulário */
         .form-row {
             display: flex;
             gap: 15px;
@@ -210,7 +205,6 @@
             transition: 0.3s;
         }
 
-        /* Checkbox Termos */
         .terms-group {
             display: flex;
             align-items: flex-start;
@@ -233,7 +227,6 @@
         }
         .terms-group a:hover { text-decoration: underline; }
 
-        /* Botão Principal */
         .submit-btn {
             width: 100%;
             background: #38bdf8;
@@ -255,7 +248,6 @@
             box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
         }
 
-        /* Login Link */
         .login-area {
             text-align: center;
             margin-top: 25px;
@@ -275,7 +267,6 @@
             text-decoration: underline;
         }
 
-        /* Responsividade para telas menores */
         @media (max-width: 480px) {
             .form-row { flex-direction: column; gap: 0; }
         }
@@ -367,7 +358,6 @@
     <script>
         feather.replace();
 
-        // Traduções
         const translations = {
             PT: {
                 page_title: "Evollogic - Criar Conta",
@@ -388,7 +378,6 @@
                 already_have: "Já tem uma conta?",
                 do_login: "Faça Login",
                 auth_alert: "Iniciando registro via",
-                // Erros de Validação
                 err_pass_match: "As senhas não coincidem.",
                 err_pass_length: "A senha deve ter pelo menos 8 caracteres.",
                 err_pass_special: "A senha deve conter pelo menos 1 caractere especial (@$!%*?&).",
@@ -416,7 +405,6 @@
                 already_have: "Already have an account?",
                 do_login: "Sign In",
                 auth_alert: "Starting registration via",
-                // Erros de Validação
                 err_pass_match: "Passwords do not match.",
                 err_pass_length: "Password must be at least 8 characters long.",
                 err_pass_special: "Password must contain at least 1 special character (@$!%*?&).",
@@ -444,7 +432,6 @@
                 already_have: "¿Ya tienes una cuenta?",
                 do_login: "Iniciar Sesión",
                 auth_alert: "Iniciando registro vía",
-                // Erros de Validação
                 err_pass_match: "Las contraseñas no coinciden.",
                 err_pass_length: "La contraseña debe tener al menos 8 caracteres.",
                 err_pass_special: "La contraseña debe contener al menos 1 carácter especial (@$!%*?&).",
@@ -505,9 +492,6 @@
             }
         }
 
-        // ==========================================
-        // LÓGICA DE VALIDAÇÃO DE SENHA RIGOROSA
-        // ==========================================
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -516,34 +500,28 @@
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
 
-            // 1. Verifica se as senhas coincidem
             if(password !== confirmPassword) {
                 return showAlert('err_pass_match', true);
             }
 
-            // 2. Verifica tamanho (Min 8 caracteres)
             if(password.length < 8) {
                 return showAlert('err_pass_length', true);
             }
 
-            // 3. Verifica se tem caractere especial (Regex)
             const specialCharRegex = /[@$!%*?&]/;
             if(!specialCharRegex.test(password)) {
                 return showAlert('err_pass_special', true);
             }
 
-            // 4. Verifica se contém o Username (se o username tiver mais de 3 letras pra evitar falsos positivos)
             if(username.length > 3 && password.toLowerCase().includes(username)) {
                 return showAlert('err_pass_contains_name', true);
             }
 
-            // 5. Verifica se contém o Email (parte antes do @)
             const emailPrefix = email.split('@')[0];
             if(emailPrefix.length > 3 && password.toLowerCase().includes(emailPrefix)) {
                 return showAlert('err_pass_contains_email', true);
             }
 
-            // Se passou em tudo, prossegue!
             const btn = document.getElementById('submitBtn');
             const alertBox = document.getElementById('alertBox');
             
@@ -552,8 +530,6 @@
             btn.style.opacity = '0.8';
             btn.style.pointerEvents = 'none';
 
-            // ATENÇÃO: Aqui você conectará com a sua API de Registro (/api/register) futuramente.
-            // Por enquanto, apenas simula o sucesso.
             setTimeout(() => {
                 showAlert('reg_success', false);
                 setTimeout(() => {
@@ -562,9 +538,6 @@
             }, 1000);
         });
 
-        // ==========================================
-        // REDIRECIONAMENTO PRO BACKEND (OAUTH)
-        // ==========================================
         function registerWith(provider) {
             const btnDiscord = document.querySelector('.btn-discord');
             const btnGoogle = document.querySelector('.btn-google');
@@ -572,10 +545,10 @@
 
             if (provider === 'Discord') {
                 btnDiscord.innerHTML = translations[currentLang].registering || "Autenticando...";
-                window.location.href = `${baseUrl}/api/auth/discord`;
+                window.location.href = `${baseUrl}/api/auth/discord/register`;
             } else if (provider === 'Google') {
                 btnGoogle.innerHTML = translations[currentLang].registering || "Autenticando...";
-                window.location.href = `${baseUrl}/api/auth/google`;
+                window.location.href = `${baseUrl}/api/auth/google/register`;
             }
         }
     </script>
