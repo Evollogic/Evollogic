@@ -17,10 +17,11 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
-            padding: 20px;
+            padding: 40px 20px;
             box-sizing: border-box;
         }
 
@@ -47,6 +48,7 @@
             max-width: 450px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             z-index: 10;
+            margin: auto;
             animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             box-sizing: border-box;
         }
@@ -78,6 +80,18 @@
             color: #94a3b8;
             font-size: 0.95rem;
             margin: 0;
+        }
+
+        /* Alertas de Erro/Sucesso */
+        .alert-box {
+            display: none;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            animation: slideUp 0.3s ease;
         }
 
         /* Botões Sociais */
@@ -156,13 +170,19 @@
             position: relative;
             display: flex;
             align-items: center;
+            width: 100%;
         }
 
-        .input-wrapper i {
+        .input-wrapper i,
+        .input-wrapper svg {
             position: absolute;
-            left: 15px;
-            color: #64748b;
-            width: 16px;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            width: 20px;
+            height: 20px;
+            z-index: 2;
         }
 
         .input-field {
@@ -170,10 +190,10 @@
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #f8fafc;
-            padding: 12px 14px 12px 40px;
+            padding: 14px 14px 14px 50px;
             border-radius: 12px;
             font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             outline: none;
             transition: 0.3s;
             box-sizing: border-box;
@@ -182,6 +202,12 @@
         .input-field:focus {
             border-color: #38bdf8;
             box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+        }
+
+        .input-field:focus + i,
+        .input-field:focus ~ svg {
+            color: #38bdf8;
+            transition: 0.3s;
         }
 
         /* Checkbox Termos */
@@ -262,9 +288,11 @@
         
         <div class="register-header">
             <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic Logo">
-            <h1>Criar uma Conta</h1>
-            <p>Junte-se ao ecossistema Evollogic</p>
+            <h1 data-i18n="h1_create">Criar uma Conta</h1>
+            <p data-i18n="p_join">Junte-se ao ecossistema Evollogic</p>
         </div>
+
+        <div id="alertBox" class="alert-box"></div>
 
         <div class="social-login">
             <button class="social-btn btn-discord" type="button" onclick="registerWith('Discord')">
@@ -277,92 +305,278 @@
             </button>
         </div>
 
-        <div class="divider">ou registre-se com e-mail</div>
+        <div class="divider" data-i18n="divider_reg">ou registre-se com e-mail</div>
 
         <form id="registerForm">
             
             <div class="input-group">
-                <label for="username">Nome de Usuário</label>
+                <label for="username" data-i18n="label_username">Nome de Usuário</label>
                 <div class="input-wrapper">
+                    <input type="text" id="username" class="input-field" data-i18n-placeholder="placeholder_username" placeholder="Seu nome ou apelido" required>
                     <i data-feather="user"></i>
-                    <input type="text" id="username" class="input-field" placeholder="Como devemos chamar você?" required>
                 </div>
             </div>
 
             <div class="input-group">
-                <label for="email">E-mail</label>
+                <label for="email" data-i18n="label_email">E-mail</label>
                 <div class="input-wrapper">
+                    <input type="email" id="email" class="input-field" data-i18n-placeholder="placeholder_email" placeholder="contato@evollogic.com" required>
                     <i data-feather="mail"></i>
-                    <input type="email" id="email" class="input-field" placeholder="exemplo@evollogic.com" required>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="input-group">
-                    <label for="password">Senha</label>
+                    <label for="password" data-i18n="label_pass">Senha</label>
                     <div class="input-wrapper">
-                        <i data-feather="lock"></i>
                         <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+                        <i data-feather="lock"></i>
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label for="confirm-password">Confirmar</label>
+                    <label for="confirm-password" data-i18n="label_confirm">Confirmar</label>
                     <div class="input-wrapper">
-                        <i data-feather="check-circle"></i>
                         <input type="password" id="confirm-password" class="input-field" placeholder="••••••••" required>
+                        <i data-feather="check-circle"></i>
                     </div>
                 </div>
             </div>
 
             <div class="terms-group">
                 <input type="checkbox" id="terms" required>
-                <label for="terms">Eu concordo com os <a href="#">Termos de Serviço</a> e a <a href="#">Política de Privacidade</a>.</label>
+                <label for="terms">
+                    <span data-i18n="terms_1">Eu concordo com os</span> 
+                    <a href="#" data-i18n="terms_2">Termos de Serviço</a> 
+                    <span data-i18n="terms_3">e a</span> 
+                    <a href="#" data-i18n="terms_4">Política de Privacidade</a>.
+                </label>
             </div>
 
-            <button type="submit" class="submit-btn">Criar Conta Agora</button>
+            <button type="submit" class="submit-btn" id="submitBtn" data-i18n="btn_register">Criar Conta Agora</button>
 
         </form>
 
         <div class="login-area">
-            Já tem uma conta? <a href="login.html">Faça Login</a>
+            <span data-i18n="already_have">Já tem uma conta?</span> 
+            <a href="login.html" data-i18n="do_login">Faça Login</a>
         </div>
 
     </div>
 
     <script>
-        // Inicializa os ícones do Feather
         feather.replace();
 
-        // Lógica de envio do formulário
+        // Traduções
+        const translations = {
+            PT: {
+                page_title: "Evollogic - Criar Conta",
+                h1_create: "Criar uma Conta",
+                p_join: "Junte-se ao ecossistema Evollogic",
+                divider_reg: "ou registre-se com e-mail",
+                label_username: "Nome de Usuário",
+                placeholder_username: "Seu nome ou apelido",
+                label_email: "E-mail",
+                placeholder_email: "contato@evollogic.com",
+                label_pass: "Senha",
+                label_confirm: "Confirmar Senha",
+                terms_1: "Eu concordo com os",
+                terms_2: "Termos de Serviço",
+                terms_3: "e a",
+                terms_4: "Política de Privacidade",
+                btn_register: "Criar Conta Agora",
+                already_have: "Já tem uma conta?",
+                do_login: "Faça Login",
+                auth_alert: "Iniciando registro via",
+                // Erros de Validação
+                err_pass_match: "As senhas não coincidem.",
+                err_pass_length: "A senha deve ter pelo menos 8 caracteres.",
+                err_pass_special: "A senha deve conter pelo menos 1 caractere especial (@$!%*?&).",
+                err_pass_contains_name: "A senha não pode conter seu nome de usuário.",
+                err_pass_contains_email: "A senha não pode conter o seu e-mail.",
+                registering: "Criando conta...",
+                reg_success: "Conta criada com sucesso! Redirecionando para o login..."
+            },
+            EN: {
+                page_title: "Evollogic - Create Account",
+                h1_create: "Create an Account",
+                p_join: "Join the Evollogic ecosystem",
+                divider_reg: "or register with email",
+                label_username: "Username",
+                placeholder_username: "Your name or nickname",
+                label_email: "Email",
+                placeholder_email: "contact@evollogic.com",
+                label_pass: "Password",
+                label_confirm: "Confirm Password",
+                terms_1: "I agree to the",
+                terms_2: "Terms of Service",
+                terms_3: "and",
+                terms_4: "Privacy Policy",
+                btn_register: "Create Account Now",
+                already_have: "Already have an account?",
+                do_login: "Sign In",
+                auth_alert: "Starting registration via",
+                // Erros de Validação
+                err_pass_match: "Passwords do not match.",
+                err_pass_length: "Password must be at least 8 characters long.",
+                err_pass_special: "Password must contain at least 1 special character (@$!%*?&).",
+                err_pass_contains_name: "Password cannot contain your username.",
+                err_pass_contains_email: "Password cannot contain your email.",
+                registering: "Creating account...",
+                reg_success: "Account created successfully! Redirecting to login..."
+            },
+            ES: {
+                page_title: "Evollogic - Crear Cuenta",
+                h1_create: "Crear una Cuenta",
+                p_join: "Únete al ecosistema Evollogic",
+                divider_reg: "o regístrate con correo",
+                label_username: "Nombre de Usuario",
+                placeholder_username: "Tu nombre o apodo",
+                label_email: "Correo electrónico",
+                placeholder_email: "contacto@evollogic.com",
+                label_pass: "Contraseña",
+                label_confirm: "Confirmar Contraseña",
+                terms_1: "Acepto los",
+                terms_2: "Términos de Servicio",
+                terms_3: "y la",
+                terms_4: "Política de Privacidad",
+                btn_register: "Crear Cuenta Ahora",
+                already_have: "¿Ya tienes una cuenta?",
+                do_login: "Iniciar Sesión",
+                auth_alert: "Iniciando registro vía",
+                // Erros de Validação
+                err_pass_match: "Las contraseñas no coinciden.",
+                err_pass_length: "La contraseña debe tener al menos 8 caracteres.",
+                err_pass_special: "La contraseña debe contener al menos 1 carácter especial (@$!%*?&).",
+                err_pass_contains_name: "La contraseña no puede contener tu nombre de usuario.",
+                err_pass_contains_email: "La contraseña no puede contener tu correo.",
+                registering: "Creando cuenta...",
+                reg_success: "¡Cuenta creada con éxito! Redirigiendo al inicio de sesión..."
+            }
+        };
+
+        let currentLang = localStorage.getItem('userLanguage');
+
+        if (!currentLang) {
+            const browserLang = (navigator.language || navigator.userLanguage).substring(0, 2).toUpperCase();
+            currentLang = ['PT', 'EN', 'ES'].includes(browserLang) ? browserLang : 'EN';
+            localStorage.setItem('userLanguage', currentLang);
+        }
+
+        function applyTranslations(lang) {
+            document.title = translations[lang].page_title;
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTranslations(currentLang);
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'userLanguage') {
+                    currentLang = e.newValue || 'EN';
+                    applyTranslations(currentLang);
+                }
+            });
+        });
+
+        function showAlert(messageKey, isError = true) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.style.display = 'block';
+            alertBox.innerHTML = translations[currentLang][messageKey] || messageKey;
+            
+            if (isError) {
+                alertBox.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+                alertBox.style.color = '#f87171';
+                alertBox.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+            } else {
+                alertBox.style.backgroundColor = 'rgba(16, 185, 129, 0.15)';
+                alertBox.style.color = '#34d399';
+                alertBox.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+            }
+        }
+
+        // ==========================================
+        // LÓGICA DE VALIDAÇÃO DE SENHA RIGOROSA
+        // ==========================================
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const username = document.getElementById('username').value.trim().toLowerCase();
+            const email = document.getElementById('email').value.trim().toLowerCase();
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
 
+            // 1. Verifica se as senhas coincidem
             if(password !== confirmPassword) {
-                alert("As senhas não coincidem!");
-                return;
+                return showAlert('err_pass_match', true);
             }
 
-            const btn = document.querySelector('.submit-btn');
+            // 2. Verifica tamanho (Min 8 caracteres)
+            if(password.length < 8) {
+                return showAlert('err_pass_length', true);
+            }
+
+            // 3. Verifica se tem caractere especial (Regex)
+            const specialCharRegex = /[@$!%*?&]/;
+            if(!specialCharRegex.test(password)) {
+                return showAlert('err_pass_special', true);
+            }
+
+            // 4. Verifica se contém o Username (se o username tiver mais de 3 letras pra evitar falsos positivos)
+            if(username.length > 3 && password.toLowerCase().includes(username)) {
+                return showAlert('err_pass_contains_name', true);
+            }
+
+            // 5. Verifica se contém o Email (parte antes do @)
+            const emailPrefix = email.split('@')[0];
+            if(emailPrefix.length > 3 && password.toLowerCase().includes(emailPrefix)) {
+                return showAlert('err_pass_contains_email', true);
+            }
+
+            // Se passou em tudo, prossegue!
+            const btn = document.getElementById('submitBtn');
+            const alertBox = document.getElementById('alertBox');
             
-            // Efeito de carregamento
-            btn.innerHTML = 'Criando conta...';
+            alertBox.style.display = 'none';
+            btn.innerHTML = translations[currentLang].registering;
             btn.style.opacity = '0.8';
             btn.style.pointerEvents = 'none';
 
-            // Simula um tempo de carregamento e redireciona para o login
+            // ATENÇÃO: Aqui você conectará com a sua API de Registro (/api/register) futuramente.
+            // Por enquanto, apenas simula o sucesso.
             setTimeout(() => {
-                alert("Conta criada com sucesso! Faça login para continuar.");
-                window.location.href = 'login.html'; 
-            }, 1500);
+                showAlert('reg_success', false);
+                setTimeout(() => {
+                    window.location.href = 'login.html'; 
+                }, 1500);
+            }, 1000);
         });
 
-        // Lógica simulada para botões sociais
+        // ==========================================
+        // REDIRECIONAMENTO PRO BACKEND (OAUTH)
+        // ==========================================
         function registerWith(provider) {
-            alert(`Iniciando registro via ${provider}...`);
+            const btnDiscord = document.querySelector('.btn-discord');
+            const btnGoogle = document.querySelector('.btn-google');
+            const baseUrl = 'https://evollogic-backend-production.up.railway.app';
+
+            if (provider === 'Discord') {
+                btnDiscord.innerHTML = translations[currentLang].registering || "Autenticando...";
+                window.location.href = `${baseUrl}/api/auth/discord`;
+            } else if (provider === 'Google') {
+                btnGoogle.innerHTML = translations[currentLang].registering || "Autenticando...";
+                window.location.href = `${baseUrl}/api/auth/google`;
+            }
         }
     </script>
 </body>
