@@ -17,10 +17,10 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            overflow-x: hidden; /* Evita vazamento horizontal */
-            overflow-y: auto;   /* Permite rolar para baixo no celular */
-            padding: 20px;      /* Dá um respiro nas bordas do celular */
+            align-items: flex-start; /* Alterado para evitar corte do topo em telas pequenas */
+            overflow-x: hidden; 
+            overflow-y: auto;   
+            padding: 40px 20px; /* Garante espaço extra nas bordas para rolagem fluida */
             box-sizing: border-box;
             position: relative;
         }
@@ -47,6 +47,7 @@
             max-width: 400px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             z-index: 10;
+            margin: auto; /* Ajuda a centralizar perfeitamente mantendo a rolagem livre */
             animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             box-sizing: border-box;
         }
@@ -180,16 +181,20 @@
             position: relative;
             display: flex;
             align-items: center;
+            width: 100%;
         }
 
-        /* CORREÇÃO DOS ÍCONES AQUI */
+        /* CORREÇÃO E ALINHAMENTO DOS ÍCONES AQUI */
         .input-wrapper i,
         .input-wrapper svg {
             position: absolute;
-            left: 15px;
-            color: #64748b;
-            width: 18px;
-            z-index: 2; /* Garante o ícone na frente */
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%); /* Centraliza verticalmente de forma perfeita */
+            color: #94a3b8;
+            width: 20px;
+            height: 20px;
+            z-index: 2; 
         }
 
         .input-field {
@@ -197,7 +202,7 @@
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #f8fafc;
-            padding: 14px 14px 14px 45px;
+            padding: 14px 14px 14px 50px; /* Aumentado o padding-left para dar espaço ao ícone */
             border-radius: 12px;
             font-family: 'Poppins', sans-serif;
             font-size: 0.95rem;
@@ -209,6 +214,13 @@
         .input-field:focus {
             border-color: #38bdf8;
             box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+        }
+
+        /* Efeito de brilho no ícone quando o input foca */
+        .input-field:focus + i,
+        .input-field:focus ~ svg {
+            color: #38bdf8;
+            transition: 0.3s;
         }
 
         .forgot-password {
@@ -299,16 +311,16 @@
             <div class="input-group">
                 <label for="email" data-i18n="label_email">E-mail ou Nome de Usuário</label>
                 <div class="input-wrapper">
-                    <i data-feather="user"></i>
                     <input type="text" id="email" class="input-field" data-i18n-placeholder="placeholder_email" placeholder="contato@evollogic.com" required>
+                    <i data-feather="user"></i>
                 </div>
             </div>
 
             <div class="input-group">
                 <label for="password" data-i18n="label_pass">Senha</label>
                 <div class="input-wrapper">
-                    <i data-feather="lock"></i>
                     <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+                    <i data-feather="lock"></i>
                 </div>
                 <a href="#" class="forgot-password" data-i18n="forgot_pass">Esqueci minha senha</a>
             </div>
@@ -342,7 +354,6 @@
                 create_account: "Criar uma conta",
                 authenticating: "Autenticando...",
                 auth_alert: "Iniciando autenticação via",
-                // Mensagens de erro da API
                 invalid_account: "Conta inválida. O usuário não foi encontrado.",
                 wrong_password: "A senha está incorreta.",
                 server_error: "Erro no servidor. Tente novamente mais tarde.",
@@ -362,7 +373,6 @@
                 create_account: "Create an account",
                 authenticating: "Authenticating...",
                 auth_alert: "Starting authentication via",
-                // API Error Messages
                 invalid_account: "Invalid account. User not found.",
                 wrong_password: "The password is incorrect.",
                 server_error: "Server error. Please try again later.",
@@ -382,7 +392,6 @@
                 create_account: "Crear una cuenta",
                 authenticating: "Autenticando...",
                 auth_alert: "Iniciando autenticación vía",
-                // API Error Messages
                 invalid_account: "Cuenta inválida. Usuario no encontrado.",
                 wrong_password: "La contraseña es incorrecta.",
                 server_error: "Error del servidor. Inténtalo de nuevo más tarde.",
