@@ -212,6 +212,10 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
+            background: rgba(15, 23, 42, 0.4);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .req-item {
@@ -300,7 +304,6 @@
         @media (max-width: 480px) {
             .form-row { flex-direction: column; gap: 0; }
         }
-
     </style>
 </head>
 <body>
@@ -423,12 +426,10 @@
                 already_have: "Já tem uma conta?",
                 do_login: "Faça Login",
                 auth_alert: "Iniciando registro via",
-                err_pass_match: "As senhas não coincidem.",
-                err_pass_length: "A senha deve ter pelo menos 8 caracteres.",
-                err_pass_special: "A senha deve conter pelo menos 1 caractere especial (@$!%*?&).",
-                err_pass_upper: "A senha deve conter pelo menos 1 letra maiúscula.",
+                err_pass_requirements: "Por favor, atenda a todos os requisitos da senha.",
                 err_pass_contains_name: "A senha não pode conter seu nome de usuário.",
                 err_pass_contains_email: "A senha não pode conter o seu e-mail.",
+                err_account_exists: "Essa conta já existe. Faça login ou redefina sua senha.",
                 registering: "Criando conta...",
                 reg_success: "Conta criada com sucesso! Redirecionando para o login...",
                 req_len: "Mínimo 8 caracteres",
@@ -455,12 +456,10 @@
                 already_have: "Already have an account?",
                 do_login: "Sign In",
                 auth_alert: "Starting registration via",
-                err_pass_match: "Passwords do not match.",
-                err_pass_length: "Password must be at least 8 characters long.",
-                err_pass_special: "Password must contain at least 1 special character (@$!%*?&).",
-                err_pass_upper: "Password must contain at least 1 uppercase letter.",
+                err_pass_requirements: "Please meet all password requirements.",
                 err_pass_contains_name: "Password cannot contain your username.",
                 err_pass_contains_email: "Password cannot contain your email.",
+                err_account_exists: "Account already exists. Please login or reset your password.",
                 registering: "Creating account...",
                 reg_success: "Account created successfully! Redirecting to login...",
                 req_len: "Minimum 8 characters",
@@ -487,12 +486,10 @@
                 already_have: "¿Ya tienes una cuenta?",
                 do_login: "Iniciar Sesión",
                 auth_alert: "Iniciando registro vía",
-                err_pass_match: "Las contraseñas no coinciden.",
-                err_pass_length: "La contraseña debe tener al menos 8 caracteres.",
-                err_pass_special: "La contraseña debe contener al menos 1 carácter especial (@$!%*?&).",
-                err_pass_upper: "La contraseña debe contener al menos 1 letra mayúscula.",
+                err_pass_requirements: "Por favor, cumpla con todos los requisitos de la contraseña.",
                 err_pass_contains_name: "La contraseña no puede contener tu nombre de usuario.",
                 err_pass_contains_email: "La contraseña no puede contener tu correo.",
+                err_account_exists: "Esta cuenta ya existe. Inicia sesión o restablece tu contraseña.",
                 registering: "Creando cuenta...",
                 reg_success: "¡Cuenta creada con éxito! Redirigiendo al inicio de sesión...",
                 req_len: "Mínimo 8 caracteres",
@@ -526,16 +523,6 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            applyTranslations(currentLang);
-            window.addEventListener('storage', (e) => {
-                if (e.key === 'userLanguage') {
-                    currentLang = e.newValue || 'EN';
-                    applyTranslations(currentLang);
-                }
-            });
-        });
-
         function showAlert(messageKey, isError = true) {
             const alertBox = document.getElementById('alertBox');
             alertBox.style.display = 'block';
@@ -552,8 +539,28 @@
             }
         }
 
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTranslations(currentLang);
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('error')) {
+                const errorType = urlParams.get('error');
+                if (errorType === 'email_in_use' || errorType === 'account_exists') {
+                    showAlert('err_account_exists', true);
+                }
+            }
+
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'userLanguage') {
+                    currentLang = e.newValue || 'EN';
+                    applyTranslations(currentLang);
+                }
+            });
+        });
+
         const passInput = document.getElementById('password');
         const confirmInput = document.getElementById('confirm-password');
+        let isPasswordFullyValid = false;
 
         function updateIcon(elementId, isValid) {
             const el = document.getElementById(elementId);
@@ -581,6 +588,9 @@
             updateIcon('req-upper', hasUpper);
             updateIcon('req-special', hasSpecial);
             updateIcon('req-match', isMatch);
+
+            isPasswordFullyValid = hasLength && hasUpper && hasSpecial && isMatch;
+            document.getElementById('alertBox').style.display = 'none';
         }
 
         passInput.addEventListener('input', validatePasswordLive);
@@ -591,24 +601,10 @@
             
             const username = document.getElementById('username').value.trim().toLowerCase();
             const email = document.getElementById('email').value.trim().toLowerCase();
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
+            const password = passInput.value;
 
-            if(password !== confirmPassword) {
-                return showAlert('err_pass_match', true);
-            }
-
-            if(password.length < 8) {
-                return showAlert('err_pass_length', true);
-            }
-
-            if(!/[A-Z]/.test(password)) {
-                return showAlert('err_pass_upper', true);
-            }
-
-            const specialCharRegex = /[@$!%*?&]/;
-            if(!specialCharRegex.test(password)) {
-                return showAlert('err_pass_special', true);
+            if (!isPasswordFullyValid) {
+                return showAlert('err_pass_requirements', true);
             }
 
             if(username.length > 3 && password.toLowerCase().includes(username)) {
