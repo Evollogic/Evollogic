@@ -111,6 +111,7 @@
         .logout-btn {
             margin-top: auto;
             color: var(--danger);
+            cursor: pointer;
         }
 
         .logout-btn:hover {
@@ -193,6 +194,7 @@
             margin: 0 0 5px 0;
             font-size: 1.6rem;
             color: #fff;
+            text-transform: capitalize;
         }
 
         .user-text p {
@@ -322,7 +324,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link logout-btn" onclick="logout()">
+                <a class="nav-link logout-btn" onclick="logout()">
                     <i data-feather="log-out"></i> Sair da conta
                 </a>
             </li>
@@ -362,8 +364,8 @@
                     <i data-feather="star"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Plano Free</h3>
-                    <p>Status da Assinatura</p>
+                    <h3>Desenvolvedor</h3>
+                    <p>Status da Conta</p>
                 </div>
             </div>
 
@@ -392,24 +394,31 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
+            // Inicia os ícones
             feather.replace();
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const urlToken = urlParams.get('token');
+            // Lógica de fallback: Enquanto o backend não tem a rota /api/user/me
+            // Nós pegamos o email que o usuário digitou no login (se você salvar no localStorage)
+            // Se não tiver salvo, usamos um email padrão de teste para a tela não quebrar.
+            const savedEmail = localStorage.getItem('evollogic_user_email') || "admin@evollogic.com";
+            
+            // Extrai o nome antes do @ para usar como nome de usuário provisório
+            const baseName = savedEmail.split('@')[0];
 
-            if (urlToken) {
-                localStorage.setItem('evollogic_auth_token', urlToken);
-                window.history.replaceState({}, document.title, window.location.pathname);
+            // Função para aplicar os dados na tela
+            function updateUI(name, email, avatarUrl) {
+                document.getElementById('userName').textContent = name;
+                document.getElementById('userEmail').textContent = email;
+                
+                const photoEl = document.getElementById('userPhoto');
+                photoEl.src = avatarUrl;
+                photoEl.style.display = 'block';
             }
 
             const userToken = localStorage.getItem('evollogic_auth_token');
 
-            if (!userToken) {
-                window.location.href = 'login.html';
-                return;
-            }
-
             try {
+                // Tenta buscar da API (Isso vai falhar até construirmos o backend completo)
                 const response = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', {
                     method: 'GET',
                     headers: {
@@ -419,33 +428,31 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Sessão inválida ou expirada');
+                    throw new Error('Rota não encontrada ou token inválido');
                 }
 
                 const userData = await response.json();
-
-                document.getElementById('userName').textContent = userData.name || "Usuário";
-                document.getElementById('userEmail').textContent = userData.email || "Sem e-mail cadastrado";
                 
-                const photoEl = document.getElementById('userPhoto');
-                if (userData.avatar) {
-                    photoEl.src = userData.avatar;
-                } else {
-                    photoEl.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.name || 'Evollogic'}`;
-                }
-                photoEl.style.display = 'block';
+                // Se a API der certo, usa os dados do banco do MongoDB
+                const avatar = userData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.name}`;
+                updateUI(userData.name || "Usuário", userData.email, avatar);
 
             } catch (error) {
-                console.error("Erro ao carregar perfil:", error);
-                localStorage.removeItem('evollogic_auth_token');
-                window.location.href = 'login.html';
+                console.warn("API de usuário ainda não configurada. Carregando dados locais provisórios...");
+                
+                // Plano B: Se a API falhar, carrega os dados locais para o painel funcionar visualmente
+                const fallbackAvatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${baseName}`;
+                updateUI(baseName, savedEmail, fallbackAvatar);
             }
         });
 
+        // Função de Sair
         function logout() {
-            if(confirm("Tem certeza que deseja sair?")) {
+            if(confirm("Tem certeza que deseja sair do ecossistema Evollogic?")) {
+                // Limpa os dados salvos e volta pro login
                 localStorage.removeItem('evollogic_auth_token');
-                window.location.href = 'login.html';
+                localStorage.removeItem('evollogic_user_email');
+                window.location.href = 'login.html'; // Certifique-se que o nome do seu arquivo de login é esse
             }
         }
     </script>
