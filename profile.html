@@ -786,9 +786,9 @@
                 document.getElementById('postAvatar').src = userAvatarDisplay;
                 document.getElementById('postAuthorName').textContent = displayName;
 
-                // Seguidores
-                document.getElementById('followersCount').textContent = userData.followers !== undefined ? userData.followers : '124';
-                document.getElementById('followingCount').textContent = userData.following !== undefined ? userData.following : '32';
+                // Seguidores (Agora puxa o tamanho real da lista do banco, começando do 0)
+                document.getElementById('followersCount').textContent = (userData.followers && Array.isArray(userData.followers)) ? userData.followers.length : 0;
+                document.getElementById('followingCount').textContent = (userData.following && Array.isArray(userData.following)) ? userData.following.length : 0;
 
                 // Mode VIP
                 const userMode = String(userData.mode || '0');
