@@ -11,11 +11,11 @@
     <style>
         :root {
             --bg-dark: #020617;
-            --bg-card: #151c2c; /* Cor exata da print para o card */
+            --bg-card: #151c2c;
             --border-glass: rgba(255, 255, 255, 0.08);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --primary: #38bdf8; /* Azul do banner da print */
+            --primary: #38bdf8;
             --primary-hover: #7dd3fc;
             --danger: #f87171;
         }
@@ -30,7 +30,6 @@
             overflow-x: hidden;
         }
 
-        /* Efeito de brilho de fundo */
         body::before {
             content: '';
             position: fixed;
@@ -66,7 +65,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             padding-left: 10px;
         }
 
@@ -90,11 +89,12 @@
 
         .mobile-menu-btn {
             display: none;
-            background: none;
-            border: none;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             color: var(--text-main);
             cursor: pointer;
-            padding: 5px;
+            padding: 8px;
+            border-radius: 8px;
         }
 
         .nav-menu {
@@ -124,18 +124,49 @@
             color: var(--primary);
         }
 
-        .nav-link i {
-            width: 20px;
-        }
+        .nav-link i { width: 20px; }
 
-        .logout-btn {
+        .logout-btn { color: var(--danger); }
+        .logout-btn:hover { background: rgba(248, 113, 113, 0.1); color: #fca5a5; }
+
+        /* =============================
+           SELETOR DE IDIOMAS NA SIDEBAR
+        ============================= */
+        .sidebar-bottom {
             margin-top: auto;
-            color: var(--danger);
+            padding-top: 20px;
+            border-top: 1px solid var(--border-glass);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .logout-btn:hover {
-            background: rgba(248, 113, 113, 0.1);
-            color: #fca5a5;
+        .lang-selector {
+            display: flex;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            justify-content: space-between;
+        }
+
+        .lang-pill {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .lang-pill:hover:not(.active) { color: #f8fafc; }
+        .lang-pill.active {
+            background: var(--primary);
+            color: #0f172a;
+            box-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
         }
 
         /* =============================
@@ -156,26 +187,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .page-header {
-            margin-bottom: 30px;
-        }
+        .page-header { margin-bottom: 30px; }
+        .page-header h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 8px 0; }
+        .page-header p { color: var(--text-muted); margin: 0; font-size: 1.05rem; }
 
-        .page-header h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin: 0 0 8px 0;
-            letter-spacing: -0.5px;
-        }
-
-        .page-header p {
-            color: var(--text-muted);
-            margin: 0;
-            font-size: 1.05rem;
-        }
-
-        /* =============================
-           CARD DE PERFIL (IDÊNTICO À PRINT)
-        ============================= */
+        /* CARD */
         .profile-card {
             background: var(--bg-card);
             border-radius: 24px;
@@ -195,40 +211,23 @@
             flex-direction: column;
             align-items: center;
             padding: 0 30px 40px 30px;
-            margin-top: -65px; /* Puxa a foto para cima do banner */
+            margin-top: -65px;
         }
 
         .profile-avatar {
             width: 130px;
             height: 130px;
             border-radius: 50%;
-            border: 6px solid var(--bg-card); /* Borda escura igual ao fundo */
+            border: 6px solid var(--bg-card);
             background: #fff;
             object-fit: cover;
             box-shadow: 0 8px 20px rgba(0,0,0,0.4);
             margin-bottom: 15px;
         }
 
-        .profile-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0 0 5px 0;
-            text-align: center;
-        }
-
-        .profile-email {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-muted);
-            font-size: 1rem;
-            margin: 0 0 25px 0;
-        }
-
-        .profile-email i {
-            width: 16px;
-            height: 16px;
-        }
+        .profile-name { font-size: 1.8rem; font-weight: 700; margin: 0 0 5px 0; text-align: center; }
+        .profile-email { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 1rem; margin: 0 0 25px 0; }
+        .profile-email i { width: 16px; height: 16px; }
 
         .btn-edit {
             display: flex;
@@ -256,9 +255,7 @@
            RESPONSIVIDADE (CELULAR)
         ============================= */
         @media (max-width: 768px) {
-            body { 
-                flex-direction: column; 
-            }
+            body { flex-direction: column; }
             
             .sidebar {
                 width: 100%;
@@ -269,36 +266,21 @@
                 border-bottom: 1px solid var(--border-glass);
             }
 
-            .brand { 
-                margin-bottom: 0; 
+            .brand { margin-bottom: 0; }
+            .mobile-menu-btn { display: block; }
+
+            .nav-menu, .sidebar-bottom { 
+                display: none; /* Esconde no celular até clicar no botão */
             }
 
-            .mobile-menu-btn {
-                display: block; /* Mostra o botão de menu hambúrguer */
+            .nav-menu.show, .sidebar-bottom.show {
+                display: flex; /* Mostra quando clica */
+                margin-top: 20px;
             }
 
-            .nav-menu { 
-                display: none; /* Esconde o menu por padrão no celular */
-                padding-top: 20px;
-            }
-
-            .nav-menu.show {
-                display: flex; /* Mostra quando clica no botão */
-            }
-
-            .main-content { 
-                padding: 30px 20px; 
-            }
-
-            .profile-banner {
-                height: 120px;
-            }
-
-            .profile-avatar {
-                width: 110px;
-                height: 110px;
-                margin-top: -55px;
-            }
+            .main-content { padding: 30px 20px; }
+            .profile-banner { height: 120px; }
+            .profile-avatar { width: 110px; height: 110px; margin-top: -55px; }
         }
     </style>
 </head>
@@ -318,37 +300,43 @@
         <ul class="nav-menu" id="navMenu">
             <li>
                 <a href="index.html" class="nav-link">
-                    <i data-feather="grid"></i> Hub Central
+                    <i data-feather="grid"></i> <span data-i18n="nav_hub">Hub Central</span>
                 </a>
             </li>
             <li>
                 <a href="profile.html" class="nav-link active">
-                    <i data-feather="user"></i> Meu Perfil
+                    <i data-feather="user"></i> <span data-i18n="nav_profile">Meu Perfil</span>
                 </a>
             </li>
             <li>
                 <a href="#" class="nav-link">
-                    <i data-feather="shield"></i> Segurança
+                    <i data-feather="shield"></i> <span data-i18n="nav_security">Segurança</span>
                 </a>
             </li>
             <li>
                 <a href="#" class="nav-link">
-                    <i data-feather="settings"></i> Configurações
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link logout-btn" onclick="logout()">
-                    <i data-feather="log-out"></i> Sair da conta
+                    <i data-feather="settings"></i> <span data-i18n="nav_settings">Configurações</span>
                 </a>
             </li>
         </ul>
+
+        <div class="sidebar-bottom" id="sidebarBottom">
+            <div class="lang-selector">
+                <div class="lang-pill" data-lang="PT" onclick="changeLang(this)">PT</div>
+                <div class="lang-pill" data-lang="EN" onclick="changeLang(this)">EN</div>
+                <div class="lang-pill" data-lang="ES" onclick="changeLang(this)">ES</div>
+            </div>
+            <a href="#" class="nav-link logout-btn" onclick="logout()">
+                <i data-feather="log-out"></i> <span data-i18n="nav_logout">Sair da conta</span>
+            </a>
+        </div>
     </aside>
 
     <main class="main-content">
         
         <div class="page-header">
-            <h1>Visão Geral</h1>
-            <p>Gerencie suas informações pessoais e segurança.</p>
+            <h1 data-i18n="page_title">Visão Geral</h1>
+            <p data-i18n="page_desc">Gerencie suas informações pessoais e segurança.</p>
         </div>
 
         <div class="profile-card">
@@ -364,7 +352,7 @@
                 </p>
 
                 <button class="btn-edit">
-                    <i data-feather="edit-2" style="width: 16px;"></i> Editar Perfil
+                    <i data-feather="edit-2" style="width: 16px;"></i> <span data-i18n="btn_edit">Editar Perfil</span>
                 </button>
             </div>
         </div>
@@ -372,39 +360,96 @@
     </main>
 
     <script>
-        // Inicializa os ícones
         feather.replace();
 
-        // Função para abrir/fechar o menu no celular
+        // Menu Mobile
         function toggleMenu() {
-            const menu = document.getElementById('navMenu');
-            menu.classList.toggle('show');
+            document.getElementById('navMenu').classList.toggle('show');
+            document.getElementById('sidebarBottom').classList.toggle('show');
         }
 
+        // ==========================================
+        // SISTEMA DE TRADUÇÃO
+        // ==========================================
+        const translations = {
+            PT: {
+                nav_hub: "Hub Central",
+                nav_profile: "Meu Perfil",
+                nav_security: "Segurança",
+                nav_settings: "Configurações",
+                nav_logout: "Sair da conta",
+                page_title: "Visão Geral",
+                page_desc: "Gerencie suas informações pessoais e segurança.",
+                btn_edit: "Editar Perfil"
+            },
+            EN: {
+                nav_hub: "Central Hub",
+                nav_profile: "My Profile",
+                nav_security: "Security",
+                nav_settings: "Settings",
+                nav_logout: "Sign Out",
+                page_title: "Overview",
+                page_desc: "Manage your personal information and security.",
+                btn_edit: "Edit Profile"
+            },
+            ES: {
+                nav_hub: "Hub Central",
+                nav_profile: "Mi Perfil",
+                nav_security: "Seguridad",
+                nav_settings: "Configuración",
+                nav_logout: "Cerrar Sesión",
+                page_title: "Visión General",
+                page_desc: "Gestiona tu información personal y seguridad.",
+                btn_edit: "Editar Perfil"
+            }
+        };
+
+        function applyTranslations(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.innerText = translations[lang][key];
+                }
+            });
+        }
+
+        function changeLang(element) {
+            document.querySelectorAll('.lang-pill').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            const selectedLang = element.getAttribute('data-lang');
+            localStorage.setItem('userLanguage', selectedLang);
+            applyTranslations(selectedLang);
+        }
+
+        function loadSavedLanguage() {
+            const savedLang = localStorage.getItem('userLanguage') || 'PT';
+            const targetPill = document.querySelector(`.lang-pill[data-lang="${savedLang}"]`);
+            
+            if (targetPill) {
+                document.querySelectorAll('.lang-pill').forEach(el => el.classList.remove('active'));
+                targetPill.classList.add('active');
+            }
+            applyTranslations(savedLang);
+        }
+
+        // ==========================================
+        // CARREGAR DADOS DO USUÁRIO
+        // ==========================================
         document.addEventListener('DOMContentLoaded', async () => {
-            // LER A URL (Caso venha direto do redirecionamento do Discord/Google)
+            loadSavedLanguage();
+
             const urlParams = new URLSearchParams(window.location.search);
             const tokenFromUrl = urlParams.get('token');
-            const isFirstLogin = urlParams.get('first_login');
 
             if (tokenFromUrl) {
-                // Se veio token na URL, salva no LocalStorage
                 localStorage.setItem('evollogic_auth_token', tokenFromUrl);
-                // Limpa a URL para ficar bonita
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
 
-            if (isFirstLogin === 'true') {
-                alert("Bem-vindo à Evollogic! Sua conta foi criada com sucesso.");
-            }
-
-            // ==========================================
-            // BUSCAR DADOS DO USUÁRIO NA API COM JWT
-            // ==========================================
             const token = localStorage.getItem('evollogic_auth_token');
 
             if (!token) {
-                // Se não tem token, joga de volta pro login!
                 window.location.href = 'login.html';
                 return;
             }
@@ -412,34 +457,24 @@
             try {
                 const response = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', {
                     method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                if (!response.ok) {
-                    throw new Error('Sessão expirada ou inválida');
-                }
+                if (!response.ok) throw new Error('Sessão expirada');
 
                 const userData = await response.json();
-
-                // Preenche o HTML com os dados reais do banco
                 document.getElementById('userName').textContent = userData.name || 'Sem Nome';
-                document.getElementById('userEmail').textContent = userData.email || 'Discord Vinculado';
+                document.getElementById('userEmail').textContent = userData.email || 'Conta Vinculada';
                 
                 if (userData.avatar) {
                     document.getElementById('userAvatar').src = userData.avatar;
                 }
-
             } catch (error) {
-                console.error("Erro ao carregar perfil:", error);
-                alert("Sua sessão expirou. Por favor, faça login novamente.");
                 localStorage.removeItem('evollogic_auth_token');
                 window.location.href = 'login.html';
             }
         });
 
-        // Função de Logout
         function logout() {
             if(confirm("Tem certeza que deseja sair?")) {
                 localStorage.removeItem('evollogic_auth_token');
