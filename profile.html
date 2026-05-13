@@ -44,11 +44,9 @@
         }
 
         /* =============================
-           CABEÇALHO MOBILE
+           CABEÇALHO MOBILE E SIDEBAR
         ============================= */
-        .mobile-header {
-            display: none;
-        }
+        .mobile-header { display: none; }
 
         .overlay {
             position: fixed;
@@ -63,9 +61,6 @@
 
         .overlay.show { opacity: 1; visibility: visible; }
 
-        /* =============================
-           MENU LATERAL (SIDEBAR)
-        ============================= */
         .sidebar {
             width: 260px;
             background: rgba(15, 23, 42, 0.8);
@@ -76,6 +71,7 @@
             padding: 30px 20px;
             z-index: 20;
             height: 100vh;
+            height: 100dvh;
             box-sizing: border-box;
             position: sticky;
             top: 0;
@@ -111,6 +107,7 @@
             flex-direction: column;
             gap: 10px;
             flex: 1;
+            overflow-y: auto;
         }
 
         .nav-link {
@@ -131,7 +128,7 @@
         }
 
         .nav-link i { width: 20px; }
-        .logout-btn { color: var(--danger); }
+        .logout-btn { color: var(--danger); margin-top: 5px; }
         .logout-btn:hover { background: rgba(248, 113, 113, 0.1); color: #fca5a5; }
 
         .sidebar-bottom {
@@ -146,14 +143,14 @@
         .lang-selector {
             display: flex;
             background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
-            padding: 4px;
+            border-radius: 12px;
+            padding: 6px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             justify-content: space-between;
         }
 
         .lang-pill {
-            padding: 6px 14px;
+            padding: 8px 14px;
             border-radius: 8px;
             font-size: 0.85rem;
             font-weight: 600;
@@ -231,31 +228,8 @@
         }
 
         .profile-name { font-size: 1.8rem; font-weight: 700; margin: 0 0 5px 0; text-align: center; }
-        
-        .profile-email { 
-            display: flex; align-items: center; gap: 8px; 
-            color: var(--text-muted); font-size: 1rem; margin: 0 0 15px 0; 
-        }
+        .profile-email { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 1rem; margin: 0 0 20px 0; }
         .profile-email i { width: 16px; height: 16px; }
-
-        /* STATUS DE SEGUIDORES E DATA */
-        .profile-stats {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 15px;
-        }
-
-        .stat-item {
-            text-align: center;
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
-        .stat-item strong {
-            display: block;
-            font-size: 1.2rem;
-            color: var(--text-main);
-        }
 
         .join-date {
             display: flex;
@@ -263,15 +237,23 @@
             gap: 8px;
             color: var(--text-muted);
             font-size: 0.9rem;
-            margin: 0 0 25px 0;
+            margin: 0 0 20px 0;
             background: rgba(255,255,255,0.03);
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .join-date i { width: 16px; height: 16px; color: var(--primary); }
+
+        .profile-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 30px;
         }
 
-        .join-date i { width: 14px; height: 14px; }
+        .stat-item { text-align: center; font-size: 0.95rem; color: var(--text-muted); }
+        .stat-item strong { display: block; font-size: 1.4rem; color: var(--text-main); margin-bottom: 2px; }
 
-        /* BOTÕES DE AÇÃO DO PERFIL */
         .profile-actions {
             display: flex;
             gap: 15px;
@@ -283,44 +265,27 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 24px;
+            padding: 12px 28px;
             border-radius: 12px;
             font-family: 'Poppins', sans-serif;
             font-size: 0.95rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid transparent;
         }
 
-        .btn-edit {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-        .btn-edit:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
+        .btn-edit { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border-color: rgba(255, 255, 255, 0.1); }
+        .btn-edit:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
 
-        .btn-follow {
-            background: var(--primary);
-            color: #020617;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
-        }
-        .btn-follow:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
-        }
+        .btn-follow { background: var(--primary); color: #020617; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2); }
+        .btn-follow:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4); }
 
         /* =============================
-           ÁREA DE POSTS (MODO +1)
+           ÁREA DE POSTS E ANIMAÇÃO DE LIKE
         ============================= */
         .post-area {
-            display: none; /* Ativado via JS */
+            display: none; 
             background: var(--bg-card);
             border-radius: 24px;
             padding: 30px;
@@ -329,13 +294,7 @@
             animation: fadeIn 0.6s ease;
         }
 
-        .post-area h3 {
-            margin: 0 0 20px 0;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .post-area h3 { margin: 0 0 20px 0; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
 
         .post-composer {
             background: rgba(0,0,0,0.2);
@@ -356,10 +315,6 @@
             outline: none;
             min-height: 80px;
             box-sizing: border-box;
-        }
-
-        .post-composer textarea::placeholder {
-            color: #64748b;
         }
 
         .composer-actions {
@@ -383,10 +338,7 @@
             align-items: center;
             gap: 8px;
         }
-
-        .btn-publish:hover {
-            background: var(--primary-hover);
-        }
+        .btn-publish:hover { background: var(--primary-hover); }
 
         .feed-post {
             background: rgba(255,255,255,0.02);
@@ -394,45 +346,24 @@
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 15px;
+            position: relative; /* Importante para a animação da partícula ficar presa aqui caso precise */
         }
 
-        .feed-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .feed-header img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .feed-author strong {
-            display: block;
-            font-size: 0.95rem;
-        }
-        .feed-author span {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        .feed-content {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: #e2e8f0;
-            margin-bottom: 15px;
-        }
-
+        .feed-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .feed-header img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
+        .feed-author strong { display: block; font-size: 1rem; }
+        .feed-author span { color: var(--text-muted); font-size: 0.85rem; }
+        .feed-content { font-size: 0.95rem; line-height: 1.6; color: #e2e8f0; margin-bottom: 15px; }
+        
         .feed-actions {
             display: flex;
             gap: 15px;
             border-top: 1px solid rgba(255,255,255,0.05);
             padding-top: 15px;
+            position: relative;
         }
 
+        /* O botão do Like */
         .btn-like {
             background: transparent;
             border: none;
@@ -443,20 +374,54 @@
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
             font-size: 0.9rem;
-            transition: 0.3s;
+            transition: color 0.3s ease;
             padding: 0;
+            position: relative;
+            outline: none;
         }
 
-        .btn-like:hover, .btn-like.liked {
+        .btn-like i {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Efeito quando está curtido */
+        .btn-like.liked { color: var(--like); }
+        
+        .btn-like.liked i { 
+            fill: var(--like); 
+            animation: heartPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Efeito de Pop no coração principal */
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+
+        /* As partículas (corações voando) */
+        .floating-heart {
+            position: absolute;
+            pointer-events: none;
             color: var(--like);
+            fill: var(--like);
+            z-index: 100;
+            animation: floatParticle 0.8s ease-out forwards;
         }
 
-        .btn-like.liked i {
-            fill: var(--like);
+        @keyframes floatParticle {
+            0% { 
+                transform: translate(0, 0) scale(0.5) rotate(0deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(var(--rot)); 
+                opacity: 0; 
+            }
         }
 
         /* =============================
-           RESPONSIVIDADE
+           RESPONSIVIDADE (CELULAR GAVETA)
         ============================= */
         @media (max-width: 768px) {
             body { flex-direction: column; }
@@ -487,10 +452,12 @@
             .sidebar {
                 position: fixed;
                 top: 0; left: -300px;
-                width: 280px; height: 100vh;
+                width: 280px; 
+                height: 100dvh;
                 z-index: 20;
                 transition: 0.3s ease;
                 box-shadow: none;
+                padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 30px); 
             }
 
             .sidebar.show { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
@@ -498,6 +465,7 @@
             .main-content { padding: 30px 20px; }
             .profile-banner { height: 120px; }
             .profile-avatar { width: 110px; height: 110px; margin-top: -55px; }
+            .profile-stats { gap: 20px; }
         }
     </style>
 </head>
@@ -557,10 +525,16 @@
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Carregando" alt="Avatar do Usuário" class="profile-avatar" id="userAvatar">
                 
                 <h2 class="profile-name" id="userName">Carregando...</h2>
+                
                 <p class="profile-email">
                     <i data-feather="mail"></i> 
                     <span id="userEmail">carregando@...</span>
                 </p>
+
+                <div class="join-date">
+                    <i data-feather="calendar"></i>
+                    <span data-i18n="join_date">Membro desde</span> <span id="userDate">--</span>
+                </div>
 
                 <div class="profile-stats">
                     <div class="stat-item">
@@ -571,11 +545,6 @@
                         <strong id="followingCount">0</strong> 
                         <span data-i18n="stat_following">Seguindo</span>
                     </div>
-                </div>
-
-                <div class="join-date">
-                    <i data-feather="calendar"></i>
-                    <span data-i18n="join_date">Membro desde</span> <span id="userDate">--/--/----</span>
                 </div>
 
                 <div class="profile-actions">
@@ -606,15 +575,15 @@
                     <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Exemplo" alt="Autor" id="postAvatar">
                     <div class="feed-author">
                         <strong id="postAuthorName">Carregando...</strong>
-                        <span data-i18n="post_time">Agora mesmo</span>
+                        <span data-i18n="post_time">Hoje, mais cedo</span>
                     </div>
                 </div>
                 <div class="feed-content" data-i18n="post_sample">
-                    Bem-vindo à área VIP do Hub Central Evollogic! Somente usuários selecionados podem criar publicações.
+                    Olá! Bem-vindo à área VIP do Evollogic. Como membro aprovado (+1), você pode criar publicações exclusivas que aparecerão no feed!
                 </div>
                 <div class="feed-actions">
-                    <button class="btn-like" onclick="toggleLike(this)">
-                        <i data-feather="heart" style="width: 16px;"></i> <span>14</span>
+                    <button class="btn-like" onclick="toggleLike(this, event)">
+                        <i data-feather="heart" style="width: 16px;"></i> <span>12</span>
                     </button>
                 </div>
             </div>
@@ -639,16 +608,16 @@
                 nav_logout: "Sair da conta",
                 page_title: "Visão Geral",
                 page_desc: "Gerencie suas informações pessoais e segurança.",
-                btn_edit: "Editar Perfil",
-                btn_follow: "Seguir",
+                join_date: "Membro desde",
                 stat_followers: "Seguidores",
                 stat_following: "Seguindo",
-                join_date: "Membro desde",
+                btn_edit: "Editar Perfil",
+                btn_follow: "Seguir",
                 post_title: "Publicações",
                 post_placeholder: "O que você deseja compartilhar hoje?",
                 btn_publish: "Publicar",
-                post_time: "Agora mesmo",
-                post_sample: "Bem-vindo à área VIP do Hub Central Evollogic! Somente usuários selecionados podem criar publicações."
+                post_time: "Hoje, mais cedo",
+                post_sample: "Olá! Bem-vindo à área VIP do Evollogic. Como membro aprovado (+1), você pode criar publicações exclusivas que aparecerão no feed!"
             },
             EN: {
                 nav_hub: "Central Hub",
@@ -658,16 +627,16 @@
                 nav_logout: "Sign Out",
                 page_title: "Overview",
                 page_desc: "Manage your personal information and security.",
-                btn_edit: "Edit Profile",
-                btn_follow: "Follow",
+                join_date: "Joined on",
                 stat_followers: "Followers",
                 stat_following: "Following",
-                join_date: "Member since",
+                btn_edit: "Edit Profile",
+                btn_follow: "Follow",
                 post_title: "Publications",
                 post_placeholder: "What do you want to share today?",
                 btn_publish: "Publish",
-                post_time: "Just now",
-                post_sample: "Welcome to the VIP area of the Evollogic Central Hub! Only selected users can create posts."
+                post_time: "Earlier today",
+                post_sample: "Hello! Welcome to the Evollogic VIP area. As an approved member (+1), you can create exclusive posts!"
             },
             ES: {
                 nav_hub: "Hub Central",
@@ -677,16 +646,16 @@
                 nav_logout: "Cerrar Sesión",
                 page_title: "Visión General",
                 page_desc: "Gestiona tu información personal y seguridad.",
-                btn_edit: "Editar Perfil",
-                btn_follow: "Seguir",
+                join_date: "Miembro desde",
                 stat_followers: "Seguidores",
                 stat_following: "Siguiendo",
-                join_date: "Miembro desde",
+                btn_edit: "Editar Perfil",
+                btn_follow: "Seguir",
                 post_title: "Publicaciones",
                 post_placeholder: "¿Qué deseas compartir hoy?",
                 btn_publish: "Publicar",
-                post_time: "Justo ahora",
-                post_sample: "¡Bienvenido al área VIP del Hub Central Evollogic! Solo usuarios seleccionados pueden crear publicaciones."
+                post_time: "Hoy más temprano",
+                post_sample: "¡Hola! Bienvenido al área VIP de Evollogic. ¡Como miembro aprobado (+1), puedes crear publicaciones exclusivas!"
             }
         };
 
@@ -705,6 +674,16 @@
             });
         }
 
+        function formatDate(dateString) {
+            if (!dateString) return '--';
+            const date = new Date(dateString);
+            const lang = localStorage.getItem('userLanguage') || 'PT';
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            if (lang === 'EN') return date.toLocaleDateString('en-US', options);
+            if (lang === 'ES') return date.toLocaleDateString('es-ES', options);
+            return date.toLocaleDateString('pt-BR', options);
+        }
+
         function changeLang(element) {
             document.querySelectorAll('.lang-pill').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
@@ -712,12 +691,15 @@
             const selectedLang = element.getAttribute('data-lang');
             localStorage.setItem('userLanguage', selectedLang);
             applyTranslations(selectedLang);
+            
+            if(window.globalCreatedAt) {
+                document.getElementById('userDate').textContent = formatDate(window.globalCreatedAt);
+            }
         }
 
         function loadSavedLanguage() {
             const savedLang = localStorage.getItem('userLanguage') || 'PT';
             const targetPill = document.querySelector(`.lang-pill[data-lang="${savedLang}"]`);
-            
             if (targetPill) {
                 document.querySelectorAll('.lang-pill').forEach(el => el.classList.remove('active'));
                 targetPill.classList.add('active');
@@ -725,27 +707,59 @@
             applyTranslations(savedLang);
         }
 
-        // Formatação de data
-        function formatDate(dateString) {
-            if (!dateString) return '--/--/----';
-            const date = new Date(dateString);
-            return date.toLocaleDateString(localStorage.getItem('userLanguage') === 'EN' ? 'en-US' : 'pt-BR', {
-                month: 'short',
-                year: 'numeric'
-            });
-        }
-
-        function toggleLike(btn) {
+        // ==========================================
+        // ANIMAÇÃO DE LIKE ESTILO TELEGRAM
+        // ==========================================
+        function toggleLike(btn, event) {
             btn.classList.toggle('liked');
             const span = btn.querySelector('span');
             let count = parseInt(span.innerText);
-            span.innerText = btn.classList.contains('liked') ? count + 1 : count - 1;
+            
+            if (btn.classList.contains('liked')) {
+                span.innerText = count + 1;
+                createLikeParticles(btn, event); // Chama as partículas ao dar like
+            } else {
+                span.innerText = count - 1;
+            }
+        }
+
+        function createLikeParticles(btn, event) {
+            // Pega a posição do botão na tela
+            const rect = btn.getBoundingClientRect();
+            
+            // Cria 5 corações voadores
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'floating-heart';
+                // SVG de coração igual ao do Feather Icons
+                particle.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
+
+                document.body.appendChild(particle);
+
+                // Define trajetórias e rotações aleatórias para explodir pros lados e pra cima
+                const tx = (Math.random() - 0.5) * 80 + 'px'; // Direção X (-40px a +40px)
+                const ty = (Math.random() * -60 - 30) + 'px'; // Direção Y (-30px a -90px pra cima)
+                const rot = (Math.random() - 0.5) * 90 + 'deg'; // Rotação aleatória
+
+                particle.style.setProperty('--tx', tx);
+                particle.style.setProperty('--ty', ty);
+                particle.style.setProperty('--rot', rot);
+                
+                // Posiciona a partícula exatamente no centro do botão
+                particle.style.left = `${rect.left + rect.width / 2 - 8}px`;
+                particle.style.top = `${rect.top + rect.height / 2 - 8}px`;
+
+                // Remove a partícula do HTML após a animação acabar (800ms)
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
         }
 
         function submitPost() {
             const input = document.getElementById('postInput');
             if(input.value.trim() === '') return;
-            alert('Publicação enviada! (Simulação)');
+            alert('Publicação enviada com sucesso!');
             input.value = '';
         }
 
@@ -784,21 +798,20 @@
                 document.getElementById('userEmail').textContent = userData.email || 'Conta Vinculada';
                 document.getElementById('userAvatar').src = userAvatarDisplay;
                 
-                // Setar data
-                document.getElementById('userDate').textContent = formatDate(userData.createdAt || new Date());
+                window.globalCreatedAt = userData.createdAt || new Date();
+                document.getElementById('userDate').textContent = formatDate(window.globalCreatedAt);
 
-                // Setar foto e nome do post mockado
                 document.getElementById('postAvatar').src = userAvatarDisplay;
                 document.getElementById('postAuthorName').textContent = userNameDisplay;
 
-                // Setar seguidores/seguindo mockado caso venha da api
-                document.getElementById('followersCount').textContent = userData.followers || Math.floor(Math.random() * 500);
-                document.getElementById('followingCount').textContent = userData.following || Math.floor(Math.random() * 100);
+                document.getElementById('followersCount').textContent = userData.followers !== undefined ? userData.followers : '124';
+                document.getElementById('followingCount').textContent = userData.following !== undefined ? userData.following : '32';
 
-                // MOSTRA A ÁREA DE POST SE O MODE FOR >= 1 OU +1
                 const userMode = String(userData.mode || '0');
                 if (userMode === '+1' || parseInt(userMode) >= 1) {
                     document.getElementById('postArea').style.display = 'block';
+                } else {
+                    document.getElementById('postArea').style.display = 'none';
                 }
 
             } catch (error) {
