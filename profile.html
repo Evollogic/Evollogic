@@ -43,6 +43,29 @@
         }
 
         /* =============================
+           CABEÇALHO MOBILE (Só aparece no celular)
+        ============================= */
+        .mobile-header {
+            display: none;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 15;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* =============================
            MENU LATERAL (SIDEBAR)
         ============================= */
         .sidebar {
@@ -87,14 +110,13 @@
             letter-spacing: 1px;
         }
 
-        .mobile-menu-btn {
+        .close-menu-btn {
             display: none;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text-main);
+            background: none;
+            border: none;
+            color: var(--text-muted);
             cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 5px;
         }
 
         .nav-menu {
@@ -252,30 +274,53 @@
         }
 
         /* =============================
-           RESPONSIVIDADE (CELULAR)
+           RESPONSIVIDADE (CELULAR GAVETA)
         ============================= */
         @media (max-width: 768px) {
             body { flex-direction: column; }
             
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
+            .mobile-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
                 padding: 15px 20px;
-                border-right: none;
+                background: rgba(15, 23, 42, 0.8);
+                backdrop-filter: blur(20px);
                 border-bottom: 1px solid var(--border-glass);
+                position: sticky;
+                top: 0;
+                z-index: 10;
             }
 
-            .brand { margin-bottom: 0; }
-            .mobile-menu-btn { display: block; }
-
-            .nav-menu, .sidebar-bottom { 
-                display: none; /* Esconde no celular até clicar no botão */
+            .mobile-menu-btn {
+                background: rgba(255,255,255,0.05);
+                border: 1px solid rgba(255,255,255,0.1);
+                color: var(--text-main);
+                cursor: pointer;
+                padding: 8px;
+                border-radius: 8px;
+                display: flex;
             }
 
-            .nav-menu.show, .sidebar-bottom.show {
-                display: flex; /* Mostra quando clica */
-                margin-top: 20px;
+            /* A Mágica: Transforma a Sidebar numa Gaveta Deslizante */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -300px; /* Esconde fora da tela */
+                width: 280px;
+                height: 100vh;
+                z-index: 20;
+                transition: 0.3s ease;
+                box-shadow: none;
+            }
+
+            .sidebar.show {
+                left: 0; /* Desliza pra dentro */
+                box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            }
+
+            .close-menu-btn {
+                display: block; /* Botão de fechar no topo da sidebar */
             }
 
             .main-content { padding: 30px 20px; }
@@ -286,18 +331,30 @@
 </head>
 <body>
 
-    <aside class="sidebar">
+    <div class="mobile-header">
+        <div class="brand-logo">
+            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic Logo" style="width: 35px;">
+            <h2 style="margin: 0 0 0 10px; font-size: 1.2rem; font-weight: 700;">Evollogic</h2>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">
+            <i data-feather="menu"></i>
+        </button>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <aside class="sidebar" id="sidebar">
         <div class="brand">
             <div class="brand-logo">
                 <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic Logo">
                 <h2>Evollogic</h2>
             </div>
-            <button class="mobile-menu-btn" onclick="toggleMenu()">
-                <i data-feather="menu"></i>
+            <button class="close-menu-btn" onclick="toggleMenu()">
+                <i data-feather="x"></i>
             </button>
         </div>
 
-        <ul class="nav-menu" id="navMenu">
+        <ul class="nav-menu">
             <li>
                 <a href="index.html" class="nav-link">
                     <i data-feather="grid"></i> <span data-i18n="nav_hub">Hub Central</span>
@@ -320,7 +377,7 @@
             </li>
         </ul>
 
-        <div class="sidebar-bottom" id="sidebarBottom">
+        <div class="sidebar-bottom">
             <div class="lang-selector">
                 <div class="lang-pill" data-lang="PT" onclick="changeLang(this)">PT</div>
                 <div class="lang-pill" data-lang="EN" onclick="changeLang(this)">EN</div>
@@ -362,10 +419,12 @@
     <script>
         feather.replace();
 
-        // Menu Mobile
+        // ==========================================
+        // GAVETA LATERAL NO MOBILE
+        // ==========================================
         function toggleMenu() {
-            document.getElementById('navMenu').classList.toggle('show');
-            document.getElementById('sidebarBottom').classList.toggle('show');
+            document.getElementById('sidebar').classList.toggle('show');
+            document.getElementById('overlay').classList.toggle('show');
         }
 
         // ==========================================
