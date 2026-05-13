@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar - Configurações</title>
+    <title>Sidebar - Navegação e Configurações</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
@@ -17,12 +17,49 @@
             background: transparent;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; 
+            justify-content: space-between; /* Mudado para separar o topo da base */
             height: calc(100vh - 40px);
             overflow: hidden;
             box-sizing: border-box;
         }
 
+        /* ==========================================
+           MENU DE NAVEGAÇÃO (TOPO)
+           ========================================== */
+        .top-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-link {
+            display: none; /* Escondido por padrão, o JS decide se mostra */
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.2);
+        }
+
+        .nav-link i {
+            width: 20px;
+        }
+
+
+        /* ==========================================
+           CONFIGURAÇÕES (BASE)
+           ========================================== */
         .bottom-section {
             background: rgba(15, 23, 42, 0.8); 
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -35,10 +72,6 @@
             backdrop-filter: blur(10px);
         }
 
-        /* ==========================================
-           SELETOR DE IDIOMAS (PILLS MODERNO)
-           ========================================== */
-        
         .setting-row {
             display: flex;
             align-items: center;
@@ -82,11 +115,19 @@
 </head>
 <body>
 
+    <!-- NAVEGAÇÃO DO USUÁRIO LOGADO -->
+    <div class="top-section">
+        <!-- Link de Perfil (Oculto por padrão) -->
+        <a href="profile.html" class="nav-link" id="profileLink" target="_parent">
+            <i data-feather="user"></i>
+            <span data-i18n="nav_profile">Meu Perfil</span>
+        </a>
+    </div>
+
+    <!-- CONFIGURAÇÕES DE IDIOMA -->
     <div class="bottom-section">
-        
         <div class="setting-row">
             <div class="setting-label">
-                <!-- Isolamos o texto em um span com a tag data-i18n -->
                 <i data-feather="globe" style="width: 18px;"></i> 
                 <span data-i18n="lang_label">Idioma</span>
             </div>
@@ -96,35 +137,48 @@
                 <div class="lang-pill" data-lang="ES" onclick="changeLang(this)">ES</div>
             </div>
         </div>
-
     </div>
 
     <script>
+        // Inicializa os ícones do Feather
         feather.replace();
+
+        // ==========================================
+        // VERIFICAÇÃO DE LOGIN (MOSTRAR ABA PERFIL)
+        // ==========================================
+        function checkLoginStatus() {
+            // Busca o token gerado no login da Evollogic
+            const userToken = localStorage.getItem('evollogic_auth_token');
+            const profileLink = document.getElementById('profileLink');
+
+            // Se o token existir, altera o CSS para mostrar o botão
+            if (userToken) {
+                profileLink.style.display = 'flex';
+            }
+        }
 
         // ==========================================
         // DICIONÁRIO DE TRADUÇÕES
         // ==========================================
         const translations = {
             PT: {
-                lang_label: "Idioma"
+                lang_label: "Idioma",
+                nav_profile: "Meu Perfil"
             },
             EN: {
-                lang_label: "Language"
+                lang_label: "Language",
+                nav_profile: "My Profile"
             },
             ES: {
-                lang_label: "Idioma" // Em espanhol também é "Idioma"
+                lang_label: "Idioma", 
+                nav_profile: "Mi Perfil"
             }
         };
 
         // Função que aplica a tradução na página
         function applyTranslations(lang) {
-            // Pega todos os elementos que têm o atributo data-i18n
             document.querySelectorAll('[data-i18n]').forEach(element => {
-                // Pega a chave da tradução (ex: 'lang_label')
                 const key = element.getAttribute('data-i18n');
-                
-                // Se a chave existir no nosso dicionário para o idioma escolhido, troca o texto
                 if (translations[lang] && translations[lang][key]) {
                     element.innerText = translations[lang][key];
                 }
@@ -134,40 +188,33 @@
         // ==========================================
         // LÓGICA DO IDIOMA COM LOCALSTORAGE
         // ==========================================
-
         function changeLang(element) {
-            // Remove a classe active de todos
             document.querySelectorAll('.lang-pill').forEach(el => el.classList.remove('active'));
-            // Adiciona no que foi clicado
             element.classList.add('active');
 
-            // Pega o idioma selecionado e salva no localStorage do navegador
             const selectedLang = element.getAttribute('data-lang');
             localStorage.setItem('userLanguage', selectedLang);
 
-            // Aplica a tradução imediatamente ao clicar
             applyTranslations(selectedLang);
         }
 
         function loadSavedLanguage() {
-            // Verifica se tem idioma salvo. Se não tiver, usa 'PT' como padrão.
             const savedLang = localStorage.getItem('userLanguage') || 'PT';
-            
-            // Procura o botão (pill) correspondente ao idioma salvo
             const targetPill = document.querySelector(`.lang-pill[data-lang="${savedLang}"]`);
             
             if (targetPill) {
-                // Ativa o botão correto visualmente
                 document.querySelectorAll('.lang-pill').forEach(el => el.classList.remove('active'));
                 targetPill.classList.add('active');
             }
 
-            // Aplica a tradução salva ao carregar a página
             applyTranslations(savedLang);
         }
 
-        // Executa a função de carregar assim que a página é carregada
-        document.addEventListener('DOMContentLoaded', loadSavedLanguage);
+        // Executa a verificação de login e de idioma quando a página carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedLanguage();
+            checkLoginStatus(); 
+        });
 
     </script>
 </body>
