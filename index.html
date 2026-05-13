@@ -6,6 +6,7 @@
     <title>Evollogic - System Gateway</title>
     
     <link rel="stylesheet" href="style.css?v=2.0">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap" rel="stylesheet">
 
     <style>
         /* Estilos adicionais para o contador e botões */
@@ -14,20 +15,27 @@
             text-align: center;
         }
 
+        /* Efeito Sinistro e Corrompido nos Números */
         #countdown-display {
-            font-size: clamp(2rem, 6vw, 3.5rem);
-            color: #ff003c; /* Vermelho macabro */
-            text-shadow: 0 0 15px rgba(255, 0, 60, 0.8), 0 0 30px rgba(255, 0, 60, 0.4);
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: #cc0000; /* Vermelho sangue escuro */
+            text-shadow: 
+                0 0 10px rgba(255, 0, 0, 0.8),
+                3px 3px 0px rgba(0, 255, 136, 0.2), /* Sombras tipo erro de VHS */
+                -3px -3px 0px rgba(0, 0, 255, 0.3);
+            font-family: 'Rubik Glitch', 'Courier New', monospace;
+            font-weight: normal;
             letter-spacing: 5px;
-            animation: pulse 1s infinite;
+            animation: creepy-flicker 0.2s infinite; /* Animação rápida de falha */
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; text-shadow: 0 0 15px rgba(255, 0, 60, 0.8); }
-            50% { opacity: 0.8; text-shadow: 0 0 5px rgba(255, 0, 60, 0.4); }
-            100% { opacity: 1; text-shadow: 0 0 15px rgba(255, 0, 60, 0.8); }
+        /* Animação macabra de cintilação e distorção */
+        @keyframes creepy-flicker {
+            0% { opacity: 0.9; transform: skewX(0deg); text-shadow: 0 0 10px #ff0000; }
+            25% { opacity: 0.6; text-shadow: 0 0 20px #ff0000, 4px 0 0 #00ff88; }
+            50% { opacity: 1; transform: skewX(-3deg); }
+            75% { opacity: 0.4; transform: skewX(3deg); text-shadow: -4px 0 0 #00ff88; }
+            100% { opacity: 0.9; transform: skewX(0deg); text-shadow: 0 0 10px #8a0000; }
         }
 
         .hub-btn {
@@ -96,7 +104,11 @@
         </audio>
 
         <audio id="macabre-tick" style="display: none;">
-            <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=clock-ticking-2-105174.mp3" type="audio/mpeg">
+            <source src="https://actions.google.com/sounds/v1/alarms/mechanical_clock_tick.ogg" type="audio/ogg">
+        </audio>
+        
+        <audio id="heartbeat-sound" style="display: none;">
+            <source src="https://actions.google.com/sounds/v1/human_voices/heartbeat.ogg" type="audio/ogg">
         </audio>
 
     </div>
@@ -112,7 +124,10 @@
         // Elementos de Áudio
         const bgMusic = document.getElementById('bg-music');
         const tickSound = document.getElementById('macabre-tick');
-        tickSound.volume = 0.8; // Deixa o som do tick mais alto para dar medo
+        const heartbeatSound = document.getElementById('heartbeat-sound');
+        
+        tickSound.volume = 0.9; // Tique mecânico alto
+        heartbeatSound.volume = 1.0; // Batimento cardíaco no máximo para tensão
 
         // ==========================================
         // SEQUÊNCIA DE INICIALIZAÇÃO
@@ -155,7 +170,7 @@
                 const now = new Date().getTime();
                 const distance = targetDate - now;
 
-                // SE O TEMPO ZEROU (Chegou Sábado 17:00)
+                // SE O TEMPO ZEROU
                 if (distance <= 0) {
                     clearInterval(countdownInterval);
                     
@@ -165,8 +180,9 @@
                         <button class="hub-btn" onclick="window.location.href='login.html'">[ ENTRAR NO HUB ]</button>
                     `;
                     
-                    // Para o som macabro e deixa só a música
+                    // Para os sons macabros e deixa só a música
                     tickSound.pause();
+                    heartbeatSound.pause();
                     return;
                 }
 
@@ -176,7 +192,6 @@
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                // Formata os números para sempre terem 2 dígitos (ex: 09:05:02)
                 const fDays = days.toString().padStart(2, '0');
                 const fHours = hours.toString().padStart(2, '0');
                 const fMinutes = minutes.toString().padStart(2, '0');
@@ -186,9 +201,12 @@
                 document.getElementById('countdown-display').innerHTML = 
                     `${fDays}:${fHours}:${fMinutes}:${fSeconds}`;
 
-                // TOCA O SOM MACABRO A CADA SEGUNDO
-                tickSound.currentTime = 0; // Reseta o áudio para o começo rápido
-                tickSound.play().catch(e => console.log("Som bloqueado pelo navegador"));
+                // TOCA OS SONS MACABROS COMBINADOS A CADA SEGUNDO
+                tickSound.currentTime = 0; 
+                heartbeatSound.currentTime = 0;
+                
+                tickSound.play().catch(e => console.log("Som bloqueado"));
+                heartbeatSound.play().catch(e => console.log("Som bloqueado"));
 
             }, 1000);
         }
@@ -200,10 +218,12 @@
             if (bgMusic.paused && tickSound.paused) {
                 bgMusic.play();
                 tickSound.muted = false;
+                heartbeatSound.muted = false;
                 this.innerText = '🔊 MUTE AUDIO';
             } else {
                 bgMusic.pause();
-                tickSound.muted = true; // Só muta o tick para ele não perder a sincronia do setInterval
+                tickSound.muted = true; 
+                heartbeatSound.muted = true;
                 this.innerText = '🔇 UNMUTE AUDIO';
             }
         });
