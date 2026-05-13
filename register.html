@@ -505,7 +505,7 @@
                 err_account_exists: "Essa conta já existe. Faça login ou redefina sua senha.",
                 server_error: "Erro de conexão com o servidor. Tente novamente.",
                 registering: "Criando conta...",
-                reg_success: "Conta criada com sucesso! Redirecionando para o login...",
+                reg_success: "Conta criada com sucesso! Redirecionando para o painel...",
                 req_len: "Mínimo 8 caracteres",
                 req_up: "Pelo menos 1 letra maiúscula",
                 req_spec: "Pelo menos 1 caractere especial (@$!%*?&)",
@@ -536,7 +536,7 @@
                 err_account_exists: "Account already exists. Please login or reset your password.",
                 server_error: "Server connection error. Please try again.",
                 registering: "Creating account...",
-                reg_success: "Account created successfully! Redirecting to login...",
+                reg_success: "Account created successfully! Redirecting to panel...",
                 req_len: "Minimum 8 characters",
                 req_up: "At least 1 uppercase letter",
                 req_spec: "At least 1 special character (@$!%*?&)",
@@ -567,7 +567,7 @@
                 err_account_exists: "Esta cuenta ya existe. Inicia sesión o restablece tu contraseña.",
                 server_error: "Error de conexión al servidor. Inténtalo de nuevo.",
                 registering: "Creando cuenta...",
-                reg_success: "¡Cuenta creada con éxito! Redirigiendo al inicio de sesión...",
+                reg_success: "¡Cuenta creada con éxito! Redirigiendo al panel...",
                 req_len: "Mínimo 8 caracteres",
                 req_up: "Al menos 1 letra mayúscula",
                 req_spec: "Al menos 1 carácter especial (@$!%*?&)",
@@ -707,10 +707,9 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        name: rawUsername,
+                        username: rawUsername,
                         email: email,
-                        password: password,
-                        authProvider: 'email'
+                        password: password
                     })
                 });
 
@@ -722,9 +721,12 @@
                     btn.style.opacity = '1';
                     btn.style.pointerEvents = 'auto';
                 } else {
+                    if(data.token) {
+                        localStorage.setItem('evollogic_auth_token', data.token);
+                    }
                     showAlert('reg_success', false);
                     setTimeout(() => {
-                        window.location.href = 'login.html'; 
+                        window.location.href = 'profile.html'; 
                     }, 1500);
                 }
 
