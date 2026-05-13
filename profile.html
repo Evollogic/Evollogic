@@ -18,6 +18,7 @@
             --primary: #38bdf8;
             --primary-hover: #7dd3fc;
             --danger: #f87171;
+            --like: #ec4899;
         }
 
         body {
@@ -43,7 +44,7 @@
         }
 
         /* =============================
-           CABEÇALHO MOBILE (Só aparece no celular)
+           CABEÇALHO MOBILE
         ============================= */
         .mobile-header {
             display: none;
@@ -60,10 +61,7 @@
             transition: all 0.3s ease;
         }
 
-        .overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
+        .overlay.show { opacity: 1; visibility: visible; }
 
         /* =============================
            MENU LATERAL (SIDEBAR)
@@ -92,23 +90,9 @@
             padding-left: 10px;
         }
 
-        .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .brand img {
-            width: 40px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-
-        .brand h2 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: 1px;
-        }
+        .brand-logo { display: flex; align-items: center; gap: 15px; }
+        .brand img { width: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        .brand h2 { font-size: 1.2rem; font-weight: 700; margin: 0; letter-spacing: 1px; }
 
         .close-menu-btn {
             display: none;
@@ -147,13 +131,9 @@
         }
 
         .nav-link i { width: 20px; }
-
         .logout-btn { color: var(--danger); }
         .logout-btn:hover { background: rgba(248, 113, 113, 0.1); color: #fca5a5; }
 
-        /* =============================
-           SELETOR DE IDIOMAS NA SIDEBAR
-        ============================= */
         .sidebar-bottom {
             margin-top: auto;
             padding-top: 20px;
@@ -192,7 +172,7 @@
         }
 
         /* =============================
-           ÁREA PRINCIPAL (PERFIL)
+           ÁREA PRINCIPAL
         ============================= */
         .main-content {
             flex: 1;
@@ -213,13 +193,16 @@
         .page-header h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 8px 0; }
         .page-header p { color: var(--text-muted); margin: 0; font-size: 1.05rem; }
 
-        /* CARD */
+        /* =============================
+           CARD DE PERFIL
+        ============================= */
         .profile-card {
             background: var(--bg-card);
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-bottom: 30px;
         }
 
         .profile-banner {
@@ -248,16 +231,58 @@
         }
 
         .profile-name { font-size: 1.8rem; font-weight: 700; margin: 0 0 5px 0; text-align: center; }
-        .profile-email { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 1rem; margin: 0 0 25px 0; }
+        
+        .profile-email { 
+            display: flex; align-items: center; gap: 8px; 
+            color: var(--text-muted); font-size: 1rem; margin: 0 0 15px 0; 
+        }
         .profile-email i { width: 16px; height: 16px; }
 
-        .btn-edit {
+        /* STATUS DE SEGUIDORES E DATA */
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .stat-item strong {
+            display: block;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        .join-date {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin: 0 0 25px 0;
+            background: rgba(255,255,255,0.03);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .join-date i { width: 14px; height: 14px; }
+
+        /* BOTÕES DE AÇÃO DO PERFIL */
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             padding: 10px 24px;
             border-radius: 12px;
             font-family: 'Poppins', sans-serif;
@@ -265,16 +290,173 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            border: 1px solid transparent;
         }
 
+        .btn-edit {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
         .btn-edit:hover {
             background: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
         }
 
+        .btn-follow {
+            background: var(--primary);
+            color: #020617;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+        }
+        .btn-follow:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+        }
+
         /* =============================
-           RESPONSIVIDADE (CELULAR GAVETA)
+           ÁREA DE POSTS (MODO +1)
+        ============================= */
+        .post-area {
+            display: none; /* Ativado via JS */
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            animation: fadeIn 0.6s ease;
+        }
+
+        .post-area h3 {
+            margin: 0 0 20px 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-composer {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+
+        .post-composer textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            resize: none;
+            outline: none;
+            min-height: 80px;
+            box-sizing: border-box;
+        }
+
+        .post-composer textarea::placeholder {
+            color: #64748b;
+        }
+
+        .composer-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 10px;
+        }
+
+        .btn-publish {
+            background: var(--primary);
+            color: #020617;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-publish:hover {
+            background: var(--primary-hover);
+        }
+
+        .feed-post {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .feed-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .feed-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .feed-author strong {
+            display: block;
+            font-size: 0.95rem;
+        }
+        .feed-author span {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .feed-content {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+            margin-bottom: 15px;
+        }
+
+        .feed-actions {
+            display: flex;
+            gap: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 15px;
+        }
+
+        .btn-like {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            padding: 0;
+        }
+
+        .btn-like:hover, .btn-like.liked {
+            color: var(--like);
+        }
+
+        .btn-like.liked i {
+            fill: var(--like);
+        }
+
+        /* =============================
+           RESPONSIVIDADE
         ============================= */
         @media (max-width: 768px) {
             body { flex-direction: column; }
@@ -302,27 +484,17 @@
                 display: flex;
             }
 
-            /* A Mágica: Transforma a Sidebar numa Gaveta Deslizante */
             .sidebar {
                 position: fixed;
-                top: 0;
-                left: -300px; /* Esconde fora da tela */
-                width: 280px;
-                height: 100vh;
+                top: 0; left: -300px;
+                width: 280px; height: 100vh;
                 z-index: 20;
                 transition: 0.3s ease;
                 box-shadow: none;
             }
 
-            .sidebar.show {
-                left: 0; /* Desliza pra dentro */
-                box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-            }
-
-            .close-menu-btn {
-                display: block; /* Botão de fechar no topo da sidebar */
-            }
-
+            .sidebar.show { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+            .close-menu-btn { display: block; }
             .main-content { padding: 30px 20px; }
             .profile-banner { height: 120px; }
             .profile-avatar { width: 110px; height: 110px; margin-top: -55px; }
@@ -349,32 +521,14 @@
                 <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic Logo">
                 <h2>Evollogic</h2>
             </div>
-            <button class="close-menu-btn" onclick="toggleMenu()">
-                <i data-feather="x"></i>
-            </button>
+            <button class="close-menu-btn" onclick="toggleMenu()"><i data-feather="x"></i></button>
         </div>
 
         <ul class="nav-menu">
-            <li>
-                <a href="index.html" class="nav-link">
-                    <i data-feather="grid"></i> <span data-i18n="nav_hub">Hub Central</span>
-                </a>
-            </li>
-            <li>
-                <a href="profile.html" class="nav-link active">
-                    <i data-feather="user"></i> <span data-i18n="nav_profile">Meu Perfil</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link">
-                    <i data-feather="shield"></i> <span data-i18n="nav_security">Segurança</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link">
-                    <i data-feather="settings"></i> <span data-i18n="nav_settings">Configurações</span>
-                </a>
-            </li>
+            <li><a href="index.html" class="nav-link"><i data-feather="grid"></i> <span data-i18n="nav_hub">Hub Central</span></a></li>
+            <li><a href="profile.html" class="nav-link active"><i data-feather="user"></i> <span data-i18n="nav_profile">Meu Perfil</span></a></li>
+            <li><a href="#" class="nav-link"><i data-feather="shield"></i> <span data-i18n="nav_security">Segurança</span></a></li>
+            <li><a href="#" class="nav-link"><i data-feather="settings"></i> <span data-i18n="nav_settings">Configurações</span></a></li>
         </ul>
 
         <div class="sidebar-bottom">
@@ -408,9 +562,61 @@
                     <span id="userEmail">carregando@...</span>
                 </p>
 
-                <button class="btn-edit">
-                    <i data-feather="edit-2" style="width: 16px;"></i> <span data-i18n="btn_edit">Editar Perfil</span>
-                </button>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <strong id="followersCount">0</strong> 
+                        <span data-i18n="stat_followers">Seguidores</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong id="followingCount">0</strong> 
+                        <span data-i18n="stat_following">Seguindo</span>
+                    </div>
+                </div>
+
+                <div class="join-date">
+                    <i data-feather="calendar"></i>
+                    <span data-i18n="join_date">Membro desde</span> <span id="userDate">--/--/----</span>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="btn-action btn-edit">
+                        <i data-feather="edit-2" style="width: 16px;"></i> <span data-i18n="btn_edit">Editar Perfil</span>
+                    </button>
+                    <button class="btn-action btn-follow">
+                        <i data-feather="user-plus" style="width: 16px;"></i> <span data-i18n="btn_follow">Seguir</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="post-area" id="postArea">
+            <h3><i data-feather="edit-3"></i> <span data-i18n="post_title">Publicações</span></h3>
+            
+            <div class="post-composer">
+                <textarea id="postInput" data-i18n-placeholder="post_placeholder" placeholder="O que você deseja compartilhar hoje?"></textarea>
+                <div class="composer-actions">
+                    <button class="btn-publish" onclick="submitPost()">
+                        <i data-feather="send" style="width: 16px;"></i> <span data-i18n="btn_publish">Publicar</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="feed-post">
+                <div class="feed-header">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Exemplo" alt="Autor" id="postAvatar">
+                    <div class="feed-author">
+                        <strong id="postAuthorName">Carregando...</strong>
+                        <span data-i18n="post_time">Agora mesmo</span>
+                    </div>
+                </div>
+                <div class="feed-content" data-i18n="post_sample">
+                    Bem-vindo à área VIP do Hub Central Evollogic! Somente usuários selecionados podem criar publicações.
+                </div>
+                <div class="feed-actions">
+                    <button class="btn-like" onclick="toggleLike(this)">
+                        <i data-feather="heart" style="width: 16px;"></i> <span>14</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -419,17 +625,11 @@
     <script>
         feather.replace();
 
-        // ==========================================
-        // GAVETA LATERAL NO MOBILE
-        // ==========================================
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('show');
             document.getElementById('overlay').classList.toggle('show');
         }
 
-        // ==========================================
-        // SISTEMA DE TRADUÇÃO
-        // ==========================================
         const translations = {
             PT: {
                 nav_hub: "Hub Central",
@@ -439,7 +639,16 @@
                 nav_logout: "Sair da conta",
                 page_title: "Visão Geral",
                 page_desc: "Gerencie suas informações pessoais e segurança.",
-                btn_edit: "Editar Perfil"
+                btn_edit: "Editar Perfil",
+                btn_follow: "Seguir",
+                stat_followers: "Seguidores",
+                stat_following: "Seguindo",
+                join_date: "Membro desde",
+                post_title: "Publicações",
+                post_placeholder: "O que você deseja compartilhar hoje?",
+                btn_publish: "Publicar",
+                post_time: "Agora mesmo",
+                post_sample: "Bem-vindo à área VIP do Hub Central Evollogic! Somente usuários selecionados podem criar publicações."
             },
             EN: {
                 nav_hub: "Central Hub",
@@ -449,7 +658,16 @@
                 nav_logout: "Sign Out",
                 page_title: "Overview",
                 page_desc: "Manage your personal information and security.",
-                btn_edit: "Edit Profile"
+                btn_edit: "Edit Profile",
+                btn_follow: "Follow",
+                stat_followers: "Followers",
+                stat_following: "Following",
+                join_date: "Member since",
+                post_title: "Publications",
+                post_placeholder: "What do you want to share today?",
+                btn_publish: "Publish",
+                post_time: "Just now",
+                post_sample: "Welcome to the VIP area of the Evollogic Central Hub! Only selected users can create posts."
             },
             ES: {
                 nav_hub: "Hub Central",
@@ -459,7 +677,16 @@
                 nav_logout: "Cerrar Sesión",
                 page_title: "Visión General",
                 page_desc: "Gestiona tu información personal y seguridad.",
-                btn_edit: "Editar Perfil"
+                btn_edit: "Editar Perfil",
+                btn_follow: "Seguir",
+                stat_followers: "Seguidores",
+                stat_following: "Siguiendo",
+                join_date: "Miembro desde",
+                post_title: "Publicaciones",
+                post_placeholder: "¿Qué deseas compartir hoy?",
+                btn_publish: "Publicar",
+                post_time: "Justo ahora",
+                post_sample: "¡Bienvenido al área VIP del Hub Central Evollogic! Solo usuarios seleccionados pueden crear publicaciones."
             }
         };
 
@@ -468,6 +695,12 @@
                 const key = element.getAttribute('data-i18n');
                 if (translations[lang] && translations[lang][key]) {
                     element.innerText = translations[lang][key];
+                }
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
                 }
             });
         }
@@ -492,9 +725,30 @@
             applyTranslations(savedLang);
         }
 
-        // ==========================================
-        // CARREGAR DADOS DO USUÁRIO
-        // ==========================================
+        // Formatação de data
+        function formatDate(dateString) {
+            if (!dateString) return '--/--/----';
+            const date = new Date(dateString);
+            return date.toLocaleDateString(localStorage.getItem('userLanguage') === 'EN' ? 'en-US' : 'pt-BR', {
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        function toggleLike(btn) {
+            btn.classList.toggle('liked');
+            const span = btn.querySelector('span');
+            let count = parseInt(span.innerText);
+            span.innerText = btn.classList.contains('liked') ? count + 1 : count - 1;
+        }
+
+        function submitPost() {
+            const input = document.getElementById('postInput');
+            if(input.value.trim() === '') return;
+            alert('Publicação enviada! (Simulação)');
+            input.value = '';
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             loadSavedLanguage();
 
@@ -522,12 +776,31 @@
                 if (!response.ok) throw new Error('Sessão expirada');
 
                 const userData = await response.json();
-                document.getElementById('userName').textContent = userData.name || 'Sem Nome';
-                document.getElementById('userEmail').textContent = userData.email || 'Conta Vinculada';
                 
-                if (userData.avatar) {
-                    document.getElementById('userAvatar').src = userData.avatar;
+                const userNameDisplay = userData.name || 'Sem Nome';
+                const userAvatarDisplay = userData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userNameDisplay}`;
+
+                document.getElementById('userName').textContent = userNameDisplay;
+                document.getElementById('userEmail').textContent = userData.email || 'Conta Vinculada';
+                document.getElementById('userAvatar').src = userAvatarDisplay;
+                
+                // Setar data
+                document.getElementById('userDate').textContent = formatDate(userData.createdAt || new Date());
+
+                // Setar foto e nome do post mockado
+                document.getElementById('postAvatar').src = userAvatarDisplay;
+                document.getElementById('postAuthorName').textContent = userNameDisplay;
+
+                // Setar seguidores/seguindo mockado caso venha da api
+                document.getElementById('followersCount').textContent = userData.followers || Math.floor(Math.random() * 500);
+                document.getElementById('followingCount').textContent = userData.following || Math.floor(Math.random() * 100);
+
+                // MOSTRA A ÁREA DE POST SE O MODE FOR >= 1 OU +1
+                const userMode = String(userData.mode || '0');
+                if (userMode === '+1' || parseInt(userMode) >= 1) {
+                    document.getElementById('postArea').style.display = 'block';
                 }
+
             } catch (error) {
                 localStorage.removeItem('evollogic_auth_token');
                 window.location.href = 'login.html';
