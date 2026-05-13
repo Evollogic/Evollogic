@@ -359,12 +359,12 @@
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card" id="statusCard" style="display: none;">
                 <div class="stat-icon">
                     <i data-feather="star"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Desenvolvedor</h3>
+                    <h3 id="accountStatus">Carregando...</h3>
                     <p>Status da Conta</p>
                 </div>
             </div>
@@ -394,31 +394,39 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // Inicia os ícones
             feather.replace();
 
-            // Lógica de fallback: Enquanto o backend não tem a rota /api/user/me
-            // Nós pegamos o email que o usuário digitou no login (se você salvar no localStorage)
-            // Se não tiver salvo, usamos um email padrão de teste para a tela não quebrar.
             const savedEmail = localStorage.getItem('evollogic_user_email') || "admin@evollogic.com";
-            
-            // Extrai o nome antes do @ para usar como nome de usuário provisório
             const baseName = savedEmail.split('@')[0];
 
-            // Função para aplicar os dados na tela
-            function updateUI(name, email, avatarUrl) {
+            function updateUI(name, email, avatarUrl, mode) {
                 document.getElementById('userName').textContent = name;
                 document.getElementById('userEmail').textContent = email;
                 
                 const photoEl = document.getElementById('userPhoto');
                 photoEl.src = avatarUrl;
                 photoEl.style.display = 'block';
+
+                const statusCard = document.getElementById('statusCard');
+                const accountStatus = document.getElementById('accountStatus');
+
+                if (mode === 1) {
+                    statusCard.style.display = 'flex';
+                    accountStatus.textContent = 'Tester';
+                } else if (mode === 2) {
+                    statusCard.style.display = 'flex';
+                    accountStatus.textContent = 'Funcionário';
+                } else if (mode === 3) {
+                    statusCard.style.display = 'flex';
+                    accountStatus.textContent = 'Desenvolvedor';
+                } else {
+                    statusCard.style.display = 'none';
+                }
             }
 
             const userToken = localStorage.getItem('evollogic_auth_token');
 
             try {
-                // Tenta buscar da API (Isso vai falhar até construirmos o backend completo)
                 const response = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', {
                     method: 'GET',
                     headers: {
@@ -428,31 +436,25 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Rota não encontrada ou token inválido');
+                    throw new Error('invalid_token');
                 }
 
                 const userData = await response.json();
-                
-                // Se a API der certo, usa os dados do banco do MongoDB
                 const avatar = userData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.name}`;
-                updateUI(userData.name || "Usuário", userData.email, avatar);
+                
+                updateUI(userData.name || "Usuário", userData.email, avatar, userData.mode);
 
             } catch (error) {
-                console.warn("API de usuário ainda não configurada. Carregando dados locais provisórios...");
-                
-                // Plano B: Se a API falhar, carrega os dados locais para o painel funcionar visualmente
                 const fallbackAvatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${baseName}`;
-                updateUI(baseName, savedEmail, fallbackAvatar);
+                updateUI(baseName, savedEmail, fallbackAvatar, 0);
             }
         });
 
-        // Função de Sair
         function logout() {
             if(confirm("Tem certeza que deseja sair do ecossistema Evollogic?")) {
-                // Limpa os dados salvos e volta pro login
                 localStorage.removeItem('evollogic_auth_token');
                 localStorage.removeItem('evollogic_user_email');
-                window.location.href = 'login.html'; // Certifique-se que o nome do seu arquivo de login é esse
+                window.location.href = 'login.html'; 
             }
         }
     </script>
