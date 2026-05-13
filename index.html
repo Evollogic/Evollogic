@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,51 @@
     
     <link rel="stylesheet" href="style.css?v=2.0">
 
+    <style>
+        /* Estilos adicionais para o contador e botões */
+        #countdown-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        #countdown-display {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            color: #ff003c; /* Vermelho macabro */
+            text-shadow: 0 0 15px rgba(255, 0, 60, 0.8), 0 0 30px rgba(255, 0, 60, 0.4);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            letter-spacing: 5px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; text-shadow: 0 0 15px rgba(255, 0, 60, 0.8); }
+            50% { opacity: 0.8; text-shadow: 0 0 5px rgba(255, 0, 60, 0.4); }
+            100% { opacity: 1; text-shadow: 0 0 15px rgba(255, 0, 60, 0.8); }
+        }
+
+        .hub-btn {
+            background: #00ff88;
+            color: #020617;
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: monospace;
+            cursor: pointer;
+            text-transform: uppercase;
+            border-radius: 8px;
+            transition: 0.3s;
+            animation: fadeIn 1s ease;
+        }
+
+        .hub-btn:hover {
+            background: transparent;
+            color: #00ff88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+        }
+    </style>
 </head>
 <body class="crt">
 
@@ -28,26 +73,140 @@
             <button id="btn-accept-transmission" class="cyber-btn">ACCEPT</button>
         </div>
 
-        <div id="coming-soon-content" style="display: none;">
-            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="main-logo">
-            <h1 class="title-text">BUILDER WORLDS</h1>
+        <div id="coming-soon-content" style="display: none; text-align: center;">
+            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="main-logo" style="width: 120px; margin-bottom: 20px;">
+            <h1 class="title-text" style="color: #f8fafc; font-family: monospace;">BUILDER WORLDS</h1>
+            
             <div class="message-card">
-                <p style="font-size: 1.1rem; line-height: 1.6; color: #00ff88; margin-bottom: 20px;">
-                    The portals are currently under maintenance. <br>
-                    Exclusive access for the creation team only.
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #94a3b8; margin-bottom: 20px;">
+                    Os portais estão selados.<br>
+                    Aguarde a liberação do sistema central.
                 </p>
-                <p class="glitch-text">COMING THIS MONTH</p>
+                
+                <div id="countdown-container">
+                    <div id="countdown-display">CARREGANDO...</div>
+                </div>
             </div>
             
-            <button id="btn-toggle-music" class="cyber-btn-small">🔊 MUTE AUDIO</button>
+            <button id="btn-toggle-music" class="cyber-btn-small" style="margin-top: 30px;">🔊 MUTE AUDIO</button>
         </div>
 
-        <audio id="bg-music" loop style="display: none !important; width: 0; height: 0; visibility: hidden;">
+        <audio id="bg-music" loop style="display: none;">
             <source src="Menu Suspenso.mp3" type="audio/mpeg">
+        </audio>
+
+        <audio id="macabre-tick" style="display: none;">
+            <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=clock-ticking-2-105174.mp3" type="audio/mpeg">
         </audio>
 
     </div>
 
-    <script src="app.js?v=2.0"></script>
+    <script>
+        // ==========================================
+        // DATA DO EVENTO (Sábado, 16 de Maio de 2026 às 17:00:00)
+        // ==========================================
+        const targetDate = new Date("May 16, 2026 17:00:00").getTime();
+        
+        let countdownInterval;
+
+        // Elementos de Áudio
+        const bgMusic = document.getElementById('bg-music');
+        const tickSound = document.getElementById('macabre-tick');
+        tickSound.volume = 0.8; // Deixa o som do tick mais alto para dar medo
+
+        // ==========================================
+        // SEQUÊNCIA DE INICIALIZAÇÃO
+        // ==========================================
+        document.getElementById('btn-start-boot').addEventListener('click', () => {
+            document.getElementById('init-screen').style.display = 'none';
+            document.getElementById('terminal-boot').style.display = 'block';
+            
+            const termText = document.getElementById('terminal-text');
+            termText.innerHTML = "> Conectando aos servidores Evollogic...<br>> Bypass de segurança concluído...<br>> Estabelecendo conexão...";
+            
+            // Simula o tempo de carregamento
+            setTimeout(() => {
+                document.getElementById('terminal-boot').style.display = 'none';
+                document.getElementById('coming-soon-screen').style.display = 'flex';
+                document.getElementById('coming-soon-screen').style.flexDirection = 'column';
+                document.getElementById('coming-soon-screen').style.alignItems = 'center';
+            }, 2500);
+        });
+
+        // ==========================================
+        // ACEITAR TRANSMISSÃO E INICIAR CONTADOR
+        // ==========================================
+        document.getElementById('btn-accept-transmission').addEventListener('click', () => {
+            document.getElementById('transmission-prompt').style.display = 'none';
+            document.getElementById('coming-soon-content').style.display = 'block';
+            
+            // Toca a música de fundo
+            bgMusic.play().catch(e => console.log("Áudio bloqueado pelo navegador"));
+            
+            // Inicia o Relógio do Apocalipse
+            startCountdown();
+        });
+
+        // ==========================================
+        // LÓGICA DO CONTADOR MISTERIOSO
+        // ==========================================
+        function startCountdown() {
+            countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                // SE O TEMPO ZEROU (Chegou Sábado 17:00)
+                if (distance <= 0) {
+                    clearInterval(countdownInterval);
+                    
+                    // Mostra o botão para entrar no HUB
+                    document.getElementById('countdown-container').innerHTML = `
+                        <h2 style="color: #00ff88; margin-bottom: 20px;">ACESSO LIBERADO</h2>
+                        <button class="hub-btn" onclick="window.location.href='login.html'">[ ENTRAR NO HUB ]</button>
+                    `;
+                    
+                    // Para o som macabro e deixa só a música
+                    tickSound.pause();
+                    return;
+                }
+
+                // Cálculos de tempo
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Formata os números para sempre terem 2 dígitos (ex: 09:05:02)
+                const fDays = days.toString().padStart(2, '0');
+                const fHours = hours.toString().padStart(2, '0');
+                const fMinutes = minutes.toString().padStart(2, '0');
+                const fSeconds = seconds.toString().padStart(2, '0');
+
+                // Atualiza a tela
+                document.getElementById('countdown-display').innerHTML = 
+                    `${fDays}:${fHours}:${fMinutes}:${fSeconds}`;
+
+                // TOCA O SOM MACABRO A CADA SEGUNDO
+                tickSound.currentTime = 0; // Reseta o áudio para o começo rápido
+                tickSound.play().catch(e => console.log("Som bloqueado pelo navegador"));
+
+            }, 1000);
+        }
+
+        // ==========================================
+        // BOTÃO DE MUTAR ÁUDIO
+        // ==========================================
+        document.getElementById('btn-toggle-music').addEventListener('click', function() {
+            if (bgMusic.paused && tickSound.paused) {
+                bgMusic.play();
+                tickSound.muted = false;
+                this.innerText = '🔊 MUTE AUDIO';
+            } else {
+                bgMusic.pause();
+                tickSound.muted = true; // Só muta o tick para ele não perder a sincronia do setInterval
+                this.innerText = '🔇 UNMUTE AUDIO';
+            }
+        });
+    </script>
 </body>
 </html>
