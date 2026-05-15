@@ -388,7 +388,7 @@
                 forgot_pass: "Olvidé mi contraseña",
                 btn_login: "Acceder a la Plataforma",
                 no_account: "¿Aún no eres miembro?",
-                create_account: "Crear una cuenta",
+                create_account: "Crear una conta",
                 authenticating: "Autenticando...",
                 auth_alert: "Iniciando autenticación vía",
                 invalid_account: "Cuenta inválida. Usuario no encontrado.",
@@ -523,10 +523,10 @@
 
             if (provider === 'Discord') {
                 btnDiscord.innerHTML = translations[currentLang].authenticating || "Autenticando...";
-                window.location.href = `${baseUrl}/api/auth/discord`;
+                window.location.href = `${baseUrl}/auth/discord`;
             } else if (provider === 'Google') {
                 btnGoogle.innerHTML = translations[currentLang].authenticating || "Autenticando...";
-                window.location.href = `${baseUrl}/api/auth/google`;
+                window.location.href = `${baseUrl}/auth/google`;
             }
         }
     </script>
