@@ -388,7 +388,7 @@
                 forgot_pass: "Olvidé mi contraseña",
                 btn_login: "Acceder a la Plataforma",
                 no_account: "¿Aún no eres miembro?",
-                create_account: "Crear una conta",
+                create_account: "Crear una cuenta",
                 authenticating: "Autenticando...",
                 auth_alert: "Iniciando autenticación vía",
                 invalid_account: "Cuenta inválida. Usuario no encontrado.",
@@ -508,7 +508,6 @@
                 }
 
             } catch (error) {
-                console.error("Erro na requisição:", error);
                 showAlert('server_error', true);
                 btn.innerHTML = translations[currentLang].btn_login;
                 btn.style.opacity = '1';
@@ -523,10 +522,10 @@
 
             if (provider === 'Discord') {
                 btnDiscord.innerHTML = translations[currentLang].authenticating || "Autenticando...";
-                window.location.href = `${baseUrl}/auth/discord`;
+                window.location.href = `${baseUrl}/api/auth/discord`;
             } else if (provider === 'Google') {
                 btnGoogle.innerHTML = translations[currentLang].authenticating || "Autenticando...";
-                window.location.href = `${baseUrl}/auth/google`;
+                window.location.href = `${baseUrl}/api/auth/google`;
             }
         }
     </script>
