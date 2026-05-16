@@ -105,7 +105,8 @@
         .company-details { display: none; position: relative; z-index: 5; }
         .company-details.active { display: block; animation: fadeIn 0.5s ease-out; }
         
-        #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('sodhupn.png'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
+        /* Ajustado aqui para a letra maiúscula de Sodhupn.png */
+        #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('Sodhupn.png'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
         
         #tobump-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 230px; background-image: url('https://i.imgur.com/vqPh35y.png'); background-size: cover; background-position: center; border-radius: 16px; opacity: 0.07; z-index: -1; pointer-events: none; }
 
@@ -202,19 +203,19 @@
                     <div class="carousel-viewport">
                         <div class="carousel-container" id="company-carousel">
                             <div class="company-card active hover-sfx click-sfx" data-target="sodhupn">
-                                <img src="sodhupn.png" alt="Sodhupn"><span>Sodhupn</span>
+                                <img src="Sodhupn.png" alt="Sodhupn"><span>Sodhupn</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="seashare">
-                                <img src="seashare.png" alt="Seashare"><span>Seashare</span>
+                                <img src="Seashare.png" alt="Seashare"><span>Seashare</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="tobump">
-                                <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump"><span>ToBump</span>
+                                <img src="Tobump.png" alt="ToBump"><span>ToBump</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="toup">
-                                <img src="toup.png" alt="ToUp"><span>ToUp</span>
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="ToUp"><span>ToUp</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="scriparadoxall">
-                                <img src="scriparadoxall.png" alt="Scripard"><span>Scripard</span>
+                                <img src="Scriparadoxall.png" alt="Scripard"><span>Scripard</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="nks">
                                 <img src="nks.png" alt="NKS"><span>NKS</span>
@@ -302,7 +303,6 @@
     </div>
 
     <script>
-        // ATUALIZAÇÃO NAS TRADUÇÕES PARA INCLUIR AS NOVAS MARCAS
         const translations = {
             PT: {
                 hub_menu: "Hub Menu",
@@ -477,7 +477,7 @@
                 },
                 { 
                     target: "seashare", tvTitle: "Seashare TV", isAd: false,
-                    text: { PT: "🌊 Conheça a Seashare e expanda seus horizontes.", EN: "🌊 Meet Seashare and expand your horizons.", ES: "🌊 Conoce Seashare y expande tus horizontes." },
+                    text: { PT: "🌊 Conheça a Seashare e gerencie seu estoque com eficiência.", EN: "🌊 Meet Seashare and manage your stock efficiently.", ES: "🌊 Conoce Seashare y gestiona tu stock con eficiencia." },
                     badgeText: { PT: "Ecossistema", EN: "Ecosystem", ES: "Ecosistema" }
                 },
                 { 
@@ -487,8 +487,28 @@
                 },
                 { 
                     target: "tobump", tvTitle: "ToBump TV", isAd: false,
-                    text: { PT: "🚀 ToBump: A ferramenta para impulsionar suas vendas.", EN: "🚀 ToBump: The tool to boost your sales.", ES: "🚀 ToBump: La herramienta para impulsar tus ventas." },
+                    text: { PT: "🚀 ToBump: A ferramenta para impulsionar seu servidor.", EN: "🚀 ToBump: The tool to boost your server.", ES: "🚀 ToBump: La herramienta para impulsar tu servidor." },
                     badgeText: { PT: "Em Alta", EN: "Trending", ES: "En Alza" }
+                },
+                { 
+                    target: "toup", tvTitle: "ToUp TV", isAd: false,
+                    text: { PT: "📈 ToUp: Análise de dados e crescimento geral automatizado.", EN: "📈 ToUp: Data analysis and automated general growth.", ES: "📈 ToUp: Análisis de datos y crecimiento general automatizado." },
+                    badgeText: { PT: "Beta", EN: "Beta", ES: "Beta" }
+                },
+                { 
+                    target: "scriparadoxall", tvTitle: "Scripard TV", isAd: false,
+                    text: { PT: "💻 Junte-se à comunidade de criação de scripts no Discord.", EN: "💻 Join the script creation community on Discord.", ES: "💻 Únete a la comunidad de creación de scripts en Discord." },
+                    badgeText: { PT: "Comunidade", EN: "Community", ES: "Comunidad" }
+                },
+                { 
+                    target: "nks", tvTitle: "NKS TV", isAd: false,
+                    text: { PT: "✔️ NKS: Automação e verificação feitas sob medida para você.", EN: "✔️ NKS: Automation and verification tailored for you.", ES: "✔️ NKS: Automatización y verificación a tu medida." },
+                    badgeText: { PT: "Serviço", EN: "Service", ES: "Servicio" }
+                },
+                { 
+                    target: "hapiephone", tvTitle: "Hapiephone TV", isAd: false,
+                    text: { PT: "📱 Automação mobile em nuvem poderosa focada em Termux.", EN: "📱 Powerful cloud mobile automation focused on Termux.", ES: "📱 Potente automatización móvil en la nube centrada en Termux." },
+                    badgeText: { PT: "Tech", EN: "Tech", ES: "Tech" }
                 }
             ];
 
