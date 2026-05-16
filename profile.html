@@ -113,9 +113,6 @@
         .btn-unfollow { background: rgba(248, 113, 113, 0.1); color: var(--danger); border-color: rgba(248, 113, 113, 0.3); box-shadow: none; }
         .btn-unfollow:hover { background: var(--danger); color: #fff; transform: translateY(-2px); }
 
-        .btn-statics { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: #fff; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); border: none; }
-        .btn-statics:hover { background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5); }
-
         .post-area { display: none; background: var(--bg-card); border-radius: 24px; padding: 30px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.03); animation: fadeIn 0.6s ease; }
         .post-area h3 { margin: 0 0 20px 0; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
 
@@ -179,6 +176,7 @@
         <ul class="nav-menu">
             <li><a href="index.html" class="nav-link"><i data-feather="grid"></i> <span data-i18n="nav_hub">Hub Central</span></a></li>
             <li><a href="profile.html" class="nav-link active"><i data-feather="user"></i> <span data-i18n="nav_profile">Meu Perfil</span></a></li>
+            <li id="navStatics" style="display: none;"><a href="Statics.html" class="nav-link"><i data-feather="bar-chart-2"></i> <span data-i18n="nav_statics">Estatísticas</span></a></li>
             <li><a href="#" class="nav-link"><i data-feather="shield"></i> <span data-i18n="nav_security">Segurança</span></a></li>
             <li><a href="#" class="nav-link"><i data-feather="settings"></i> <span data-i18n="nav_settings">Configurações</span></a></li>
         </ul>
@@ -232,9 +230,6 @@
                 </div>
 
                 <div class="profile-actions">
-                    <button id="btnStatics" class="btn-action btn-statics" onclick="window.location.href='Statics.html'">
-                        <i data-feather="bar-chart-2" style="width: 16px;"></i> <span data-i18n="btn_statics">Dados & Estatísticas</span>
-                    </button>
                     <button id="btnEditProfile" class="btn-action btn-edit" onclick="window.location.href='profile_edit.html'">
                         <i data-feather="edit-2" style="width: 16px;"></i> <span data-i18n="btn_edit">Editar Perfil</span>
                     </button>
@@ -293,6 +288,7 @@
                 nav_security: "Segurança",
                 nav_settings: "Configurações",
                 nav_logout: "Sair da conta",
+                nav_statics: "Estatísticas",
                 page_title: "Visão Geral",
                 page_desc: "Gerencie suas informações pessoais e segurança.",
                 page_title_other: "Perfil do Usuário",
@@ -303,7 +299,6 @@
                 btn_edit: "Editar Perfil",
                 btn_follow: "Seguir",
                 btn_unfollow: "Remover",
-                btn_statics: "Dados & Estatísticas",
                 post_title: "Publicações",
                 post_placeholder: "O que você deseja compartilhar hoje?",
                 btn_publish: "Publicar",
@@ -317,6 +312,7 @@
                 nav_security: "Security",
                 nav_settings: "Settings",
                 nav_logout: "Sign Out",
+                nav_statics: "Analytics",
                 page_title: "Overview",
                 page_desc: "Manage your personal information and security.",
                 page_title_other: "User Profile",
@@ -327,7 +323,6 @@
                 btn_edit: "Edit Profile",
                 btn_follow: "Follow",
                 btn_unfollow: "Unfollow",
-                btn_statics: "Data & Stats",
                 post_title: "Publications",
                 post_placeholder: "What do you want to share today?",
                 btn_publish: "Publish",
@@ -341,6 +336,7 @@
                 nav_security: "Seguridad",
                 nav_settings: "Configuración",
                 nav_logout: "Cerrar Sesión",
+                nav_statics: "Estadísticas",
                 page_title: "Visión General",
                 page_desc: "Gestiona tu información personal y seguridad.",
                 page_title_other: "Perfil del Usuario",
@@ -351,7 +347,6 @@
                 btn_edit: "Editar Perfil",
                 btn_follow: "Seguir",
                 btn_unfollow: "Dejar de seguir",
-                btn_statics: "Datos y Estadísticas",
                 post_title: "Publicaciones",
                 post_placeholder: "¿Qué deseas compartir hoy?",
                 btn_publish: "Publicar",
@@ -507,6 +502,10 @@
                 const myData = await meResponse.json();
                 const currentUserId = myData._id || myData.id; 
                 
+                if (parseInt(myData.mode || '0') > 2) {
+                    document.getElementById('navStatics').style.display = 'block';
+                }
+
                 const isOwnProfile = !targetUserId || targetUserId === String(currentUserId);
                 let profileDataToDisplay = myData;
 
@@ -532,17 +531,10 @@
                     document.getElementById('btnFollowUser').style.display = 'none';
                     document.getElementById('composerArea').style.display = 'block';
                     
-                    if (parseInt(myData.mode || '0') > 2) {
-                        document.getElementById('btnStatics').style.display = 'flex';
-                    } else {
-                        document.getElementById('btnStatics').style.display = 'none';
-                    }
-
                     document.getElementById('dynamicTitle').textContent = translations[lang].page_title;
                     document.getElementById('dynamicDesc').textContent = translations[lang].page_desc;
                 } else {
                     document.getElementById('btnEditProfile').style.display = 'none';
-                    document.getElementById('btnStatics').style.display = 'none';
                     document.getElementById('composerArea').style.display = 'none';
                     
                     document.getElementById('dynamicTitle').textContent = translations[lang].page_title_other;
