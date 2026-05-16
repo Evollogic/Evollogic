@@ -282,7 +282,6 @@
             }
 
             list.forEach(user => {
-                // Caso o backend não tenha feito o "populate", o user pode ser apenas o ID em texto
                 const isPopulated = typeof user === 'object' && user !== null && user.name;
                 
                 const userId = isPopulated ? user._id : user;
@@ -293,7 +292,6 @@
                 const item = document.createElement('div');
                 item.className = 'user-item';
 
-                // Verifica na lista 'following' se o ID já existe lá dentro
                 const alreadyFollowing = currentUserData.following && currentUserData.following.some(f => {
                     const fId = typeof f === 'object' ? f._id : f;
                     return String(fId) === String(userId);
@@ -301,12 +299,12 @@
 
                 let buttonHtml = '';
                 if (currentTab === 'following') {
-                    buttonHtml = `<button class="action-btn btn-remove" onclick="handleAction('${userId}', 'unfollow')">${t.btn_remove}</button>`;
+                    buttonHtml = `<button class="action-btn btn-remove" onclick="handleAction('${userId}', 'unfollow', event)">${t.btn_remove}</button>`;
                 } else {
                     if (alreadyFollowing) {
-                        buttonHtml = `<button class="action-btn btn-remove" onclick="handleAction('${userId}', 'unfollow')">${t.btn_remove}</button>`;
+                        buttonHtml = `<button class="action-btn btn-remove" onclick="handleAction('${userId}', 'unfollow', event)">${t.btn_remove}</button>`;
                     } else {
-                        buttonHtml = `<button class="action-btn btn-follow" onclick="handleAction('${userId}', 'follow')">${t.btn_follow}</button>`;
+                        buttonHtml = `<button class="action-btn btn-follow" onclick="handleAction('${userId}', 'follow', event)">${t.btn_follow}</button>`;
                     }
                 }
 
@@ -327,23 +325,25 @@
         }
 
         function goToProfile(id) {
-            // Isso cria a "outra visão" no seu profile.html
             window.location.href = `profile.html?id=${id}`;
         }
 
-        async function handleAction(targetId, type) {
+        async function handleAction(targetId, type, event) {
+            // Isso impede que o clique no botão ative também o clique na div do usuário
+            if(event) event.stopPropagation(); 
+            
             const token = localStorage.getItem('evollogic_auth_token');
             try {
-                // Aqui você vai configurar a sua rota de seguir/deixar de seguir do backend
                 const response = await fetch(`https://evollogic-backend-production.up.railway.app/api/follow/${targetId}`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
                 if (response.ok) {
-                    fetchUserData();
+                    // MÁGICA AQUI: Redireciona para o perfil da pessoa loga após seguir/remover!
+                    window.location.href = `profile.html?id=${targetId}`;
                 } else {
-                    alert('Erro ao processar a ação.');
+                    console.error("Erro na resposta do servidor.");
                 }
             } catch (error) {
                 console.error("Erro na ação:", error);
@@ -375,11 +375,10 @@
             applyTranslations();
             fetchUserData();
             
-            // Fica de olho se o idioma mudar no localStorage
             window.addEventListener('storage', (e) => {
                 if (e.key === 'userLanguage') {
                     applyTranslations();
-                    if(currentUserData) renderList(); // Re-renderiza a lista com os textos traduzidos
+                    if(currentUserData) renderList(); 
                 }
             });
         });
