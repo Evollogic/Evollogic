@@ -105,7 +105,7 @@
         .company-details { display: none; position: relative; z-index: 5; }
         .company-details.active { display: block; animation: fadeIn 0.5s ease-out; }
         
-        #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('https://i.imgur.com/igeI5LA.png'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
+        #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('sodhupn.png'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
         
         #tobump-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 230px; background-image: url('https://i.imgur.com/vqPh35y.png'); background-size: cover; background-position: center; border-radius: 16px; opacity: 0.07; z-index: -1; pointer-events: none; }
 
@@ -202,19 +202,25 @@
                     <div class="carousel-viewport">
                         <div class="carousel-container" id="company-carousel">
                             <div class="company-card active hover-sfx click-sfx" data-target="sodhupn">
-                                <img src="https://i.imgur.com/igeI5LA.png" alt="Sodhupn"><span>Sodhupn</span>
+                                <img src="sodhupn.png" alt="Sodhupn"><span>Sodhupn</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="seashare">
-                                <img src="https://i.imgur.com/31WnC6D.png" alt="Seashare"><span>Seashare</span>
+                                <img src="seashare.png" alt="Seashare"><span>Seashare</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="tobump">
                                 <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump"><span>ToBump</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="toup">
-                                <img src="https://i.imgur.com/31WnC6D.png" alt="ToUp"><span>ToUp</span>
+                                <img src="toup.png" alt="ToUp"><span>ToUp</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="scriparadoxall">
-                                <img src="https://i.imgur.com/31WnC6D.png" alt="Scripard"><span>Scripard</span>
+                                <img src="scriparadoxall.png" alt="Scripard"><span>Scripard</span>
+                            </div>
+                            <div class="company-card hover-sfx click-sfx" data-target="nks">
+                                <img src="nks.png" alt="NKS"><span>NKS</span>
+                            </div>
+                            <div class="company-card hover-sfx click-sfx" data-target="hapiephone">
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="Hapiephone"><span>Hapiephone</span>
                             </div>
                         </div>
                     </div>
@@ -239,7 +245,7 @@
 
                 <div class="company-details" id="seashare-info">
                     <h2 class="brand-title">Seashare</h2>
-                    <p class="brand-desc" data-i18n="seashare_desc">Ecossistema inovador de compartilhamento e recursos digitais.</p>
+                    <p class="brand-desc" data-i18n="seashare_desc">Bot de vendas e gerenciamento de stock oficial da Sodhupn. Em breve para uso público (Beta).</p>
                 </div>
                 
                 <div class="company-details" id="tobump-info">
@@ -266,12 +272,25 @@
 
                 <div class="company-details" id="toup-info">
                     <h2 class="brand-title">ToUp</h2>
-                    <p class="brand-desc" data-i18n="toup_desc">Sistemas de elevação de contas e gestão de engajamento.</p>
+                    <p class="brand-desc" data-i18n="toup_desc">Bot para crescimento geral, análise de dados e publicação automática no Instagram e Facebook (em beta).</p>
+                    <div class="social-buttons-container">
+                        <div class="contact-email hover-sfx click-sfx">📧 <span data-i18n="contact">Uso comercial ou test:</span>&nbsp;<a href="mailto:EvollogicHQ@gmail.com">EvollogicHQ@gmail.com</a></div>
+                    </div>
                 </div>
 
                 <div class="company-details" id="scriparadoxall-info">
                     <h2 class="brand-title">Scripard</h2>
-                    <p class="brand-desc" data-i18n="scripard_desc">Tecnologia avançada em scripts e segurança para operações digitais.</p>
+                    <p class="brand-desc" data-i18n="scripard_desc">Canal no YouTube e comunidade no Discord dedicados à criação de scripts.</p>
+                </div>
+
+                <div class="company-details" id="nks-info">
+                    <h2 class="brand-title">NKS</h2>
+                    <p class="brand-desc" data-i18n="nks_desc">Serviço de Nicks Verification e automação personalizada para empresas e pessoas físicas.</p>
+                </div>
+
+                <div class="company-details" id="hapiephone-info">
+                    <h2 class="brand-title">Hapiephone</h2>
+                    <p class="brand-desc" data-i18n="hapiephone_desc">Sistema avançado de automação mobile em nuvem, com gerenciamento de dispositivos focado em Termux.</p>
                 </div>
 
                 <div class="company-details" id="placeholder-info">
@@ -283,6 +302,7 @@
     </div>
 
     <script>
+        // ATUALIZAÇÃO NAS TRADUÇÕES PARA INCLUIR AS NOVAS MARCAS
         const translations = {
             PT: {
                 hub_menu: "Hub Menu",
@@ -292,13 +312,15 @@
                 sodhupn_vision_title: "Nossa Visão para 2026",
                 sodhupn_vision_goal: "Unificação de 14 Lojas",
                 contact: "Contato:",
-                seashare_desc: "Ecossistema inovador de compartilhamento e recursos digitais.",
+                seashare_desc: "Bot de vendas e gerenciamento de stock oficial da Sodhupn. Em breve para uso público (Beta).",
                 tobump_desc: "Cresça seu servidor com bump 100% automático. O bot faz o auto bump direto no dashboard!",
                 tobump_alert1: "Para adicionar, aperte no botão abaixo.",
                 tobump_alert2: "💡 Aviso: No dashboard, em breve terá muito mais coisas!",
                 tobump_btn: "Adicionar ao Servidor",
-                toup_desc: "Sistemas de elevação de contas e gestão de engajamento.",
-                scripard_desc: "Tecnologia avançada em scripts e segurança para operações digitais.",
+                toup_desc: "Bot para crescimento geral, análise de dados e publicação automática no Instagram e Facebook (em beta).",
+                scripard_desc: "Canal no YouTube e comunidade no Discord dedicados à criação de scripts.",
+                nks_desc: "Serviço de Nicks Verification e automação personalizada para empresas e pessoas físicas.",
+                hapiephone_desc: "Sistema avançado de automação mobile em nuvem, com gerenciamento de dispositivos focado em Termux.",
                 waiting_selection: "Aguardando Seleção..."
             },
             EN: {
@@ -309,13 +331,15 @@
                 sodhupn_vision_title: "Our Vision for 2026",
                 sodhupn_vision_goal: "Unification of 14 Stores",
                 contact: "Contact:",
-                seashare_desc: "Innovative ecosystem for sharing and digital resources.",
+                seashare_desc: "Official sales and stock management bot for Sodhupn. Coming soon for public use (Beta).",
                 tobump_desc: "Grow your server with 100% automatic bumping. The bot auto-bumps directly from the dashboard!",
                 tobump_alert1: "To add, click the button below.",
                 tobump_alert2: "💡 Notice: The dashboard will soon have much more!",
                 tobump_btn: "Add to Server",
-                toup_desc: "Account boosting and engagement management systems.",
-                scripard_desc: "Advanced technology in scripts and security for digital operations.",
+                toup_desc: "Bot for general growth, data analysis, and automated publishing on Instagram and Facebook (Beta).",
+                scripard_desc: "YouTube channel and Discord community dedicated to script creation.",
+                nks_desc: "Nicks Verification service and tailored automation for businesses and individuals.",
+                hapiephone_desc: "Advanced cloud-based mobile automation system, featuring device management focused on Termux.",
                 waiting_selection: "Waiting for Selection..."
             },
             ES: {
@@ -326,13 +350,15 @@
                 sodhupn_vision_title: "Nuestra Visión para 2026",
                 sodhupn_vision_goal: "Unificación de 14 Tiendas",
                 contact: "Contacto:",
-                seashare_desc: "Ecosistema innovador de recursos digitales y compartidos.",
+                seashare_desc: "Bot oficial de ventas y gestión de stock de Sodhupn. Próximamente para uso público (Beta).",
                 tobump_desc: "Haz crecer tu servidor con bump 100% automático. ¡El bot hace el auto bump directamente en el dashboard!",
                 tobump_alert1: "Para agregar, presiona el botón de abajo.",
                 tobump_alert2: "💡 Aviso: ¡En el dashboard pronto habrá muchas más cosas!",
                 tobump_btn: "Añadir al Servidor",
-                toup_desc: "Sistemas de elevación de cuentas y gestión de interacción.",
-                scripard_desc: "Tecnología avanzada en scripts y seguridad para operaciones digitales.",
+                toup_desc: "Bot para crecimiento general, análisis de datos y publicación automática en Instagram y Facebook (Beta).",
+                scripard_desc: "Canal de YouTube y comunidad de Discord dedicados a la creación de scripts.",
+                nks_desc: "Servicio de Nicks Verification y automatización personalizada para empresas e individuos.",
+                hapiephone_desc: "Avanzado sistema de automatización móvil en la nube, con gestión de dispositivos centrada en Termux.",
                 waiting_selection: "Esperando Selección..."
             }
         };
