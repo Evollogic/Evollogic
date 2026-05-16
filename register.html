@@ -620,11 +620,32 @@
             applyTranslations(window.currentLang);
             
             const urlParams = new URLSearchParams(window.location.search);
+            
+            // 1. Verifica se houve algum erro ao voltar do Google/Discord
             if (urlParams.has('error')) {
                 const errorType = urlParams.get('error');
                 if (errorType === 'email_in_use' || errorType === 'account_exists') {
                     showAlert('err_account_exists', true);
+                } else {
+                    showAlert('server_error', true);
                 }
+            }
+
+            // 2. Verifica se o login social foi um SUCESSO (espera receber um ?token=...)
+            if (urlParams.has('token')) {
+                const token = urlParams.get('token');
+                // Salva o token no navegador
+                localStorage.setItem('evollogic_auth_token', token);
+                
+                // Mostra mensagem de sucesso
+                showAlert('reg_success', false);
+                
+                // Limpa a URL para esconder o token por segurança e redireciona
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                setTimeout(() => {
+                    window.location.href = 'profile.html'; // Redireciona para a área logada
+                }, 1500);
             }
 
             window.addEventListener('storage', (e) => {
