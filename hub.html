@@ -54,7 +54,7 @@
             border-radius: 50%; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(8px);
             border: 2px solid rgba(56, 189, 248, 0.3); cursor: pointer; z-index: 100;
             transition: all 0.3s ease; display: flex; justify-content: center; align-items: center;
-            text-decoration: none; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-decoration: none; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); overflow: hidden;
         }
         .profile-btn svg { width: 22px; height: 22px; transition: transform 0.3s ease; }
         .profile-btn:hover { border-color: #38bdf8; transform: scale(1.05) translateY(-2px); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5); }
@@ -164,7 +164,7 @@
         <span></span><span></span><span></span>
     </button>
 
-    <a href="login.html" class="profile-btn hover-sfx click-sfx" title="Acessar Perfil">
+    <a href="login.html" class="profile-btn hover-sfx click-sfx" title="Acessar Perfil" id="userProfileBtn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
@@ -354,13 +354,28 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('evollogic_auth_token');
+            const profileBtn = document.getElementById('userProfileBtn');
+            if (token) {
+                profileBtn.href = 'profile.html';
+                try {
+                    const meRes = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (meRes.ok) {
+                        const myData = await meRes.json();
+                        const displayName = myData.nickname || myData.name || 'User';
+                        const avatarSrc = myData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${displayName}`;
+                        profileBtn.innerHTML = `<img src="${avatarSrc}" alt="Perfil" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+                    } else {
+                        localStorage.removeItem('evollogic_auth_token');
+                    }
+                } catch(e) {}
+            }
 
             applyTranslations(currentLang);
 
-            // ==========================================
-            // LÓGICA DE RASTREAMENTO REAL (ANALYTICS)
-            // ==========================================
             (async () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 let ref = urlParams.get('ref') || 'organico';
@@ -376,9 +391,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ source: ref.toLowerCase(), country: country })
                     });
-                } catch (err) {
-                    console.error('Erro ao contabilizar acesso real:', err);
-                }
+                } catch (err) {}
             })();
 
             window.addEventListener('storage', (e) => {
