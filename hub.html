@@ -105,10 +105,10 @@
         .company-details { display: none; position: relative; z-index: 5; }
         .company-details.active { display: block; animation: fadeIn 0.5s ease-out; }
         
-        /* Ajustado aqui para a letra maiúscula de Sodhupn.png */
-        #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('Sodhupn.png'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
+        /* Ajustado para puxar da pasta IMAGE no GitHub */
+        #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('IMAGE/Sodhupn.png'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
         
-        #tobump-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 230px; background-image: url('https://i.imgur.com/vqPh35y.png'); background-size: cover; background-position: center; border-radius: 16px; opacity: 0.07; z-index: -1; pointer-events: none; }
+        #tobump-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 230px; background-image: url('IMAGE/Tobump.png'); background-size: cover; background-position: center; border-radius: 16px; opacity: 0.07; z-index: -1; pointer-events: none; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
@@ -203,25 +203,34 @@
                     <div class="carousel-viewport">
                         <div class="carousel-container" id="company-carousel">
                             <div class="company-card active hover-sfx click-sfx" data-target="sodhupn">
-                                <img src="Sodhupn.png" alt="Sodhupn"><span>Sodhupn</span>
+                                <img src="IMAGE/Sodhupn.png" alt="Sodhupn"><span>Sodhupn</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="seashare">
-                                <img src="Seashare.png" alt="Seashare"><span>Seashare</span>
+                                <img src="IMAGE/Seashare.png" alt="Seashare"><span>Seashare</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="tobump">
-                                <img src="Tobump.png" alt="ToBump"><span>ToBump</span>
+                                <img src="IMAGE/Tobump.png" alt="ToBump"><span>ToBump</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="toup">
                                 <img src="https://i.imgur.com/31WnC6D.png" alt="ToUp"><span>ToUp</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="scriparadoxall">
-                                <img src="Scriparadoxall.png" alt="Scripard"><span>Scripard</span>
+                                <img src="IMAGE/Scriparadoxall.png" alt="Scripard"><span>Scripard</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="nks">
-                                <img src="nks.png" alt="NKS"><span>NKS</span>
+                                <img src="IMAGE/nks.png" alt="NKS"><span>NKS</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="hapiephone">
                                 <img src="https://i.imgur.com/31WnC6D.png" alt="Hapiephone"><span>Hapiephone</span>
+                            </div>
+                            <div class="company-card hover-sfx click-sfx" data-target="robloxverification">
+                                <img src="IMAGE/Robloxverification.png" alt="Roblox"><span>Roblox Ver.</span>
+                            </div>
+                            <div class="company-card hover-sfx click-sfx" data-target="gravitycoil">
+                                <img src="IMAGE/Gravitycoil.png" alt="Gravity Coil"><span>Gravity Coil</span>
+                            </div>
+                            <div class="company-card hover-sfx click-sfx" data-target="1x1scripter">
+                                <img src="IMAGE/1x1scripter.png" alt="1x1Scripter"><span>1x1Scripter</span>
                             </div>
                         </div>
                     </div>
@@ -253,7 +262,7 @@
                     <h2 class="brand-title">ToBump</h2>
                     <p class="brand-desc" data-i18n="tobump_desc">Cresça seu servidor com bump 100% automático. O bot faz o auto bump direto no dashboard!</p>
                     
-                    <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump Auto Bump Dashboard" style="width: 100%; max-width: 450px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 15px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.4); object-fit: cover;">
+                    <img src="IMAGE/Tobump.png" alt="ToBump Auto Bump Dashboard" style="width: 100%; max-width: 450px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 15px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.4); object-fit: cover;">
                     
                     <div class="meta-container" style="margin-top: 10px;">
                         <p style="color: #e2e8f0; font-size: 1.05rem; font-weight: 500; margin-bottom: 8px;" data-i18n="tobump_alert1">
@@ -294,6 +303,21 @@
                     <p class="brand-desc" data-i18n="hapiephone_desc">Sistema avançado de automação mobile em nuvem, com gerenciamento de dispositivos focado em Termux.</p>
                 </div>
 
+                <div class="company-details" id="robloxverification-info">
+                    <h2 class="brand-title">Roblox Verification</h2>
+                    <p class="brand-desc" data-i18n="roblox_desc">Bot da NKS e realizador de cações (em beta).</p>
+                </div>
+
+                <div class="company-details" id="gravitycoil-info">
+                    <h2 class="brand-title">Gravity Coil</h2>
+                    <p class="brand-desc" data-i18n="gravity_desc">Canal focado em tutoriais no YouTube.</p>
+                </div>
+
+                <div class="company-details" id="1x1scripter-info">
+                    <h2 class="brand-title">1x1Scripter</h2>
+                    <p class="brand-desc" data-i18n="1x1_desc">Canal no YouTube dedicado a demonstração de scripts.</p>
+                </div>
+
                 <div class="company-details" id="placeholder-info">
                     <div class="placeholder-text"><div class="placeholder-icon">📦</div><h2 class="brand-title" style="color: #94a3b8; font-size: 1.5rem;" data-i18n="waiting_selection">Aguardando Seleção...</h2></div>
                 </div>
@@ -321,6 +345,9 @@
                 scripard_desc: "Canal no YouTube e comunidade no Discord dedicados à criação de scripts.",
                 nks_desc: "Serviço de Nicks Verification e automação personalizada para empresas e pessoas físicas.",
                 hapiephone_desc: "Sistema avançado de automação mobile em nuvem, com gerenciamento de dispositivos focado em Termux.",
+                roblox_desc: "Bot da NKS e realizador de cações (em beta).",
+                gravity_desc: "Canal focado em tutoriais no YouTube.",
+                "1x1_desc": "Canal no YouTube dedicado a demonstração de scripts.",
                 waiting_selection: "Aguardando Seleção..."
             },
             EN: {
@@ -340,6 +367,9 @@
                 scripard_desc: "YouTube channel and Discord community dedicated to script creation.",
                 nks_desc: "Nicks Verification service and tailored automation for businesses and individuals.",
                 hapiephone_desc: "Advanced cloud-based mobile automation system, featuring device management focused on Termux.",
+                roblox_desc: "NKS bot and action executor (in beta).",
+                gravity_desc: "Channel focused on YouTube tutorials.",
+                "1x1_desc": "YouTube channel dedicated to script demonstration.",
                 waiting_selection: "Waiting for Selection..."
             },
             ES: {
@@ -359,6 +389,9 @@
                 scripard_desc: "Canal de YouTube y comunidad de Discord dedicados a la creación de scripts.",
                 nks_desc: "Servicio de Nicks Verification y automatización personalizada para empresas e individuos.",
                 hapiephone_desc: "Avanzado sistema de automatización móvil en la nube, con gestión de dispositivos centrada en Termux.",
+                roblox_desc: "Bot de NKS y realizador de acciones (en beta).",
+                gravity_desc: "Canal centrado en tutoriales de YouTube.",
+                "1x1_desc": "Canal de YouTube dedicado a la demostración de scripts.",
                 waiting_selection: "Esperando Selección..."
             }
         };
