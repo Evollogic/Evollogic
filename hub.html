@@ -9,11 +9,12 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
         body { 
-            background: #000; 
+            background: #020617; /* Ajustado para remover a borda preta */
             color: #f8fafc; 
             font-family: 'Poppins', sans-serif; 
             text-align: center; 
             margin: 0; 
+            padding: 0;
             min-height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             overflow-x: hidden;
@@ -30,14 +31,11 @@
         }
 
         #app-wrapper { 
-            width: 100vw; 
+            width: 100%; 
             min-height: 100vh; 
-            display: flex; justify-content: center; padding: 40px 0; box-sizing: border-box; 
+            display: flex; justify-content: center; padding: 20px 0; box-sizing: border-box; 
             background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
-            transform: rotateX(1.5deg) scale(0.98); 
-            transform-style: preserve-3d;
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(56, 189, 248, 0.1);
+            /* Efeito 3D removido para consertar a borda preta no topo */
         }
 
         .menu-btn {
@@ -105,10 +103,10 @@
         .company-details { display: none; position: relative; z-index: 5; }
         .company-details.active { display: block; animation: fadeIn 0.5s ease-out; }
         
-        /* Ajustado para puxar da pasta IMAGE exata */
         #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('IMAGE/Sodhupn.png'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
         
-        #tobump-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 230px; background-image: url('IMAGE/Tobump.png'); background-size: cover; background-position: center; border-radius: 16px; opacity: 0.07; z-index: -1; pointer-events: none; }
+        /* Ajustado para o link permanente do ToBump */
+        #tobump-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 230px; background-image: url('https://i.imgur.com/31WnC6D.png'); background-size: cover; background-position: center; border-radius: 16px; opacity: 0.07; z-index: -1; pointer-events: none; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
@@ -187,7 +185,7 @@
                 </h2>
                 
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed?listType=playlist&list=UUikhw5yi9tW7NjIaWG9KNoQ&autoplay=1&loop=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/videoseries?list=UUikhw5yi9tW7NjIaWG9KNoQ&autoplay=1&loop=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
 
                 <div class="ad-container" id="ad-container-box">
@@ -209,10 +207,10 @@
                                 <img src="IMAGE/Seashare.png" alt="Seashare"><span>Seashare</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="tobump">
-                                <img src="IMAGE/Tobump.png" alt="ToBump"><span>ToBump</span>
+                                <img src="https://i.imgur.com/31WnC6D.png" alt="ToBump"><span>ToBump</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="toup">
-                                <img src="https://i.imgur.com/31WnC6D.png" alt="ToUp"><span>ToUp</span>
+                                <img src="IMAGE/Toup.png" alt="ToUp"><span>ToUp</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="scriparadoxall">
                                 <img src="IMAGE/Scriparadoxall.png" alt="Scripard"><span>Scripard</span>
@@ -262,7 +260,7 @@
                     <h2 class="brand-title">ToBump</h2>
                     <p class="brand-desc" data-i18n="tobump_desc">Cresça seu servidor com bump 100% automático. O bot faz o auto bump direto no dashboard!</p>
                     
-                    <img src="IMAGE/Tobump.png" alt="ToBump Auto Bump Dashboard" style="width: 100%; max-width: 450px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 15px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.4); object-fit: cover;">
+                    <img src="https://i.imgur.com/31WnC6D.png" alt="ToBump Auto Bump Dashboard" style="width: 100%; max-width: 450px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 15px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.4); object-fit: cover;">
                     
                     <div class="meta-container" style="margin-top: 10px;">
                         <p style="color: #e2e8f0; font-size: 1.05rem; font-weight: 500; margin-bottom: 8px;" data-i18n="tobump_alert1">
