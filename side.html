@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sidebar - Configurações</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
 
     <style>
@@ -24,14 +24,14 @@
         }
 
         .bottom-section {
-            background: rgba(15, 23, 42, 0.7); 
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 16px;
-            padding: 20px;
+            padding: 22px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             transform: translateY(0);
@@ -39,7 +39,8 @@
         }
 
         .bottom-section:hover {
-            border-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
         .profile-btn {
@@ -56,21 +57,24 @@
             font-size: 0.95rem;
             border: 1px solid rgba(56, 189, 248, 0.2);
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         .profile-btn:hover {
             background: #38bdf8;
-            color: #0f172a;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+            color: #020617;
+            border-color: #38bdf8;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
             transform: translateY(-2px);
         }
 
         .divider {
             height: 1px;
-            background: rgba(255, 255, 255, 0.08);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
             width: 100%;
             display: none; 
             border-radius: 1px;
+            margin: 4px 0;
         }
 
         .setting-row {
@@ -83,17 +87,18 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #94a3b8;
+            color: #cbd5e1;
             font-size: 0.95rem;
             font-weight: 500;
         }
 
         .lang-selector {
             display: flex;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(15, 23, 42, 0.6);
             border-radius: 10px;
             padding: 4px;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .lang-pill {
@@ -104,16 +109,29 @@
             color: #64748b;
             cursor: pointer;
             transition: all 0.3s ease;
+            user-select: none;
         }
 
         .lang-pill:hover:not(.active) {
             color: #f8fafc;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .lang-pill.active {
-            background: #38bdf8;
-            color: #0f172a;
-            box-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .version-info {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #475569;
+            margin-top: 8px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            user-select: none;
         }
     </style>
 </head>
@@ -121,7 +139,7 @@
 
     <div class="bottom-section">
         
-        <a href="profile.html" class="profile-btn" id="btnProfile" target="_parent">
+        <a href="profile.html" class="profile-btn hover-sfx click-sfx" id="btnProfile" target="_parent">
             <i data-feather="user" style="width: 18px;"></i>
             <span data-i18n="nav_profile">Meu Perfil</span>
         </a>
@@ -134,10 +152,14 @@
                 <span data-i18n="lang_label">Idioma</span>
             </div>
             <div class="lang-selector">
-                <div class="lang-pill" data-lang="PT" onclick="changeLang(this)">PT</div>
-                <div class="lang-pill" data-lang="EN" onclick="changeLang(this)">EN</div>
-                <div class="lang-pill" data-lang="ES" onclick="changeLang(this)">ES</div>
+                <div class="lang-pill hover-sfx click-sfx" data-lang="PT" onclick="changeLang(this)">PT</div>
+                <div class="lang-pill hover-sfx click-sfx" data-lang="EN" onclick="changeLang(this)">EN</div>
+                <div class="lang-pill hover-sfx click-sfx" data-lang="ES" onclick="changeLang(this)">ES</div>
             </div>
+        </div>
+
+        <div class="version-info">
+            Evollogic Hub <span data-i18n="version_text">Versão</span> 1.0.0
         </div>
 
     </div>
@@ -145,6 +167,28 @@
     <script>
         feather.replace();
 
+        // Sistema de Efeitos Sonoros (SFX)
+        const sfx = {
+            hover: new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'),
+            click: new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3')
+        };
+        sfx.hover.volume = 0.15;
+        sfx.click.volume = 0.3;
+
+        function playSound(type) {
+            let sound = sfx[type].cloneNode(); 
+            sound.volume = sfx[type].volume;
+            sound.play().catch(() => {}); 
+        }
+
+        document.querySelectorAll('.hover-sfx').forEach(el => {
+            el.addEventListener('mouseenter', () => playSound('hover'));
+        });
+        document.querySelectorAll('.click-sfx').forEach(el => {
+            el.addEventListener('click', () => playSound('click'));
+        });
+
+        // Lógica de Login
         function checkLoginStatus() {
             const isLogged = localStorage.getItem('evollogic_auth_token');
             if (isLogged) {
@@ -153,19 +197,11 @@
             }
         }
 
+        // Sistema de Idiomas
         const translations = {
-            PT: {
-                lang_label: "Idioma",
-                nav_profile: "Meu Perfil"
-            },
-            EN: {
-                lang_label: "Language",
-                nav_profile: "My Profile"
-            },
-            ES: {
-                lang_label: "Idioma", 
-                nav_profile: "Mi Perfil"
-            }
+            PT: { lang_label: "Idioma", nav_profile: "Meu Perfil", version_text: "Versão" },
+            EN: { lang_label: "Language", nav_profile: "My Profile", version_text: "Version" },
+            ES: { lang_label: "Idioma", nav_profile: "Mi Perfil", version_text: "Versión" }
         };
 
         function applyTranslations(lang) {
@@ -186,7 +222,7 @@
 
             applyTranslations(selectedLang);
             
-            // Dispara um evento global para que a página "pai" (index/login/etc) também atualize o idioma instantaneamente
+            // Dispara um evento global para que a página "pai" (o Hub) atualize instantaneamente
             window.parent.dispatchEvent(new StorageEvent('storage', {
                 key: 'userLanguage',
                 newValue: selectedLang
