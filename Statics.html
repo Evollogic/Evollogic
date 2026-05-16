@@ -90,6 +90,17 @@
         .stat-label { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.95rem; }
         .stat-dot { width: 12px; height: 12px; border-radius: 50%; }
 
+        .select-filter { background: rgba(0,0,0,0.3); color: var(--text-main); border: 1px solid var(--border-glass); padding: 8px 15px; border-radius: 10px; font-family: 'Poppins'; outline: none; cursor: pointer; }
+        .select-filter option { background: var(--bg-card); color: var(--text-main); }
+
+        .source-table-wrapper { overflow-x: auto; margin-top: 10px; }
+        .source-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .source-table th { padding: 12px 15px; color: var(--text-muted); font-weight: 500; font-size: 0.9rem; border-bottom: 1px solid var(--border-glass); }
+        .source-table td { padding: 15px; font-size: 0.95rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .source-table tr:last-child td { border-bottom: none; }
+        .source-name { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .source-icon { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.05); }
+
         @media (max-width: 1024px) { .charts-grid, .charts-grid.equal { grid-template-columns: 1fr; } }
         @media (max-width: 768px) { body { flex-direction: column; } .sidebar { display: none; } .main-content { padding: 20px; } }
     </style>
@@ -119,28 +130,28 @@
             <div class="kpi-card blue">
                 <i data-feather="mouse-pointer" class="kpi-icon"></i>
                 <div class="kpi-title">Acessos Totais (Visitas)</div>
-                <h2 class="kpi-value" id="valVisits">Carregando...</h2>
+                <h2 class="kpi-value" id="valVisits">...</h2>
                 <div class="kpi-desc"><i data-feather="eye" style="width: 14px;"></i> Tráfego geral no site</div>
             </div>
 
             <div class="kpi-card">
                 <i data-feather="users" class="kpi-icon"></i>
                 <div class="kpi-title">Contas Registradas</div>
-                <h2 class="kpi-value" id="valUsers">Carregando...</h2>
+                <h2 class="kpi-value" id="valUsers">...</h2>
                 <div class="kpi-desc"><i data-feather="user-check" style="width: 14px;"></i> Conversões de acesso</div>
             </div>
             
             <div class="kpi-card red">
                 <i data-feather="target" class="kpi-icon"></i>
                 <div class="kpi-title">Maior Fonte de Tráfego</div>
-                <h2 class="kpi-value" id="valSource">Carregando...</h2>
+                <h2 class="kpi-value" id="valSource">...</h2>
                 <div class="kpi-desc"><i data-feather="link" style="width: 14px;"></i> Link mais clicado</div>
             </div>
 
             <div class="kpi-card green">
                 <i data-feather="map-pin" class="kpi-icon"></i>
                 <div class="kpi-title">Principal Região</div>
-                <h2 class="kpi-value" id="valCountry">Carregando...</h2>
+                <h2 class="kpi-value" id="valCountry">...</h2>
                 <div class="kpi-desc"><i data-feather="globe" style="width: 14px;"></i> Concentração de público</div>
             </div>
         </div>
@@ -165,7 +176,7 @@
         <div class="charts-grid equal">
             <div class="chart-card">
                 <div class="chart-header">
-                    <span>Origem de Entrada (UTM / Referência)</span>
+                    <span>Origem de Entrada (Gráfico)</span>
                 </div>
                 <canvas id="sourceChart" height="180"></canvas>
             </div>
@@ -178,6 +189,34 @@
             </div>
         </div>
 
+        <div class="chart-card" style="margin-bottom: 40px;">
+            <div class="chart-header">
+                <span>Detalhamento por Origem (UTM)</span>
+                <select id="sourceFilter" class="select-filter" onchange="filterSourceTable()">
+                    <option value="all">Todas as Origens</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="organico">Orgânico</option>
+                </select>
+            </div>
+            <div class="source-table-wrapper">
+                <table class="source-table">
+                    <thead>
+                        <tr>
+                            <th>Fonte do Link</th>
+                            <th>Total de Acessos</th>
+                            <th>Contas Criadas</th>
+                            <th>Taxa de Conversão</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sourceTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -187,9 +226,9 @@
         Chart.defaults.font.family = "'Poppins', sans-serif";
 
         let trafficChartInstance, authChartInstance, sourceChartInstance, geoChartInstance;
+        let globalSourceDetails = [];
 
         function initCharts(data) {
-            // 1. Gráfico Funil (Acessos vs Cadastros)
             const ctxTraffic = document.getElementById('trafficChart').getContext('2d');
             
             let gradVisits = ctxTraffic.createLinearGradient(0, 0, 0, 400);
@@ -226,7 +265,6 @@
                 options: { responsive: true, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top', labels: { usePointStyle: true } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
             });
 
-            // 2. Gráfico de Login (Doughnut)
             const ctxAuth = document.getElementById('authChart').getContext('2d');
             authChartInstance = new Chart(ctxAuth, {
                 type: 'doughnut',
@@ -248,7 +286,6 @@
                 <div class="stat-row"><div class="stat-label"><div class="stat-dot" style="background: #cbd5e1;"></div> E-mail</div><strong>${data.auth.email}</strong></div>
             `;
 
-            // 3. Gráfico de Origem (Barra Vertical)
             const ctxSource = document.getElementById('sourceChart').getContext('2d');
             sourceChartInstance = new Chart(ctxSource, {
                 type: 'bar',
@@ -257,14 +294,13 @@
                     datasets: [{
                         label: 'Acessos por Origem',
                         data: data.sources.data,
-                        backgroundColor: ['#E1306C', '#FF0000', '#00f2fe', '#34d399', '#94a3b8'],
+                        backgroundColor: ['#E1306C', '#FF0000', '#00f2fe', '#25D366', '#94a3b8'],
                         borderRadius: 6
                     }]
                 },
                 options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
             });
 
-            // 4. Gráfico de Localização/Países (Barra Horizontal)
             const ctxGeo = document.getElementById('geoChart').getContext('2d');
             geoChartInstance = new Chart(ctxGeo, {
                 type: 'bar',
@@ -288,12 +324,52 @@
             document.getElementById('valCountry').innerText = data.topCountry;
         }
 
+        function renderSourceTable(items) {
+            const tbody = document.getElementById('sourceTableBody');
+            tbody.innerHTML = '';
+
+            items.forEach(item => {
+                const convRate = item.visits > 0 ? ((item.users / item.visits) * 100).toFixed(1) : 0;
+                let iconStr = 'link';
+                let colorStr = 'var(--text-muted)';
+                
+                if(item.id === 'instagram') { iconStr = 'instagram'; colorStr = '#E1306C'; }
+                if(item.id === 'youtube') { iconStr = 'youtube'; colorStr = '#FF0000'; }
+                if(item.id === 'tiktok') { iconStr = 'video'; colorStr = '#00f2fe'; }
+                if(item.id === 'whatsapp') { iconStr = 'message-circle'; colorStr = '#25D366'; }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div class="source-name">
+                            <div class="source-icon" style="color: ${colorStr};"><i data-feather="${iconStr}" style="width: 16px;"></i></div>
+                            ${item.name}
+                        </div>
+                    </td>
+                    <td><strong style="color: var(--text-main);">${item.visits.toLocaleString('pt-BR')}</strong></td>
+                    <td>${item.users.toLocaleString('pt-BR')}</td>
+                    <td><span style="color: ${convRate > 10 ? 'var(--success)' : 'var(--primary)'};">${convRate}%</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            feather.replace();
+        }
+
+        window.filterSourceTable = function() {
+            const filterValue = document.getElementById('sourceFilter').value;
+            if (filterValue === 'all') {
+                renderSourceTable(globalSourceDetails);
+            } else {
+                const filtered = globalSourceDetails.filter(s => s.id === filterValue);
+                renderSourceTable(filtered);
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('evollogic_auth_token');
             if (!token) { window.location.href = 'login.html'; return; }
 
             try {
-                // Tenta buscar os dados reais do Backend
                 const response = await fetch('https://evollogic-backend-production.up.railway.app/api/stats', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -301,16 +377,10 @@
                 let dashboardData;
 
                 if (response.ok) {
-                    // Se o backend enviar os novos dados de tracking, ele usa
                     dashboardData = await response.json();
                 } else {
-                    // FALLBACK: Se o backend ainda não tiver a rota de Localização e Origem pronta,
-                    // carrega essa amostra para você ver como a UI fica perfeita.
                     dashboardData = {
-                        totalUsers: 1452,
-                        totalVisits: 12450,
-                        topSource: "Instagram",
-                        topCountry: "Brasil",
+                        totalUsers: 1452, totalVisits: 12450, topSource: "Instagram", topCountry: "Brasil",
                         auth: { discord: 650, google: 580, email: 222 },
                         timeline: {
                             labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5', 'Atual'],
@@ -324,12 +394,21 @@
                         geo: {
                             labels: ['Brasil', 'Portugal', 'EUA', 'Angola', 'Outros'],
                             data: [8500, 2100, 950, 600, 300]
-                        }
+                        },
+                        sourceDetails: [
+                            { id: 'instagram', name: 'Instagram', visits: 5200, users: 650 },
+                            { id: 'youtube', name: 'YouTube', visits: 3100, users: 380 },
+                            { id: 'tiktok', name: 'TikTok', visits: 2400, users: 210 },
+                            { id: 'whatsapp', name: 'WhatsApp', visits: 1200, users: 150 },
+                            { id: 'organico', name: 'Orgânico', visits: 550, users: 62 }
+                        ]
                     };
                 }
                 
+                globalSourceDetails = dashboardData.sourceDetails;
                 updateUI(dashboardData);
                 initCharts(dashboardData);
+                renderSourceTable(globalSourceDetails);
 
             } catch (error) {
                 console.error("Erro:", error);
