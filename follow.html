@@ -182,7 +182,7 @@
 <body>
 
     <div class="container">
-        <a href="profile.html" class="back-link">
+        <a href="profile.html" id="backLink" class="back-link">
             <i data-feather="arrow-left"></i> <span data-i18n="back_profile">Voltar ao perfil</span>
         </a>
 
@@ -243,11 +243,19 @@
         }
 
         let currentTab = 'followers';
-        let currentUserData = null;
+        let currentUserData = null; // Dados do usuário logado (para saber se já segue)
+        let profileData = null;     // Dados de quem estamos visualizando
 
         const urlParams = new URLSearchParams(window.location.search);
+        const targetUserId = urlParams.get('id');
         const initialTab = urlParams.get('tab');
+        
         if (initialTab === 'following') currentTab = 'following';
+
+        // Ajusta o link de voltar para cair no perfil correto
+        if (targetUserId) {
+            document.getElementById('backLink').href = `profile.html?id=${targetUserId}`;
+        }
 
         async function switchTab(tab) {
             currentTab = tab;
@@ -266,7 +274,8 @@
             const listElement = document.getElementById('userList');
             listElement.innerHTML = '';
 
-            const list = (currentTab === 'followers') ? currentUserData.followers : currentUserData.following;
+            // A lista que vamos mostrar depende se estamos vendo as nossas conexões ou as de outra pessoa
+            const list = (currentTab === 'followers') ? profileData.followers : profileData.following;
             const lang = localStorage.getItem('userLanguage') || 'PT';
             const t = translations[lang];
 
@@ -282,23 +291,27 @@
             }
 
             list.forEach(user => {
-                const isPopulated = typeof user === 'object' && user !== null && user.name;
+                // Nova validação de Povoamento BLINDADA contra undefined
+                const isPopulated = typeof user === 'object' && user !== null;
                 
-                const userId = isPopulated ? user._id : user;
-                const name = isPopulated ? user.name : 'Usuário Oculto';
+                const userId = isPopulated ? (user._id || user.id) : user;
+                const name = (isPopulated && user.name) ? user.name : 'Usuário Oculto';
                 const avatar = (isPopulated && user.avatar) ? user.avatar : `https://api.dicebear.com/7.x/avataaars/svg?seed=${userId}`;
                 const nickname = (isPopulated && user.nickname) ? user.nickname : 'membro';
 
                 const item = document.createElement('div');
                 item.className = 'user-item';
 
+                // Verifica se o usuário LOGADO segue a pessoa desta linha
                 const alreadyFollowing = currentUserData.following && currentUserData.following.some(f => {
-                    const fId = typeof f === 'object' ? f._id : f;
+                    const fId = typeof f === 'object' ? (f._id || f.id) : f;
                     return String(fId) === String(userId);
                 });
 
                 let buttonHtml = '';
-                if (currentTab === 'following') {
+                
+                // Se eu estiver olhando o MEU perfil e na aba "Seguindo", é sempre botão "Remover"
+                if (!targetUserId && currentTab === 'following') {
                     buttonHtml = `<button class="action-btn btn-remove" onclick="handleAction('${userId}', 'unfollow', event)">${t.btn_remove}</button>`;
                 } else {
                     if (alreadyFollowing) {
@@ -328,20 +341,18 @@
             window.location.href = `profile.html?id=${id}`;
         }
 
-        async function handleAction(targetId, type, event) {
-            // Isso impede que o clique no botão ative também o clique na div do usuário
+        async function handleAction(idDaAcao, type, event) {
             if(event) event.stopPropagation(); 
             
             const token = localStorage.getItem('evollogic_auth_token');
             try {
-                const response = await fetch(`https://evollogic-backend-production.up.railway.app/api/follow/${targetId}`, {
+                const response = await fetch(`https://evollogic-backend-production.up.railway.app/api/follow/${idDaAcao}`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
                 if (response.ok) {
-                    // MÁGICA AQUI: Redireciona para o perfil da pessoa loga após seguir/remover!
-                    window.location.href = `profile.html?id=${targetId}`;
+                    window.location.href = `profile.html?id=${idDaAcao}`;
                 } else {
                     console.error("Erro na resposta do servidor.");
                 }
@@ -355,17 +366,38 @@
             if (!token) { window.location.href = 'login.html'; return; }
 
             try {
-                const response = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', {
+                // 1. Busca os dados de quem está LOGADO
+                const responseMe = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', {
                     method: 'GET',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                if (response.ok) {
-                    currentUserData = await response.json();
-                    switchTab(currentTab); 
-                } else {
+                if (!responseMe.ok) {
                     window.location.href = 'login.html';
+                    return;
                 }
+                
+                currentUserData = await responseMe.json();
+                profileData = currentUserData; // Por padrão, mostramos as nossas conexões
+
+                // 2. Se a URL tiver um ID, buscamos as conexões dessa OUTRA pessoa
+                if (targetUserId) {
+                    const responseTarget = await fetch(`https://evollogic-backend-production.up.railway.app/api/user/${targetUserId}`, {
+                        method: 'GET',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+
+                    if (responseTarget.ok) {
+                        profileData = await responseTarget.json();
+                    } else {
+                        alert("Não foi possível carregar as conexões deste usuário.");
+                        window.location.href = 'profile.html';
+                        return;
+                    }
+                }
+
+                switchTab(currentTab); 
+
             } catch (error) {
                 console.error("Erro ao carregar dados:", error);
             }
@@ -378,7 +410,7 @@
             window.addEventListener('storage', (e) => {
                 if (e.key === 'userLanguage') {
                     applyTranslations();
-                    if(currentUserData) renderList(); 
+                    if(profileData) renderList(); 
                 }
             });
         });
