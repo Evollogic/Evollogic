@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evollogic - Estatísticas</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #020617;
+            --bg-card: #151c2c;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #8b5cf6;
+            --primary-hover: #a78bfa;
+            --secondary: #38bdf8;
+            --success: #34d399;
+            --danger: #f87171;
+            --discord: #5865F2;
+            --google: #ea4335;
+            --email: #cbd5e1;
+            --insta: #E1306C;
+            --tiktok: #00f2fe;
+            --youtube: #FF0000;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, var(--bg-dark) 100%);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, rgba(0,0,0,0) 70%);
+            top: -200px;
+            left: -200px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .sidebar {
+            width: 260px; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-glass); display: flex; flex-direction: column;
+            padding: 30px 20px; z-index: 20; height: 100vh; box-sizing: border-box;
+            position: sticky; top: 0;
+        }
+
+        .brand { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; padding-left: 10px; }
+        .brand img { width: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        .brand h2 { font-size: 1.2rem; font-weight: 700; margin: 0; }
+
+        .nav-menu { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+        .nav-link { display: flex; align-items: center; gap: 15px; padding: 12px 15px; border-radius: 12px; color: var(--text-muted); text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background: rgba(139, 92, 246, 0.1); color: var(--primary); }
+
+        .main-content { flex: 1; padding: 40px; z-index: 1; box-sizing: border-box; max-width: 1200px; margin: 0 auto; animation: fadeIn 0.6s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .dashboard-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; }
+        .dashboard-header h1 { font-size: 2rem; margin: 0 0 5px 0; color: var(--primary-hover); }
+        .dashboard-header p { margin: 0; color: var(--text-muted); }
+
+        .filter-group { display: flex; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 5px; border: 1px solid var(--border-glass); }
+        .filter-btn { background: transparent; border: none; color: var(--text-muted); padding: 8px 20px; border-radius: 8px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .filter-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); }
+
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .kpi-card { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 20px; padding: 25px; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
+        .kpi-card.green::before { background: var(--success); }
+        .kpi-card.blue::before { background: var(--secondary); }
+        .kpi-card.red::before { background: var(--danger); }
+        
+        .kpi-icon { position: absolute; right: -10px; bottom: -10px; width: 80px; height: 80px; opacity: 0.05; color: #fff; }
+        .kpi-title { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px; font-weight: 500; }
+        .kpi-value { font-size: 2.2rem; font-weight: 700; color: var(--text-main); margin: 0; }
+        .kpi-trend { font-size: 0.8rem; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+
+        .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .chart-card { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .chart-header { margin-bottom: 20px; font-size: 1.1rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+
+        .stats-list { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .stat-row { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--border-glass); }
+        .stat-row:last-child { border: none; padding-bottom: 0; }
+        .stat-label { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.9rem; }
+        .stat-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+        @media (max-width: 900px) {
+            .charts-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { display: none; }
+            .main-content { padding: 20px; }
+            .dashboard-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic">
+            <h2>Evollogic</h2>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link"><i data-feather="grid"></i> Hub Central</a></li>
+            <li><a href="profile.html" class="nav-link"><i data-feather="user"></i> Meu Perfil</a></li>
+            <li><a href="Statics.html" class="nav-link active"><i data-feather="bar-chart-2"></i> Estatísticas</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        
+        <div class="dashboard-header">
+            <div>
+                <h1 data-i18n="dash_title">Painel de Controle</h1>
+                <p data-i18n="dash_desc">Visão geral e Origem de Tráfego</p>
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn active" onclick="setFilter('month', this)" data-i18n="filter_month">Mês</button>
+                <button class="filter-btn" onclick="setFilter('year', this)" data-i18n="filter_year">Ano</button>
+                <button class="filter-btn" onclick="setFilter('global', this)" data-i18n="filter_global">Global</button>
+            </div>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <i data-feather="users" class="kpi-icon"></i>
+                <div class="kpi-title" data-i18n="kpi_total">Usuários Totais</div>
+                <h2 class="kpi-value" id="valUsers">0</h2>
+                <div class="kpi-trend trend-up"><i data-feather="trending-up" style="width: 14px;"></i> <span id="trendUsers">+0%</span></div>
+            </div>
+            
+            <div class="kpi-card green">
+                <i data-feather="activity" class="kpi-icon"></i>
+                <div class="kpi-title" data-i18n="kpi_eng">Engajamento (Média Seguidores)</div>
+                <h2 class="kpi-value" id="valEng">0</h2>
+                <div class="kpi-trend trend-up"><i data-feather="trending-up" style="width: 14px;"></i> Conexões ativas</div>
+            </div>
+
+            <div class="kpi-card blue">
+                <i data-feather="star" class="kpi-icon"></i>
+                <div class="kpi-title" data-i18n="kpi_vip">Membros VIP/Admin</div>
+                <h2 class="kpi-value" id="valVip">0</h2>
+                <div class="kpi-trend trend-up"><i data-feather="award" style="width: 14px;"></i> Mode > 0</div>
+            </div>
+
+            <div class="kpi-card red">
+                <i data-feather="link" class="kpi-icon"></i>
+                <div class="kpi-title" data-i18n="kpi_priv">Maior Fonte de Tráfego</div>
+                <h2 class="kpi-value" id="valSource">Insta</h2>
+                <div class="kpi-trend trend-up"><i data-feather="mouse-pointer" style="width: 14px;"></i> Mais conversões</div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span data-i18n="chart_growth">Crescimento da Plataforma</span>
+                </div>
+                <canvas id="growthChart" height="100"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span data-i18n="chart_auth">Métodos de Login</span>
+                </div>
+                <canvas id="authChart" height="200"></canvas>
+                
+                <div class="stats-list">
+                    <div class="stat-row">
+                        <div class="stat-label"><div class="stat-dot" style="background: var(--discord);"></div> Discord</div>
+                        <strong id="authDiscord">0%</strong>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label"><div class="stat-dot" style="background: var(--google);"></div> Google</div>
+                        <strong id="authGoogle">0%</strong>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label"><div class="stat-dot" style="background: var(--email);"></div> E-mail</div>
+                        <strong id="authEmail">0%</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card" style="grid-column: 1 / -1;">
+                <div class="chart-header">
+                    <span data-i18n="chart_source">Origem de Tráfego (Rastreamento de Links)</span>
+                    <i data-feather="target" style="color: var(--text-muted); width: 16px;"></i>
+                </div>
+                <canvas id="sourceChart" height="80"></canvas>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        feather.replace();
+
+        let growthChartInstance = null;
+        let authChartInstance = null;
+        let sourceChartInstance = null;
+
+        // Dados simulados. Quando o backend tiver a rota /api/stats, você substitui isso pelo Fetch!
+        const dummyData = {
+            month: { 
+                users: 142, eng: 4.2, vip: 12, topSource: 'Instagram', 
+                discord: 45, google: 35, email: 20, 
+                line: [10, 25, 45, 80, 110, 142],
+                sources: [60, 40, 25, 17] // Insta, TikTok, YouTube, Orgânico
+            },
+            year: { 
+                users: 1850, eng: 12.5, vip: 150, topSource: 'TikTok', 
+                discord: 50, google: 40, email: 10, 
+                line: [120, 250, 400, 700, 1100, 1850],
+                sources: [500, 800, 300, 250] 
+            },
+            global: { 
+                users: 5240, eng: 24.1, vip: 420, topSource: 'Instagram', 
+                discord: 55, google: 35, email: 10, 
+                line: [500, 1200, 2500, 3800, 4500, 5240],
+                sources: [2100, 1500, 800, 840] 
+            }
+        };
+
+        function initCharts() {
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.font.family = "'Poppins', sans-serif";
+
+            // 1. Gráfico de Crescimento
+            const ctxGrowth = document.getElementById('growthChart').getContext('2d');
+            let gradient = ctxGrowth.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(139, 92, 246, 0.5)');
+            gradient.addColorStop(1, 'rgba(139, 92, 246, 0.0)');
+
+            growthChartInstance = new Chart(ctxGrowth, {
+                type: 'line',
+                data: {
+                    labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5', 'Atual'],
+                    datasets: [{
+                        label: 'Novos Usuários',
+                        data: dummyData.month.line,
+                        borderColor: '#8b5cf6',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#0f172a',
+                        pointBorderColor: '#8b5cf6',
+                        pointBorderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+            });
+
+            // 2. Gráfico de Login (Pizza/Doughnut)
+            const ctxAuth = document.getElementById('authChart').getContext('2d');
+            authChartInstance = new Chart(ctxAuth, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Discord', 'Google', 'E-mail'],
+                    datasets: [{
+                        data: [dummyData.month.discord, dummyData.month.google, dummyData.month.email],
+                        backgroundColor: ['#5865F2', '#ea4335', '#cbd5e1'],
+                        borderWidth: 0, hoverOffset: 4
+                    }]
+                },
+                options: { responsive: true, cutout: '75%', plugins: { legend: { display: false } } }
+            });
+
+            // 3. NOVO: Gráfico de Origem de Tráfego (Barras)
+            const ctxSource = document.getElementById('sourceChart').getContext('2d');
+            sourceChartInstance = new Chart(ctxSource, {
+                type: 'bar',
+                data: {
+                    labels: ['Instagram (?ref=insta)', 'TikTok (?ref=tiktok)', 'YouTube (?ref=yt)', 'Direto / Orgânico'],
+                    datasets: [{
+                        label: 'Cadastros por Origem',
+                        data: dummyData.month.sources,
+                        backgroundColor: ['#E1306C', '#00f2fe', '#FF0000', '#94a3b8'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        function updateUI(filter) {
+            const data = dummyData[filter];
+
+            // Atualiza KPIs
+            document.getElementById('valUsers').innerText = data.users;
+            document.getElementById('valEng').innerText = data.eng;
+            document.getElementById('valVip').innerText = data.vip;
+            document.getElementById('valSource').innerText = data.topSource;
+            document.getElementById('trendUsers').innerText = '+' + Math.floor(Math.random() * 20 + 5) + '%';
+
+            // Atualiza Textos de Login
+            document.getElementById('authDiscord').innerText = data.discord + '%';
+            document.getElementById('authGoogle').innerText = data.google + '%';
+            document.getElementById('authEmail').innerText = data.email + '%';
+
+            const labelsMap = {
+                month: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5', 'Atual'],
+                year: ['Jan', 'Mar', 'Mai', 'Jul', 'Set', 'Nov'],
+                global: ['2022', '2023', '2024', '2025', '2026', 'Atual']
+            };
+
+            // Atualiza Gráficos
+            growthChartInstance.data.labels = labelsMap[filter];
+            growthChartInstance.data.datasets[0].data = data.line;
+            growthChartInstance.update();
+
+            authChartInstance.data.datasets[0].data = [data.discord, data.google, data.email];
+            authChartInstance.update();
+
+            sourceChartInstance.data.datasets[0].data = data.sources;
+            sourceChartInstance.update();
+        }
+
+        function setFilter(filter, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            updateUI(filter);
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('evollogic_auth_token');
+            if (!token) { window.location.href = 'login.html'; return; }
+
+            try {
+                const response = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) throw new Error('Sessão expirada');
+                
+                const user = await response.json();
+                
+                // Trava de segurança: Apenas Mode > 2
+                if (parseInt(user.mode || 0) <= 2) {
+                    alert('Acesso negado. Apenas administradores.');
+                    window.location.href = 'profile.html';
+                    return;
+                }
+
+                initCharts();
+                updateUI('month');
+
+            } catch (error) {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>
