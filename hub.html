@@ -119,7 +119,6 @@
         .meta-subtitle { color: #cbd5e1; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;}
         .meta-goal { font-size: 1.5rem; color: #818cf8; font-weight: 700; margin: 0;}
         
-        /* ------------- NOVO DESIGN DOS BOTÕES (MOBILE FRIENDLY) ------------- */
         .social-buttons-container { display: flex; gap: 12px; margin-top: 25px; flex-wrap: wrap; justify-content: flex-start; }
         
         .btn-modern { 
@@ -156,7 +155,6 @@
             color: #020617;
         }
         .social-icon { width: 22px; height: 22px; object-fit: contain; }
-        /* ---------------------------------------------------------------------- */
         
         .placeholder-text { text-align: center; color: #64748b; padding: 40px 0; }
         .placeholder-icon { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
@@ -214,7 +212,7 @@
                 </h2>
                 
                 <div class="video-container">
-                    <iframe id="tv-frame" src="https://www.youtube.com/embed/videoseries?list=UUikhw5yi9tW7NjIaWG9KNoQ&autoplay=1&loop=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe id="tv-frame" src="https://www.youtube-nocookie.com/embed?listType=playlist&list=UUikhw5yi9tW7NjIaWG9KNoQ&autoplay=1&mute=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
 
                 <div class="ad-container" id="ad-container-box">
@@ -276,7 +274,7 @@
                     <div class="social-buttons-container">
                         <a href="mailto:Sodhupn@gmail.com" class="btn-modern hover-sfx click-sfx"><span>📧</span> <span data-i18n="contact">Contato</span></a>
                         <a href="#" class="btn-modern hover-sfx click-sfx"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" class="social-icon"> Discord</a>
-                        <a href="https://www.instagram.com/sodhupn?igsh=MWF5cGkyNjZkMGQwMQ==" class="btn-modern hover-sfx click-sfx"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="social-icon" style="filter: brightness(0) invert(1);"> Instagram</a>
+                        <a href="https://www.instagram.com/sodhupn?igsh=MWF5cGkyNjZkMGQwMQ==" class="btn-modern hover-sfx click-sfx"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" class="social-icon" style="filter: brightness(0) invert(1);"> Instagram</a>
                     </div>
                 </div>
 
@@ -520,7 +518,6 @@
             const details = document.querySelectorAll('.company-details');
             const cards = document.querySelectorAll('.company-card');
 
-            // --- LÓGICA DA TV INDEPENDENTE ---
             const tvPlaylists = [
                 { id: "UUikhw5yi9tW7NjIaWG9KNoQ", title: "Sodhupn TV", badge: {PT: "Destaque", EN: "Featured", ES: "Destacado"}, isAd: false, text: {PT: "🔥 Novidade: O novo sistema da Sodhupn já está no ar!", EN: "🔥 News: The new Sodhupn system is live!", ES: "🔥 Novedad: ¡El nuevo sistema de Sodhupn ya está activo!"} },
                 { id: "UUpqcsjk80XDpTg1aSFCE1Rg", title: "Gravity Coil TV", badge: {PT: "Tutoriais", EN: "Tutorials", ES: "Tutoriales"}, isAd: false, text: {PT: "🚀 Aprenda a criar os melhores scripts no Roblox!", EN: "🚀 Learn to create the best Roblox scripts!", ES: "🚀 ¡Aprende a crear los mejores scripts en Roblox!"} },
@@ -555,7 +552,6 @@
             function rotateTV() {
                 let currentData;
                 
-                // Se o usuário clicou em uma empresa com YouTube, a TV consome a "preferência" agora
                 if (nextQueuedPlaylist) {
                     currentData = {
                         id: nextQueuedPlaylist,
@@ -574,15 +570,14 @@
                     scheduleIndex = (scheduleIndex + 1) % tvPlaylists.length;
                 }
 
-                document.getElementById('tv-frame').src = `https://www.youtube.com/embed/videoseries?list=${currentData.id}&autoplay=1&mute=1`;
+                // CORREÇÃO DA TV: Usa 'youtube-nocookie' e 'listType=playlist' para evitar bloqueios no celular!
+                document.getElementById('tv-frame').src = `https://www.youtube-nocookie.com/embed?listType=playlist&list=${currentData.id}&autoplay=1&mute=1&playsinline=1`;
                 triggerTvEvent(currentData);
             }
 
             rotateTV(); 
-            // A TV gira sozinha a cada 45 segundos, ignorando se o usuário está lendo os botões
             tvRotationInterval = setInterval(rotateTV, 45000); 
 
-            // --- LÓGICA DE SELEÇÃO DAS EMPRESAS ---
             track.onclick = (e) => {
                 const card = e.target.closest('.company-card');
                 if (!card) return;
@@ -595,11 +590,15 @@
                 const targetInfo = document.getElementById(`${targetId}-info`) || document.getElementById('placeholder-info');
                 targetInfo.classList.add('active');
 
-                // Se a empresa selecionada tiver YouTube, coloca na fila da TV!
                 const ytId = card.getAttribute('data-yt');
                 if (ytId) {
                     nextQueuedPlaylist = ytId;
                     nextQueuedTitle = card.querySelector('span').innerText;
+                    
+                    // MELHORIA DE UX: Atualiza a TV instantaneamente quando clica (cancela e reinicia o timer)
+                    clearInterval(tvRotationInterval);
+                    rotateTV();
+                    tvRotationInterval = setInterval(rotateTV, 45000);
                 }
             };
 
