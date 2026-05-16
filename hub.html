@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evollogic - Hub Central</title>
     
-    <link rel="preload" as="image" href="IMAGE/Sodhupn.png?v=3">
-    <link rel="preload" as="image" href="IMAGE/Seashare.png?v=3">
+    <link rel="preload" as="image" href="IMAGE/Sodhupn.png?v=4">
+    <link rel="preload" as="image" href="IMAGE/Seashare.png?v=4">
     <link rel="preload" as="image" href="https://i.imgur.com/vqPh35y.png">
-    <link rel="preload" as="image" href="IMAGE/Scriparadoxall.png?v=3">
+    <link rel="preload" as="image" href="IMAGE/Scriparadoxall.png?v=4">
+    <link rel="preload" as="image" href="IMAGE/Hapiephone.png?v=4">
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -83,6 +84,7 @@
         .dash-section { margin-bottom: 40px; text-align: left; background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .section-title { font-size: 1.3rem; margin-bottom: 20px; font-weight: 600; color: #e2e8f0; display: flex; align-items: center; gap: 10px; }
         .badge { background: rgba(56, 189, 248, 0.1); color: #38bdf8; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid rgba(56, 189, 248, 0.2); transition: 0.3s; }
+        
         .badge.ad-style { background: rgba(234, 179, 8, 0.1); color: #eab308; border-color: rgba(234, 179, 8, 0.3); }
 
         .carousel-wrapper { display: flex; align-items: center; gap: 15px; position: relative; width: 100%; }
@@ -92,7 +94,9 @@
         .carousel-container { display: flex; gap: 20px; width: max-content; }
         
         .company-card { width: 140px; height: 160px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); flex-shrink: 0; padding: 10px; box-sizing: border-box; }
+        
         .company-card img { max-width: 65px; height: 65px; object-fit: contain; margin-bottom: 12px; transition: 0.3s; border-radius: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
+        
         .company-card[data-target="sodhupn"] img { border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); }
         .company-card span { color: #94a3b8; font-size: 0.9rem; font-weight: 500; transition: 0.3s;}
         
@@ -104,38 +108,60 @@
         .company-details { display: none; position: relative; z-index: 5; }
         .company-details.active { display: block; animation: fadeIn 0.5s ease-out; }
         
-        #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('IMAGE/Sodhupn.png?v=3'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
+        #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('IMAGE/Sodhupn.png?v=4'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
         #tobump-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 230px; background-image: url('https://i.imgur.com/vqPh35y.png'); background-size: cover; background-position: center; border-radius: 16px; opacity: 0.07; z-index: -1; pointer-events: none; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
         .brand-title { color: #f8fafc; font-size: 1.8rem; margin-bottom: 10px; font-weight: 700; }
-        .brand-desc { color: #94a3b8; line-height: 1.7; font-size: 1.05rem; max-width: 100%; }
+        .brand-desc { color: #94a3b8; line-height: 1.7; font-size: 1.05rem; max-width: 90%; }
         .meta-container { margin-top: 25px; }
         .meta-subtitle { color: #cbd5e1; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;}
         .meta-goal { font-size: 1.5rem; color: #818cf8; font-weight: 700; margin: 0;}
         
-        /* Botões Modernos e Responsivos */
-        .social-buttons-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 30px; align-items: center; justify-content: flex-start; }
+        /* ------------- NOVO DESIGN DOS BOTÕES (MOBILE FRIENDLY) ------------- */
+        .social-buttons-container { display: flex; gap: 12px; margin-top: 25px; flex-wrap: wrap; justify-content: flex-start; }
         
-        .social-btn, .contact-email { 
-            flex: 1 1 auto; min-width: 140px; text-align: center;
-            padding: 12px 20px; font-family: 'Poppins', sans-serif; border-radius: 12px; transition: all 0.3s ease; 
-            font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); color: #f8fafc; text-decoration: none; cursor: pointer; 
+        .btn-modern { 
+            padding: 12px 22px; 
+            border-radius: 14px; 
+            text-decoration: none; 
+            font-size: 0.95rem; 
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            color: #f8fafc;
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease; 
         }
-        .social-btn:hover, .contact-email:hover { background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.2); color: #fff;}
-        
-        .primary-btn { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); font-weight: 600; }
-        .primary-btn:hover { background: #38bdf8; color: #020617; }
-        
-        .social-icon { width: 20px; height: 20px; object-fit: contain; }
-        .contact-email a { color: inherit; text-decoration: none; }
+        .btn-modern:hover { 
+            background: rgba(56, 189, 248, 0.15); 
+            border-color: #38bdf8; 
+            color: #38bdf8;
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+        }
+        .btn-modern.primary {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+            color: #38bdf8;
+            font-weight: 600;
+        }
+        .btn-modern.primary:hover {
+            background: #38bdf8;
+            color: #020617;
+        }
+        .social-icon { width: 22px; height: 22px; object-fit: contain; }
+        /* ---------------------------------------------------------------------- */
         
         .placeholder-text { text-align: center; color: #64748b; padding: 40px 0; }
         .placeholder-icon { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
 
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #000; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; border: 1px solid rgba(56, 189, 248, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #000; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
         .ad-container { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; margin-top: 15px; padding: 12px 20px; display: flex; align-items: center; gap: 15px; position: relative; overflow: hidden; transition: 0.3s; }
@@ -145,11 +171,13 @@
         .ad-content { color: #e2e8f0; font-size: 0.95rem; font-weight: 500; transition: opacity 0.4s ease; text-align: left; flex: 1; }
         
         @keyframes pulseAd { 0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(234, 179, 8, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); } }
+
     </style>
 </head>
 <body>
 
     <div class="screen-curve-overlay"></div>
+
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="sidebar" id="sidebar">
@@ -186,7 +214,7 @@
                 </h2>
                 
                 <div class="video-container">
-                    <iframe id="main-tv" src="https://www.youtube.com/embed/videoseries?list=UUikhw5yi9tW7NjIaWG9KNoQ&autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe id="tv-frame" src="https://www.youtube.com/embed/videoseries?list=UUikhw5yi9tW7NjIaWG9KNoQ&autoplay=1&loop=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
 
                 <div class="ad-container" id="ad-container-box">
@@ -201,37 +229,35 @@
                     <button id="scroll-left" class="scroll-btn hover-sfx slide-sfx">&#10094;</button>
                     <div class="carousel-viewport">
                         <div class="carousel-container" id="company-carousel">
-                            <!-- Adicionado data-yt para empresas com YouTube -->
                             <div class="company-card active hover-sfx click-sfx" data-target="sodhupn" data-yt="UUikhw5yi9tW7NjIaWG9KNoQ">
-                                <img src="IMAGE/Sodhupn.png?v=3" alt="Sodhupn" loading="eager"><span>Sodhupn</span>
+                                <img src="IMAGE/Sodhupn.png?v=4" alt="Sodhupn" loading="eager"><span>Sodhupn</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="seashare">
-                                <img src="IMAGE/Seashare.png?v=3" alt="Seashare" loading="eager"><span>Seashare</span>
+                                <img src="IMAGE/Seashare.png?v=4" alt="Seashare" loading="eager"><span>Seashare</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="tobump">
                                 <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump" loading="eager"><span>ToBump</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="toup">
-                                <img src="IMAGE/Toup.png?v=3" alt="ToUp" loading="eager"><span>ToUp</span>
+                                <img src="IMAGE/Toup.png?v=4" alt="ToUp" loading="eager"><span>ToUp</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="scriparadoxall">
-                                <img src="IMAGE/Scriparadoxall.png?v=3" alt="Scripard" loading="eager"><span>Scripard</span>
+                                <img src="IMAGE/Scriparadoxall.png?v=4" alt="Scripard" loading="eager"><span>Scripard</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="nks">
-                                <img src="IMAGE/nks.png?v=3" alt="NKS" loading="eager"><span>NKS</span>
+                                <img src="IMAGE/nks.png?v=4" alt="NKS" loading="eager"><span>NKS</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="hapiephone">
-                                <img src="https://i.imgur.com/31WnC6D.png" alt="Hapiephone" loading="eager"><span>Hapiephone</span>
+                                <img src="IMAGE/Hapiephone.png?v=4" alt="Hapiephone" loading="eager"><span>Hapiephone</span>
                             </div>
-                            <div class="company-card hover-sfx click-sfx" data-target="robloxverification">
-                                <img src="IMAGE/Robloxverification.png?v=3" alt="Roblox" loading="eager"><span>Roblox Ver.</span>
-                            </div>
-                            <!-- Canais de Youtube configurados -->
                             <div class="company-card hover-sfx click-sfx" data-target="gravitycoil" data-yt="PL6RohxnHSenT9CK89">
-                                <img src="IMAGE/Gravitycoil.png?v=3" alt="Gravity Coil" loading="eager"><span>Gravity Coil</span>
+                                <img src="IMAGE/Gravitycoil.png?v=4" alt="Gravity Coil" loading="eager"><span>Gravity Coil</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="1x1scripter" data-yt="PLCNh97K2G2yHaeosF">
-                                <img src="IMAGE/1x1scripter.png?v=3" alt="1x1Scripter" loading="eager"><span>1x1Scripter</span>
+                                <img src="IMAGE/1x1scripter.png?v=4" alt="1x1Scripter" loading="eager"><span>1x1Scripter</span>
+                            </div>
+                            <div class="company-card hover-sfx click-sfx" data-target="robloxverification">
+                                <img src="IMAGE/Robloxverification.png?v=4" alt="Roblox" loading="eager"><span>Roblox Ver.</span>
                             </div>
                         </div>
                     </div>
@@ -243,67 +269,74 @@
                 
                 <div class="company-details active" id="sodhupn-info">
                     <h2 class="brand-title">Sodhupn</h2>
-                    <p class="brand-desc" data-i18n="sodhupn_desc">Referência na venda de produtos digitais com excelência e segurança em marketplaces de grande porte. Foco absoluto em entrega de alto padrão e confiança para o cliente.</p>
+                    <p class="brand-desc" data-i18n="sodhupn_desc">Loja dedicada à venda de produtos digitais, operando com excelência em 3 grandes marketplaces (GG Max, Eldorado e Desapego Games). Nosso foco absoluto é oferecer segurança e entrega de alto padrão para nossos clientes.</p>
                     <div class="meta-container">
-                        <h3 class="meta-subtitle" data-i18n="sodhupn_vision_title">Visão para 2026</h3><p class="meta-goal" data-i18n="sodhupn_vision_goal">Unificação Estratégica de Lojas</p>
+                        <h3 class="meta-subtitle" data-i18n="sodhupn_vision_title">Nossa Visão para 2026</h3><p class="meta-goal" data-i18n="sodhupn_vision_goal">Unificação de 14 Lojas</p>
                     </div>
                     <div class="social-buttons-container">
-                        <div class="contact-email hover-sfx click-sfx">📧 <a href="mailto:Sodhupn@gmail.com">Sodhupn@gmail.com</a></div>
-                        <a href="#" class="social-btn hover-sfx click-sfx"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" class="social-icon">Discord</a>
-                        <a href="https://www.instagram.com/sodhupn?igsh=MWF5cGkyNjZkMGQwMQ==" class="social-btn hover-sfx click-sfx"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="social-icon" style="filter: brightness(0) invert(1);">Instagram</a>
+                        <a href="mailto:Sodhupn@gmail.com" class="btn-modern hover-sfx click-sfx"><span>📧</span> <span data-i18n="contact">Contato</span></a>
+                        <a href="#" class="btn-modern hover-sfx click-sfx"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" class="social-icon"> Discord</a>
+                        <a href="https://www.instagram.com/sodhupn?igsh=MWF5cGkyNjZkMGQwMQ==" class="btn-modern hover-sfx click-sfx"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="social-icon" style="filter: brightness(0) invert(1);"> Instagram</a>
                     </div>
                 </div>
 
                 <div class="company-details" id="seashare-info">
                     <h2 class="brand-title">Seashare</h2>
-                    <p class="brand-desc" data-i18n="seashare_desc">A solução inteligente para vendas e gestão de stock. O bot oficial da Sodhupn, projetado para escalabilidade e controle preciso (Versão Beta).</p>
+                    <p class="brand-desc" data-i18n="seashare_desc">Bot de vendas e gerenciamento de stock oficial da Sodhupn. Em breve para uso público (Beta).</p>
                 </div>
                 
                 <div class="company-details" id="tobump-info">
                     <h2 class="brand-title">ToBump</h2>
-                    <p class="brand-desc" data-i18n="tobump_desc">Aumente o alcance do seu servidor no automático! O sistema realiza bumps constantes direto do dashboard, sem complicação.</p>
+                    <p class="brand-desc" data-i18n="tobump_desc">Cresça seu servidor com bump 100% automático. O bot faz o auto bump direto no dashboard!</p>
+                    
                     <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump Auto Bump Dashboard" style="width: 100%; max-width: 450px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 15px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.4); object-fit: cover;">
+                    
+                    <div class="meta-container" style="margin-top: 10px;">
+                        <p style="color: #e2e8f0; font-size: 1.05rem; font-weight: 500; margin-bottom: 8px;" data-i18n="tobump_alert1">Para adicionar, aperte no botão abaixo.</p>
+                        <p style="color: #64748b; font-size: 0.90rem; font-style: italic; margin: 0;" data-i18n="tobump_alert2">💡 Aviso: No dashboard, em breve terá muito mais coisas!</p>
+                    </div>
+
                     <div class="social-buttons-container">
-                        <a href="ToBump.html" class="social-btn primary-btn hover-sfx click-sfx" data-i18n="tobump_btn">🚀 Adicionar ao Servidor</a>
+                        <a href="ToBump.html" class="btn-modern primary hover-sfx click-sfx" data-i18n="tobump_btn">Adicionar ao Servidor</a>
                     </div>
                 </div>
 
                 <div class="company-details" id="toup-info">
                     <h2 class="brand-title">ToUp</h2>
-                    <p class="brand-desc" data-i18n="toup_desc">Sua central de crescimento digital: bot integrado para análise de dados e publicação automatizada no Instagram e Facebook.</p>
+                    <p class="brand-desc" data-i18n="toup_desc">Bot para crescimento geral, análise de dados e publicação automática no Instagram e Facebook (em beta).</p>
                     <div class="social-buttons-container">
-                        <div class="contact-email hover-sfx click-sfx">📧 <a href="mailto:EvollogicHQ@gmail.com">EvollogicHQ@gmail.com</a></div>
+                        <a href="mailto:EvollogicHQ@gmail.com" class="btn-modern hover-sfx click-sfx"><span>📧</span> <span data-i18n="contact">Uso comercial ou test:</span> EvollogicHQ@gmail.com</a>
                     </div>
                 </div>
 
                 <div class="company-details" id="scriparadoxall-info">
                     <h2 class="brand-title">Scripard</h2>
-                    <p class="brand-desc" data-i18n="scripard_desc">Hub definitivo para desenvolvedores e criadores. Acompanhe os vídeos e conecte-se na nossa comunidade do Discord.</p>
+                    <p class="brand-desc" data-i18n="scripard_desc">Canal no YouTube e comunidade no Discord dedicados à criação de scripts.</p>
                 </div>
 
                 <div class="company-details" id="nks-info">
                     <h2 class="brand-title">NKS</h2>
-                    <p class="brand-desc" data-i18n="nks_desc">Especialistas em Nicks Verification e soluções de automação personalizadas de alto nível.</p>
+                    <p class="brand-desc" data-i18n="nks_desc">Serviço de Nicks Verification e automação personalizada para empresas e pessoas físicas.</p>
                 </div>
 
                 <div class="company-details" id="hapiephone-info">
                     <h2 class="brand-title">Hapiephone</h2>
-                    <p class="brand-desc" data-i18n="hapiephone_desc">Controle remoto revolucionário. O sistema mais avançado para automação mobile em nuvem rodando via Termux.</p>
+                    <p class="brand-desc" data-i18n="hapiephone_desc">Sistema avançado de automação mobile em nuvem, com gerenciamento de dispositivos focado em Termux.</p>
                 </div>
 
                 <div class="company-details" id="robloxverification-info">
                     <h2 class="brand-title">Roblox Verification</h2>
-                    <p class="brand-desc" data-i18n="roblox_desc">Automação integrada da NKS para verificação e realização de ações em massa (Beta).</p>
+                    <p class="brand-desc" data-i18n="roblox_desc">Bot da NKS e realizador de cações (em beta).</p>
                 </div>
 
                 <div class="company-details" id="gravitycoil-info">
                     <h2 class="brand-title">Gravity Coil</h2>
-                    <p class="brand-desc" data-i18n="gravity_desc">Canal do YouTube projetado para entregar os melhores tutoriais, de forma clara, rápida e sem enrolação.</p>
+                    <p class="brand-desc" data-i18n="gravity_desc">Canal focado em tutoriais no YouTube.</p>
                 </div>
 
                 <div class="company-details" id="1x1scripter-info">
                     <h2 class="brand-title">1x1Scripter</h2>
-                    <p class="brand-desc" data-i18n="1x1_desc">Acompanhe demonstrações práticas de desenvolvimento e execução de scripts complexos direto pelo YouTube.</p>
+                    <p class="brand-desc" data-i18n="1x1_desc">Canal no YouTube dedicado a demonstração de scripts.</p>
                 </div>
 
                 <div class="company-details" id="placeholder-info">
@@ -315,59 +348,240 @@
     </div>
 
     <script>
-        // Traduções base mantidas e refinadas
         const translations = {
             PT: {
-                hub_menu: "Hub Menu", header_subtitle: "Sua central de marcas e ecossistemas", our_brands: "Nossas Marcas", waiting_selection: "Aguardando Seleção..."
-                // Você pode expandir o resto do dicionário PT/EN/ES aqui, conforme seu código original
+                hub_menu: "Hub Menu",
+                header_subtitle: "Sua central de marcas e ecossistemas",
+                our_brands: "Nossas Marcas",
+                sodhupn_desc: "Loja dedicada à venda de produtos digitais, operando com excelência em 3 grandes marketplaces (GG Max, Eldorado e Desapego Games). Nosso foco absoluto é oferecer segurança e entrega de alto padrão para nossos clientes.",
+                sodhupn_vision_title: "Nossa Visão para 2026",
+                sodhupn_vision_goal: "Unificação de 14 Lojas",
+                contact: "Contato",
+                seashare_desc: "Bot de vendas e gerenciamento de stock oficial da Sodhupn. Em breve para uso público (Beta).",
+                tobump_desc: "Cresça seu servidor com bump 100% automático. O bot faz o auto bump direto no dashboard!",
+                tobump_alert1: "Para adicionar, aperte no botão abaixo.",
+                tobump_alert2: "💡 Aviso: No dashboard, em breve terá muito mais coisas!",
+                tobump_btn: "Adicionar ao Servidor",
+                toup_desc: "Bot para crescimento geral, análise de dados e publicação automática no Instagram e Facebook (em beta).",
+                scripard_desc: "Canal no YouTube e comunidade no Discord dedicados à criação de scripts.",
+                nks_desc: "Serviço de Nicks Verification e automação personalizada para empresas e pessoas físicas.",
+                hapiephone_desc: "Sistema avançado de automação mobile em nuvem, com gerenciamento de dispositivos focado em Termux.",
+                roblox_desc: "Bot da NKS e realizador de cações (em beta).",
+                gravity_desc: "Canal focado em tutoriais no YouTube.",
+                "1x1_desc": "Canal no YouTube dedicado a demonstração de scripts.",
+                waiting_selection: "Aguardando Seleção..."
+            },
+            EN: {
+                hub_menu: "Hub Menu",
+                header_subtitle: "Your central hub for brands and ecosystems",
+                our_brands: "Our Brands",
+                sodhupn_desc: "Store dedicated to selling digital products, operating with excellence in 3 major marketplaces (GG Max, Eldorado, and Desapego Games). Our absolute focus is offering security and high-standard delivery for our customers.",
+                sodhupn_vision_title: "Our Vision for 2026",
+                sodhupn_vision_goal: "Unification of 14 Stores",
+                contact: "Contact",
+                seashare_desc: "Official sales and stock management bot for Sodhupn. Coming soon for public use (Beta).",
+                tobump_desc: "Grow your server with 100% automatic bumping. The bot auto-bumps directly from the dashboard!",
+                tobump_alert1: "To add, click the button below.",
+                tobump_alert2: "💡 Notice: The dashboard will soon have much more!",
+                tobump_btn: "Add to Server",
+                toup_desc: "Bot for general growth, data analysis, and automated publishing on Instagram and Facebook (Beta).",
+                scripard_desc: "YouTube channel and Discord community dedicated to script creation.",
+                nks_desc: "Nicks Verification service and tailored automation for businesses and individuals.",
+                hapiephone_desc: "Advanced cloud-based mobile automation system, featuring device management focused on Termux.",
+                roblox_desc: "NKS bot and action executor (in beta).",
+                gravity_desc: "Channel focused on YouTube tutorials.",
+                "1x1_desc": "YouTube channel dedicated to script demonstration.",
+                waiting_selection: "Waiting for Selection..."
+            },
+            ES: {
+                hub_menu: "Menú del Hub",
+                header_subtitle: "Tu centro de marcas y ecosistemas",
+                our_brands: "Nuestras Marcas",
+                sodhupn_desc: "Tienda dedicada a la venta de productos digitales, operando con excelencia en 3 grandes marketplaces (GG Max, Eldorado y Desapego Games). Nuestro enfoque absoluto es ofrecer seguridad y entrega de alto nivel para nuestros clientes.",
+                sodhupn_vision_title: "Nuestra Visión para 2026",
+                sodhupn_vision_goal: "Unificación de 14 Tiendas",
+                contact: "Contacto",
+                seashare_desc: "Bot oficial de ventas y gestión de stock de Sodhupn. Próximamente para uso público (Beta).",
+                tobump_desc: "Haz crecer tu servidor con bump 100% automático. ¡El bot hace el auto bump directamente en el dashboard!",
+                tobump_alert1: "Para agregar, presiona el botón de abajo.",
+                tobump_alert2: "💡 Aviso: ¡En el dashboard pronto habrá muchas más cosas!",
+                tobump_btn: "Añadir al Servidor",
+                toup_desc: "Bot para crecimiento general, análisis de datos y publicación automática en Instagram y Facebook (Beta).",
+                scripard_desc: "Canal de YouTube y comunidad de Discord dedicados a la creación de scripts.",
+                nks_desc: "Servicio de Nicks Verification y automatización personalizada para empresas e individuos.",
+                hapiephone_desc: "Avanzado sistema de automatización móvil en la nube, con gestión de dispositivos centrada en Termux.",
+                roblox_desc: "Bot de NKS y realizador de acciones (en beta).",
+                gravity_desc: "Canal centrado en tutoriales de YouTube.",
+                "1x1_desc": "Canal de YouTube dedicado a la demostración de scripts.",
+                waiting_selection: "Esperando Selección..."
             }
         };
 
-        let currentLang = localStorage.getItem('userLanguage') || 'PT';
+        let currentLang = localStorage.getItem('userLanguage');
+
+        if (!currentLang) {
+            const browserLang = (navigator.language || navigator.userLanguage).substring(0, 2).toUpperCase();
+            currentLang = ['PT', 'EN', 'ES'].includes(browserLang) ? browserLang : 'EN';
+            localStorage.setItem('userLanguage', currentLang);
+        }
+
+        function applyTranslations(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.innerText = translations[lang][key];
+                }
+            });
+        }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // Sons de UI
-            const sfx = { hover: new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'), click: new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'), slide: new Audio('https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3') };
-            sfx.hover.volume = 0.15; sfx.click.volume = 0.3; sfx.slide.volume = 0.2;
-            const playSound = (type) => { let sound = sfx[type].cloneNode(); sound.volume = sfx[type].volume; sound.play().catch(()=>{}); }
+            const token = localStorage.getItem('evollogic_auth_token');
+            const profileBtn = document.getElementById('userProfileBtn');
+            if (token) {
+                profileBtn.href = 'profile.html';
+                try {
+                    const meRes = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (meRes.ok) {
+                        const myData = await meRes.json();
+                        const displayName = myData.nickname || myData.name || 'User';
+                        const avatarSrc = myData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${displayName}`;
+                        profileBtn.innerHTML = `<img src="${avatarSrc}" alt="Perfil" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+                    } else {
+                        localStorage.removeItem('evollogic_auth_token');
+                    }
+                } catch(e) {}
+            }
 
-            document.querySelectorAll('.hover-sfx').forEach(el => el.addEventListener('mouseenter', () => playSound('hover')));
-            document.querySelectorAll('.click-sfx').forEach(el => el.addEventListener('click', () => playSound('click')));
-            document.querySelectorAll('.slide-sfx').forEach(el => el.addEventListener('click', () => playSound('slide')));
+            applyTranslations(currentLang);
 
-            // Sidebar
-            const sidebar = document.getElementById('sidebar'), overlay = document.getElementById('sidebar-overlay');
+            (async () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                let ref = urlParams.get('ref') || 'organico';
+                let country = 'Brasil';
+                const navLang = navigator.language || navigator.userLanguage;
+                if (navLang.includes('pt-PT')) country = 'Portugal';
+                else if (navLang.includes('en')) country = 'EUA';
+
+                try {
+                    await fetch('https://evollogic-backend-production.up.railway.app/api/stats/track', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ source: ref.toLowerCase(), country: country })
+                    });
+                } catch (err) {}
+            })();
+
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'userLanguage') {
+                    currentLang = e.newValue || 'EN';
+                    applyTranslations(currentLang);
+                }
+            });
+
+            const sfx = {
+                hover: new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'),
+                click: new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'),
+                slide: new Audio('https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3')
+            };
+
+            sfx.hover.volume = 0.15;
+            sfx.click.volume = 0.3;
+            sfx.slide.volume = 0.2;
+
+            function playSound(type) {
+                let sound = sfx[type].cloneNode(); 
+                sound.volume = sfx[type].volume;
+                sound.play().catch(() => {}); 
+            }
+
+            document.querySelectorAll('.hover-sfx').forEach(el => {
+                el.addEventListener('mouseenter', () => playSound('hover'));
+            });
+            document.querySelectorAll('.click-sfx').forEach(el => {
+                el.addEventListener('click', () => playSound('click'));
+            });
+            document.querySelectorAll('.slide-sfx').forEach(el => {
+                el.addEventListener('click', () => playSound('slide'));
+            });
+
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
             document.getElementById('open-sidebar').onclick = () => { sidebar.classList.add('active'); overlay.classList.add('active'); }
             document.getElementById('close-sidebar').onclick = () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); }
             overlay.onclick = () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); playSound('slide'); }
 
-            // TV Lógica Independente & Preferências
-            const tvIframe = document.getElementById('main-tv');
-            const tvPlaylists = [
-                "UUikhw5yi9tW7NjIaWG9KNoQ", // Sodhupn
-                "PLCNh97K2G2yHaeosF",       // 1x1 Scripts
-                "PL6RohxnHSenT9CK89"        // Gravity Coil
-            ];
-            
-            let currentTvIndex = 0;
-            let nextTvPreference = null;
-
-            // Altera o canal da TV a cada 45 segundos de forma automática
-            setInterval(() => {
-                if (nextTvPreference) {
-                    tvIframe.src = `https://www.youtube.com/embed/videoseries?list=${nextTvPreference}&autoplay=1&mute=1`;
-                    nextTvPreference = null; // Limpa a preferência depois que ela tocar
-                } else {
-                    currentTvIndex = (currentTvIndex + 1) % tvPlaylists.length;
-                    tvIframe.src = `https://www.youtube.com/embed/videoseries?list=${tvPlaylists[currentTvIndex]}&autoplay=1&mute=1`;
-                }
-            }, 45000); // 45 segundos. Aumente ou diminua se precisar
-
-            // Carrossel de Empresas e Painel de Info
+            const tvHeaderTitle = document.getElementById('tv-header-title');
+            const adContainerBox = document.getElementById('ad-container-box');
+            const adBadgeTag = document.getElementById('ad-badge-tag');
+            const adTextDisplay = document.getElementById('ad-text-display');
             const track = document.getElementById('company-carousel');
             const details = document.querySelectorAll('.company-details');
             const cards = document.querySelectorAll('.company-card');
 
+            // --- LÓGICA DA TV INDEPENDENTE ---
+            const tvPlaylists = [
+                { id: "UUikhw5yi9tW7NjIaWG9KNoQ", title: "Sodhupn TV", badge: {PT: "Destaque", EN: "Featured", ES: "Destacado"}, isAd: false, text: {PT: "🔥 Novidade: O novo sistema da Sodhupn já está no ar!", EN: "🔥 News: The new Sodhupn system is live!", ES: "🔥 Novedad: ¡El nuevo sistema de Sodhupn ya está activo!"} },
+                { id: "PL6RohxnHSenT9CK89", title: "Gravity Coil TV", badge: {PT: "Tutoriais", EN: "Tutorials", ES: "Tutoriales"}, isAd: false, text: {PT: "🚀 Aprenda a criar os melhores scripts no Roblox!", EN: "🚀 Learn to create the best Roblox scripts!", ES: "🚀 ¡Aprende a crear los mejores scripts en Roblox!"} },
+                { id: "PLCNh97K2G2yHaeosF", title: "1x1Scripter TV", badge: {PT: "Scripts", EN: "Scripts", ES: "Scripts"}, isAd: false, text: {PT: "💻 Demonstrações dos projetos mais recentes.", EN: "💻 Demos of the latest projects.", ES: "💻 Demostraciones de los últimos proyectos."} }
+            ];
+
+            let scheduleIndex = 0;
+            let tvRotationInterval;
+            let nextQueuedPlaylist = null;
+            let nextQueuedTitle = null;
+
+            function triggerTvEvent(data) {
+                adTextDisplay.style.opacity = 0;
+                setTimeout(() => {
+                    adTextDisplay.innerHTML = data.text[currentLang] || data.text.PT;
+                    adTextDisplay.style.opacity = 1;
+                    tvHeaderTitle.innerHTML = `${data.title} <span class="badge ${data.isAd ? 'ad-style' : ''}">${data.badge[currentLang] || data.badge.PT}</span>`;
+                    
+                    if (data.isAd) {
+                        adBadgeTag.textContent = currentLang === 'EN' ? "AD" : (currentLang === 'ES' ? "ANUNCIO" : "ANÚNCIO");
+                        adBadgeTag.classList.add('is-ad');
+                        adContainerBox.classList.add('is-ad');
+                    } else {
+                        adBadgeTag.textContent = "INFO";
+                        adBadgeTag.classList.remove('is-ad');
+                        adContainerBox.classList.remove('is-ad');
+                    }
+                }, 400);
+            }
+
+            function rotateTV() {
+                let currentData;
+                
+                // Se o usuário clicou em uma empresa com YouTube, a TV consome a "preferência" agora
+                if (nextQueuedPlaylist) {
+                    currentData = {
+                        id: nextQueuedPlaylist,
+                        title: nextQueuedTitle + " TV",
+                        badge: {PT: "A Pedido", EN: "Requested", ES: "A Pedido"},
+                        isAd: false,
+                        text: {
+                            PT: `📺 Exibindo a playlist de ${nextQueuedTitle} a seu pedido!`,
+                            EN: `📺 Playing the ${nextQueuedTitle} playlist you selected!`,
+                            ES: `📺 ¡Reproduciendo la lista de ${nextQueuedTitle} que seleccionaste!`
+                        }
+                    };
+                    nextQueuedPlaylist = null; 
+                } else {
+                    currentData = tvPlaylists[scheduleIndex];
+                    scheduleIndex = (scheduleIndex + 1) % tvPlaylists.length;
+                }
+
+                document.getElementById('tv-frame').src = `https://www.youtube.com/embed/videoseries?list=${currentData.id}&autoplay=1&mute=1`;
+                triggerTvEvent(currentData);
+            }
+
+            rotateTV(); 
+            // A TV gira sozinha a cada 45 segundos, ignorando se o usuário está lendo os botões
+            tvRotationInterval = setInterval(rotateTV, 45000); 
+
+            // --- LÓGICA DE SELEÇÃO DAS EMPRESAS ---
             track.onclick = (e) => {
                 const card = e.target.closest('.company-card');
                 if (!card) return;
@@ -380,14 +594,14 @@
                 const targetInfo = document.getElementById(`${targetId}-info`) || document.getElementById('placeholder-info');
                 targetInfo.classList.add('active');
 
-                // Aqui é onde o botão define a preferência da TV (só entra na fila, não troca na hora)
+                // Se a empresa selecionada tiver YouTube, coloca na fila da TV!
                 const ytId = card.getAttribute('data-yt');
                 if (ytId) {
-                    nextTvPreference = ytId;
+                    nextQueuedPlaylist = ytId;
+                    nextQueuedTitle = card.querySelector('span').innerText;
                 }
             };
 
-            // Scroll do Carrossel
             let isTransitioning = false;
             function move(direction) {
                 if (isTransitioning) return;
