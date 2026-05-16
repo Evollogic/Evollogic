@@ -358,6 +358,29 @@
 
             applyTranslations(currentLang);
 
+            // ==========================================
+            // LÓGICA DE RASTREAMENTO REAL (ANALYTICS)
+            // ==========================================
+            (async () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                let ref = urlParams.get('ref') || 'organico';
+                
+                let country = 'Brasil';
+                const navLang = navigator.language || navigator.userLanguage;
+                if (navLang.includes('pt-PT')) country = 'Portugal';
+                else if (navLang.includes('en')) country = 'EUA';
+
+                try {
+                    await fetch('https://evollogic-backend-production.up.railway.app/api/stats/track', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ source: ref.toLowerCase(), country: country })
+                    });
+                } catch (err) {
+                    console.error('Erro ao contabilizar acesso real:', err);
+                }
+            })();
+
             window.addEventListener('storage', (e) => {
                 if (e.key === 'userLanguage') {
                     currentLang = e.newValue || 'EN';
