@@ -103,6 +103,7 @@
 
         .user-item:hover {
             border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-2px);
         }
 
         .user-info {
@@ -148,6 +149,11 @@
             color: #020617;
         }
 
+        .btn-follow:hover {
+            background: var(--primary-hover);
+            transform: scale(1.05);
+        }
+
         .btn-remove {
             background: rgba(248, 113, 113, 0.1);
             color: var(--danger);
@@ -157,6 +163,7 @@
         .btn-remove:hover {
             background: var(--danger);
             color: white;
+            transform: scale(1.05);
         }
 
         .empty-state {
@@ -176,26 +183,68 @@
 
     <div class="container">
         <a href="profile.html" class="back-link">
-            <i data-feather="arrow-left"></i> Voltar ao perfil
+            <i data-feather="arrow-left"></i> <span data-i18n="back_profile">Voltar ao perfil</span>
         </a>
 
         <div class="header-card">
-            <button class="tab-btn active" id="tabFollowers" onclick="switchTab('followers')">Seguidores</button>
-            <button class="tab-btn" id="tabFollowing" onclick="switchTab('following')">Seguindo</button>
+            <button class="tab-btn active" id="tabFollowers" onclick="switchTab('followers')" data-i18n="tab_followers">Seguidores</button>
+            <button class="tab-btn" id="tabFollowing" onclick="switchTab('following')" data-i18n="tab_following">Seguindo</button>
         </div>
 
         <div id="userList" class="list-container">
-            <div class="empty-state">Carregando conexões...</div>
+            <div class="empty-state" data-i18n="loading">Carregando conexões...</div>
         </div>
     </div>
 
     <script>
         feather.replace();
 
+        const translations = {
+            PT: {
+                back_profile: "Voltar ao perfil",
+                tab_followers: "Seguidores",
+                tab_following: "Seguindo",
+                loading: "Carregando conexões...",
+                empty_followers: "Nenhum usuário encontrado em seguidores.",
+                empty_following: "Nenhum usuário encontrado em seguindo.",
+                btn_follow: "Seguir",
+                btn_remove: "Remover"
+            },
+            EN: {
+                back_profile: "Back to profile",
+                tab_followers: "Followers",
+                tab_following: "Following",
+                loading: "Loading connections...",
+                empty_followers: "No users found in followers.",
+                empty_following: "No users found in following.",
+                btn_follow: "Follow",
+                btn_remove: "Remove"
+            },
+            ES: {
+                back_profile: "Volver al perfil",
+                tab_followers: "Seguidores",
+                tab_following: "Siguiendo",
+                loading: "Cargando conexiones...",
+                empty_followers: "No se encontraron usuarios en seguidores.",
+                empty_following: "No se encontraron usuarios en siguiendo.",
+                btn_follow: "Seguir",
+                btn_remove: "Eliminar"
+            }
+        };
+
+        function applyTranslations() {
+            const lang = localStorage.getItem('userLanguage') || 'PT';
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
         let currentTab = 'followers';
         let currentUserData = null;
 
-        // Pega os parâmetros da URL para saber qual aba abrir primeiro
         const urlParams = new URLSearchParams(window.location.search);
         const initialTab = urlParams.get('tab');
         if (initialTab === 'following') currentTab = 'following';
@@ -218,12 +267,14 @@
             listElement.innerHTML = '';
 
             const list = (currentTab === 'followers') ? currentUserData.followers : currentUserData.following;
+            const lang = localStorage.getItem('userLanguage') || 'PT';
+            const t = translations[lang];
 
             if (!list || list.length === 0) {
                 listElement.innerHTML = `
                     <div class="empty-state">
                         <i data-feather="users" style="width: 48px; height: 48px; margin: 0 auto 10px;"></i>
-                        <p>Nenhum usuário encontrado em ${currentTab === 'followers' ? 'seguidores' : 'seguindo'}.</p>
+                        <p>${currentTab === 'followers' ? t.empty_followers : t.empty_following}</p>
                     </div>
                 `;
                 feather.replace();
@@ -231,25 +282,31 @@
             }
 
             list.forEach(user => {
-                // Aqui assumimos que o backend povoou (populated) os dados básicos do usuário
-                const name = user.name || 'Usuário Evollogic';
-                const avatar = user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user._id}`;
-                const userId = user._id;
+                // Caso o backend não tenha feito o "populate", o user pode ser apenas o ID em texto
+                const isPopulated = typeof user === 'object' && user !== null && user.name;
+                
+                const userId = isPopulated ? user._id : user;
+                const name = isPopulated ? user.name : 'Usuário Oculto';
+                const avatar = (isPopulated && user.avatar) ? user.avatar : `https://api.dicebear.com/7.x/avataaars/svg?seed=${userId}`;
+                const nickname = (isPopulated && user.nickname) ? user.nickname : 'membro';
 
                 const item = document.createElement('div');
                 item.className = 'user-item';
 
-                // Verifica se você já segue esse seguidor (apenas para a aba seguidores)
-                const alreadyFollowing = currentUserData.following.some(f => f._id === userId);
+                // Verifica na lista 'following' se o ID já existe lá dentro
+                const alreadyFollowing = currentUserData.following && currentUserData.following.some(f => {
+                    const fId = typeof f === 'object' ? f._id : f;
+                    return String(fId) === String(userId);
+                });
 
                 let buttonHtml = '';
                 if (currentTab === 'following') {
-                    buttonHtml = `<button class="action-btn btn-remove" onclick="handleAction('${userId}', 'unfollow')">Remover</button>`;
+                    buttonHtml = `<button class="action-btn btn-remove" onclick="handleAction('${userId}', 'unfollow')">${t.btn_remove}</button>`;
                 } else {
                     if (alreadyFollowing) {
-                        buttonHtml = `<button class="action-btn btn-remove" onclick="handleAction('${userId}', 'unfollow')">Remover</button>`;
+                        buttonHtml = `<button class="action-btn btn-remove" onclick="handleAction('${userId}', 'unfollow')">${t.btn_remove}</button>`;
                     } else {
-                        buttonHtml = `<button class="action-btn btn-follow" onclick="handleAction('${userId}', 'follow')">Seguir</button>`;
+                        buttonHtml = `<button class="action-btn btn-follow" onclick="handleAction('${userId}', 'follow')">${t.btn_follow}</button>`;
                     }
                 }
 
@@ -258,7 +315,7 @@
                         <img src="${avatar}" class="user-avatar" alt="Avatar">
                         <div class="user-details">
                             <strong>${name}</strong>
-                            <span>@${user.nickname || 'evolloger'}</span>
+                            <span>@${nickname}</span>
                         </div>
                     </div>
                     <div class="user-actions">
@@ -270,24 +327,26 @@
         }
 
         function goToProfile(id) {
+            // Isso cria a "outra visão" no seu profile.html
             window.location.href = `profile.html?id=${id}`;
         }
 
         async function handleAction(targetId, type) {
             const token = localStorage.getItem('evollogic_auth_token');
             try {
-                // Chamada fictícia para sua rota de follow/unfollow
+                // Aqui você vai configurar a sua rota de seguir/deixar de seguir do backend
                 const response = await fetch(`https://evollogic-backend-production.up.railway.app/api/follow/${targetId}`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
                 if (response.ok) {
-                    // Recarrega os dados para atualizar a lista
                     fetchUserData();
+                } else {
+                    alert('Erro ao processar a ação.');
                 }
             } catch (error) {
-                console.error("Erro na ação de follow:", error);
+                console.error("Erro na ação:", error);
             }
         }
 
@@ -296,7 +355,6 @@
             if (!token) { window.location.href = 'login.html'; return; }
 
             try {
-                // Buscamos o usuário logado (o backend precisa retornar followers/following populados)
                 const response = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', {
                     method: 'GET',
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -304,7 +362,7 @@
 
                 if (response.ok) {
                     currentUserData = await response.json();
-                    switchTab(currentTab); // Renderiza a aba atual
+                    switchTab(currentTab); 
                 } else {
                     window.location.href = 'login.html';
                 }
@@ -313,8 +371,18 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', fetchUserData);
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTranslations();
+            fetchUserData();
+            
+            // Fica de olho se o idioma mudar no localStorage
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'userLanguage') {
+                    applyTranslations();
+                    if(currentUserData) renderList(); // Re-renderiza a lista com os textos traduzidos
+                }
+            });
+        });
     </script>
 </body>
 </html>
- 
