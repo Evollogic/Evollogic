@@ -4,42 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evollogic - Hub Central</title>
-    
+
     <link rel="preload" as="image" href="IMAGE/Sodhupn.png?v=5">
     <link rel="preload" as="image" href="IMAGE/Seashare.png?v=5">
     <link rel="preload" as="image" href="https://i.imgur.com/vqPh35y.png">
     <link rel="preload" as="image" href="IMAGE/Scriparadoxall.png?v=5">
-    <link rel="preload" as="image" href="IMAGE/Hapiephone.png?v=5">
-    
+    <link rel="preload" as="image" href="https://i.imgur.com/Rqj83Qb.png">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        body { 
-            background: #020617; 
-            color: #f8fafc; 
-            font-family: 'Poppins', sans-serif; 
-            text-align: center; 
-            margin: 0; 
+        body {
+            background: #020617;
+            color: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
             padding: 0;
             min-height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             overflow-x: hidden;
-            perspective: 1200px; 
+            perspective: 1200px;
         }
 
         .screen-curve-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; 
+            pointer-events: none;
             z-index: 9999;
             background: radial-gradient(circle at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.75) 120%);
             box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.9);
         }
 
-        #app-wrapper { 
-            width: 100%; 
-            min-height: 100vh; 
-            display: flex; justify-content: center; padding: 20px 0; box-sizing: border-box; 
+        #app-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            display: flex; justify-content: center; padding: 20px 0; box-sizing: border-box;
             background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
         }
 
@@ -78,36 +78,111 @@
         .header-logo { width: 140px; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
         .title-text { font-size: 2.2rem; margin: 10px 0; font-weight: 700; background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .subtitle { color: #94a3b8; font-size: 1rem; margin-top: -10px; font-weight: 300; }
-        
+
         .dashboard-container { width: 90%; max-width: 1000px; z-index: 10; position: relative; padding-top: 20px;}
-        
+
         .dash-section { margin-bottom: 40px; text-align: left; background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .section-title { font-size: 1.3rem; margin-bottom: 20px; font-weight: 600; color: #e2e8f0; display: flex; align-items: center; gap: 10px; }
         .badge { background: rgba(56, 189, 248, 0.1); color: #38bdf8; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid rgba(56, 189, 248, 0.2); transition: 0.3s; }
-        
         .badge.ad-style { background: rgba(234, 179, 8, 0.1); color: #eab308; border-color: rgba(234, 179, 8, 0.3); }
+        .badge.danger-style { background: rgba(248, 113, 113, 0.1); color: #f87171; border-color: rgba(248, 113, 113, 0.3); }
+
+        /* ================= SHOWCASE SLIDER ================= */
+        .showcase-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+        .showcase-track {
+            display: flex;
+            width: 100%;
+        }
+        .showcase-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 30px;
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+        }
+        .showcase-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(15, 23, 42, 0.8);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            border-radius: 50%;
+            width: 45px; height: 45px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 20;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .showcase-wrapper:hover .showcase-btn { opacity: 1; }
+        .showcase-btn:hover { background: #38bdf8; color: #0f172a; transform: translateY(-50%) scale(1.1); }
+        .showcase-btn.prev { left: 15px; }
+        .showcase-btn.next { right: 15px; }
+
+        @media (max-width: 768px) {
+            .showcase-btn { opacity: 0.8; width: 35px; height: 35px; font-size: 1rem; }
+            .showcase-slide { padding: 20px 15px; }
+        }
+
+        #slide-pinned {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(245, 158, 11, 0.08) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        .pinned-card {
+            display: flex; flex-direction: column; gap: 15px; cursor: pointer; transition: transform 0.3s;
+            padding: 20px; background: rgba(0,0,0,0.2); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .pinned-card:hover { transform: translateY(-3px); border-color: rgba(245, 158, 11, 0.4); box-shadow: 0 10px 25px rgba(245, 158, 11, 0.15);}
+        .pinned-header { display: flex; align-items: center; gap: 12px; pointer-events: none;}
+        .pinned-avatar { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); object-fit: cover;}
+        .pinned-author { font-weight: 600; color: #f8fafc; font-size: 1.05rem; display: flex; align-items: center; gap: 6px; text-align: left; }
+        .pinned-date { font-size: 0.8rem; color: #94a3b8; text-align: left; }
+        .pinned-body { color: #e2e8f0; font-size: 0.95rem; line-height: 1.6; word-wrap: break-word; pointer-events: none; text-align: left; }
+        .pinned-image { width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-top: 10px; border: 1px solid rgba(255,255,255,0.1);}
+
+        .tabs-header {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;
+        }
+        .tab-btn {
+            flex: 1; min-width: 140px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; color: #94a3b8; font-size: 1rem; font-weight: 600; cursor: pointer;
+            padding: 10px 15px; transition: 0.3s; font-family: 'Poppins', sans-serif; outline: none;
+        }
+        .tab-btn:hover { color: #f8fafc; background: rgba(56, 189, 248, 0.1); }
+        .tab-btn.active { color: #020617; background: #38bdf8; border-color: #38bdf8; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); }
 
         .carousel-wrapper { display: flex; align-items: center; gap: 15px; position: relative; width: 100%; }
-        .scroll-btn { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 1.2rem; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; }
+        .scroll-btn { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 1.2rem; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; flex-shrink: 0;}
         .scroll-btn:hover { background: #38bdf8; color: #fff; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4); transform: scale(1.05); }
-        .carousel-viewport { overflow: hidden; width: 100%; padding: 20px 0; perspective: 800px; } 
+        .carousel-viewport { overflow: hidden; width: 100%; padding: 20px 0; perspective: 800px; }
         .carousel-container { display: flex; gap: 20px; width: max-content; }
-        
+
         .company-card { width: 140px; height: 160px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); flex-shrink: 0; padding: 10px; box-sizing: border-box; }
-        
         .company-card img { max-width: 65px; height: 65px; object-fit: contain; margin-bottom: 12px; transition: 0.3s; border-radius: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
-        
         .company-card[data-target="sodhupn"] img { border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); }
         .company-card span { color: #94a3b8; font-size: 0.9rem; font-weight: 500; transition: 0.3s;}
-        
+
         .company-card.active { background: rgba(56, 189, 248, 0.1); border-color: #38bdf8; transform: translateY(-5px) translateZ(10px); box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15); }
         .company-card.active span { color: #38bdf8; font-weight: 600; }
         .company-card.active img { transform: scale(1.15); }
 
+        .company-card.desc.active { background: rgba(248, 113, 113, 0.05); border-color: #f87171; box-shadow: 0 10px 25px rgba(248, 113, 113, 0.15); }
+        .company-card.desc.active span { color: #f87171; }
+
         #info-display-area { background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 20px; min-height: 280px; text-align: left; position: relative; overflow: hidden; }
         .company-details { display: none; position: relative; z-index: 5; }
         .company-details.active { display: block; animation: fadeIn 0.5s ease-out; }
-        
+
         #sodhupn-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 300px; height: 300px; background-image: url('IMAGE/Sodhupn.png?v=5'); background-size: cover; background-position: center; border-radius: 50%; opacity: 0.04; z-index: -1; pointer-events: none; }
         #tobump-info::before { content: ""; position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 230px; background-image: url('https://i.imgur.com/vqPh35y.png'); background-size: cover; background-position: center; border-radius: 16px; opacity: 0.07; z-index: -1; pointer-events: none; }
 
@@ -118,64 +193,36 @@
         .meta-container { margin-top: 25px; }
         .meta-subtitle { color: #cbd5e1; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;}
         .meta-goal { font-size: 1.5rem; color: #818cf8; font-weight: 700; margin: 0;}
-        
+
         .social-buttons-container { display: flex; gap: 12px; margin-top: 25px; flex-wrap: wrap; justify-content: flex-start; }
-        
-        .btn-modern { 
-            padding: 12px 22px; 
-            border-radius: 14px; 
-            text-decoration: none; 
-            font-size: 0.95rem; 
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            color: #f8fafc;
-            background: rgba(255, 255, 255, 0.05); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease; 
-        }
-        .btn-modern:hover { 
-            background: rgba(56, 189, 248, 0.15); 
-            border-color: #38bdf8; 
-            color: #38bdf8;
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
-        }
-        .btn-modern.primary {
-            background: rgba(56, 189, 248, 0.2);
-            border-color: rgba(56, 189, 248, 0.5);
-            color: #38bdf8;
-            font-weight: 600;
-        }
-        .btn-modern.primary:hover {
-            background: #38bdf8;
-            color: #020617;
-        }
+        .btn-modern { padding: 12px 22px; border-radius: 14px; text-decoration: none; font-size: 0.95rem; font-family: 'Poppins', sans-serif; font-weight: 500; display: flex; align-items: center; gap: 10px; color: #f8fafc; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; }
+        .btn-modern:hover { background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; color: #38bdf8; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3); }
+        .btn-modern.primary { background: rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.5); color: #38bdf8; font-weight: 600; }
+        .btn-modern.primary:hover { background: #38bdf8; color: #020617; }
         .social-icon { width: 22px; height: 22px; object-fit: contain; }
-        
+
         .placeholder-text { text-align: center; color: #64748b; padding: 40px 0; }
         .placeholder-icon { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
 
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; border: 1px solid rgba(56, 189, 248, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: #000; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        
+
         .ad-container { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; margin-top: 15px; padding: 12px 20px; display: flex; align-items: center; gap: 15px; position: relative; overflow: hidden; transition: 0.3s; }
         .ad-container.is-ad { border-color: rgba(234, 179, 8, 0.4); }
         .ad-badge { background: #38bdf8; color: #000; font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; letter-spacing: 1px; transition: 0.3s;}
         .ad-badge.is-ad { background: #eab308; animation: pulseAd 2s infinite; }
         .ad-content { color: #e2e8f0; font-size: 0.95rem; font-weight: 500; transition: opacity 0.4s ease; text-align: left; flex: 1; }
-        
+
         @keyframes pulseAd { 0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(234, 179, 8, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); } }
 
+        .hub-footer { margin-top: 30px; padding: 30px 0; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center; color: #64748b; font-size: 0.9rem; }
+        .hub-footer img { width: 35px; filter: grayscale(100%) opacity(0.5); margin-bottom: 10px; transition: 0.3s; }
+        .hub-footer:hover img { filter: grayscale(0%) opacity(1); }
     </style>
 </head>
 <body>
 
     <div class="screen-curve-overlay"></div>
-
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="sidebar" id="sidebar">
@@ -199,32 +246,45 @@
 
     <div id="app-wrapper">
         <div class="dashboard-container">
-            
+
             <header>
                 <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic" class="header-logo">
                 <h1 class="title-text">Evollogic Hub</h1>
                 <p class="subtitle" data-i18n="header_subtitle">Sua central de marcas e ecossistemas</p>
             </header>
 
+            <div class="showcase-wrapper" id="main-showcase">
+                <button class="showcase-btn prev hover-sfx click-sfx" id="showcase-prev" style="display: none;">&#10094;</button>
+                <button class="showcase-btn next hover-sfx click-sfx" id="showcase-next" style="display: none;">&#10095;</button>
+
+                <div class="showcase-track" id="showcase-track">
+                    <div class="showcase-slide" id="slide-pinned">
+                        <!-- Conteúdo injetado pelo JS -->
+                    </div>
+
+                    <div class="showcase-slide" id="slide-tv">
+                        <h2 class="section-title" id="tv-header-title">
+                            Sodhupn TV <span class="badge" id="tv-header-badge">Em Destaque</span>
+                        </h2>
+                        <div class="video-container">
+                            <iframe id="tv-frame" src="https://www.youtube-nocookie.com/embed?listType=playlist&list=UUikhw5yi9tW7NjIaWG9KNoQ&autoplay=1&mute=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        </div>
+                        <div class="ad-container" id="ad-container-box">
+                            <div class="ad-badge" id="ad-badge-tag">INFO</div>
+                            <div class="ad-content" id="ad-text-display">Iniciando sistema...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <section class="dash-section">
-                <h2 class="section-title" id="tv-header-title">
-                    Sodhupn TV <span class="badge" id="tv-header-badge">Em Destaque</span>
-                </h2>
-                
-                <div class="video-container">
-                    <iframe id="tv-frame" src="https://www.youtube-nocookie.com/embed?listType=playlist&list=UUikhw5yi9tW7NjIaWG9KNoQ&autoplay=1&mute=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <div class="tabs-header">
+                    <button class="tab-btn active hover-sfx click-sfx" data-target="carousel-ativas" data-i18n="our_brands">Nossas Marcas</button>
+                    <button class="tab-btn hover-sfx click-sfx" data-target="carousel-desc" data-i18n="discontinued_brands">Descontinuados</button>
                 </div>
 
-                <div class="ad-container" id="ad-container-box">
-                    <div class="ad-badge" id="ad-badge-tag">INFO</div>
-                    <div class="ad-content" id="ad-text-display">Iniciando sistema...</div>
-                </div>
-            </section>
-
-            <section class="dash-section">
-                <h2 class="section-title" data-i18n="our_brands">Nossas Marcas</h2>
-                <div class="carousel-wrapper">
-                    <button id="scroll-left" class="scroll-btn hover-sfx slide-sfx">&#10094;</button>
+                <div class="carousel-wrapper" id="carousel-ativas">
+                    <button id="scroll-left-ativas" class="scroll-btn hover-sfx slide-sfx">&#10094;</button>
                     <div class="carousel-viewport">
                         <div class="carousel-container" id="company-carousel">
                             <div class="company-card active hover-sfx click-sfx" data-target="sodhupn" data-yt="UUikhw5yi9tW7NjIaWG9KNoQ">
@@ -242,11 +302,8 @@
                             <div class="company-card hover-sfx click-sfx" data-target="scriparadoxall">
                                 <img src="IMAGE/Scriparadoxall.png?v=5" alt="Scripard" loading="eager"><span>Scripard</span>
                             </div>
-                            <div class="company-card hover-sfx click-sfx" data-target="nks">
-                                <img src="IMAGE/nks.png?v=5" alt="NKS" loading="eager"><span>NKS</span>
-                            </div>
                             <div class="company-card hover-sfx click-sfx" data-target="hapiephone" data-yt="UUyJj933jDli0Baj8n76wpqQ">
-                                <img src="IMAGE/Hapiephone.png?v=5" alt="Hapiephone" loading="eager"><span>Hapiephone</span>
+                                <img src="https://i.imgur.com/Rqj83Qb.png" alt="Hapiephone" loading="eager"><span>Hapiephone</span>
                             </div>
                             <div class="company-card hover-sfx click-sfx" data-target="gravitycoil" data-yt="UUpqcsjk80XDpTg1aSFCE1Rg">
                                 <img src="IMAGE/Gravitycoil.png?v=5" alt="Gravity Coil" loading="eager"><span>Gravity Coil</span>
@@ -259,12 +316,25 @@
                             </div>
                         </div>
                     </div>
-                    <button id="scroll-right" class="scroll-btn hover-sfx slide-sfx">&#10095;</button>
+                    <button id="scroll-right-ativas" class="scroll-btn hover-sfx slide-sfx">&#10095;</button>
+                </div>
+
+                <div class="carousel-wrapper" id="carousel-desc" style="display: none;">
+                    <button id="scroll-left-desc" class="scroll-btn hover-sfx slide-sfx">&#10094;</button>
+                    <div class="carousel-viewport">
+                        <div class="carousel-container" id="desc-carousel">
+                            <div class="company-card desc hover-sfx click-sfx active" data-target="nks">
+                                <img src="IMAGE/nks.png?v=5" alt="NKS" loading="lazy">
+                                <span style="color: #f87171;">NKS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="scroll-right-desc" class="scroll-btn hover-sfx slide-sfx">&#10095;</button>
                 </div>
             </section>
 
             <section class="dash-section" id="info-display-area" style="margin-bottom: 0;">
-                
+
                 <div class="company-details active" id="sodhupn-info">
                     <h2 class="brand-title">Sodhupn</h2>
                     <p class="brand-desc" data-i18n="sodhupn_desc">Loja dedicada à venda de produtos digitais, operando com excelência em 3 grandes marketplaces (GG Max, Eldorado e Desapego Games). Nosso foco absoluto é oferecer segurança e entrega de alto padrão para nossos clientes.</p>
@@ -282,18 +352,15 @@
                     <h2 class="brand-title">Seashare</h2>
                     <p class="brand-desc" data-i18n="seashare_desc">Bot de vendas e gerenciamento de stock oficial da Sodhupn. Em breve para uso público (Beta).</p>
                 </div>
-                
+
                 <div class="company-details" id="tobump-info">
                     <h2 class="brand-title">ToBump</h2>
                     <p class="brand-desc" data-i18n="tobump_desc">Cresça seu servidor com bump 100% automático. O bot faz o auto bump direto no dashboard!</p>
-                    
-                    <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump Auto Bump Dashboard" style="width: 100%; max-width: 450px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 15px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.4); object-fit: cover;">
-                    
+                    <img src="https://i.imgur.com/vqPh35y.png" alt="ToBump Dashboard" style="width: 100%; max-width: 450px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 15px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.4); object-fit: cover;">
                     <div class="meta-container" style="margin-top: 10px;">
                         <p style="color: #e2e8f0; font-size: 1.05rem; font-weight: 500; margin-bottom: 8px;" data-i18n="tobump_alert1">Para adicionar, aperte no botão abaixo.</p>
-                        <p style="color: #64748b; font-size: 0.90rem; font-style: italic; margin: 0;" data-i18n="tobump_alert2">💡 Aviso: No dashboard, em breve terá muito mais coisas!</p>
+                        <p style="color: #64748b; font-size: 0.90rem; font-style: italic; margin: 0;" data-i18n="tobump_alert2">💡 Aviso: No dashboard, em breve terá muito mais cosas!</p>
                     </div>
-
                     <div class="social-buttons-container">
                         <a href="ToBump.html" class="btn-modern primary hover-sfx click-sfx" data-i18n="tobump_btn">Adicionar ao Servidor</a>
                     </div>
@@ -312,29 +379,27 @@
                     <p class="brand-desc" data-i18n="scripard_desc">Canal no YouTube e comunidade no Discord dedicados à criação de scripts.</p>
                 </div>
 
-                <div class="company-details" id="nks-info">
-                    <h2 class="brand-title">NKS</h2>
-                    <p class="brand-desc" data-i18n="nks_desc">Serviço de Nicks Verification e automação personalizada para empresas e pessoas físicas.</p>
-                </div>
-
                 <div class="company-details" id="hapiephone-info">
                     <h2 class="brand-title">Hapiephone</h2>
-                    <p class="brand-desc" data-i18n="hapiephone_desc">Sistema avançado de automação mobile em nuvem, com gerenciamento de dispositivos focado em Termux.</p>
+                    <p class="brand-desc" data-i18n="hapiephone_desc">Grandes novidades, automações 100% automáticas no Roblox em test, via Discord.</p>
                 </div>
-
                 <div class="company-details" id="robloxverification-info">
                     <h2 class="brand-title">Roblox Verification</h2>
                     <p class="brand-desc" data-i18n="roblox_desc">Bot da NKS e realizador de cações (em beta).</p>
                 </div>
-
                 <div class="company-details" id="gravitycoil-info">
                     <h2 class="brand-title">Gravity Coil</h2>
                     <p class="brand-desc" data-i18n="gravity_desc">Canal focado em tutoriais no YouTube.</p>
                 </div>
-
                 <div class="company-details" id="1x1scripter-info">
                     <h2 class="brand-title">1x1Scripter</h2>
                     <p class="brand-desc" data-i18n="1x1_desc">Canal no YouTube dedicado a demonstração de scripts.</p>
+                </div>
+
+                <div class="company-details" id="nks-info">
+                    <h2 class="brand-title" style="color: #f87171;">NKS (Nicks Verification)</h2>
+                    <p class="brand-desc" data-i18n="nks_desc">Desativado indertiminadamente nossos Discord ou qualquer forma atrelhada a NKS, mantemos uma segurança estritamente segura, e percebemos que boas partes da Nick verification estava sendo usada para roubo de contas, não toleramos isso e decidimos encerrar todas as operações o Discord passará para uma mudança ou estruturacao.</p>
+                    <div class="meta-container"><span class="badge danger-style" data-i18n="badge_desc">Operações Encerradas</span></div>
                 </div>
 
                 <div class="company-details" id="placeholder-info">
@@ -342,6 +407,12 @@
                 </div>
 
             </section>
+
+            <footer class="hub-footer">
+                <img src="https://i.imgur.com/31WnC6D.png" alt="Evollogic">
+                <p>&copy; 2026 Evollogic. <span data-i18n="footer_rights">Todos os direitos reservados.</span></p>
+            </footer>
+
         </div>
     </div>
 
@@ -351,6 +422,10 @@
                 hub_menu: "Hub Menu",
                 header_subtitle: "Sua central de marcas e ecossistemas",
                 our_brands: "Nossas Marcas",
+                discontinued_brands: "Descontinuados",
+                pinned_title: "📌 Destaque da Comunidade",
+                pinned_expire: "Expira em",
+                days: "dias",
                 sodhupn_desc: "Loja dedicada à venda de produtos digitais, operando com excelência em 3 grandes marketplaces (GG Max, Eldorado e Desapego Games). Nosso foco absoluto é oferecer segurança e entrega de alto padrão para nossos clientes.",
                 sodhupn_vision_title: "Nossa Visão para 2026",
                 sodhupn_vision_goal: "Unificação de 14 Lojas",
@@ -362,17 +437,23 @@
                 tobump_btn: "Adicionar ao Servidor",
                 toup_desc: "Bot para crescimento geral, análise de dados e publicação automática no Instagram e Facebook (em beta).",
                 scripard_desc: "Canal no YouTube e comunidade no Discord dedicados à criação de scripts.",
-                nks_desc: "Serviço de Nicks Verification e automação personalizada para empresas e pessoas físicas.",
-                hapiephone_desc: "Sistema avançado de automação mobile em nuvem, com gerenciamento de dispositivos focado em Termux.",
+                nks_desc: "Desativado indertiminadamente nossos Discord ou qualquer forma atrelhada a NKS, mantemos uma segurança estritamente segura, e percebemos que boas partes da Nick verification estava sendo usada para roubo de contas, não toleramos isso e decidimos encerrar todas as operações o Discord passará para uma mudança ou estruturacao.",
+                hapiephone_desc: "Grandes novidades, automações 100% automáticas no Roblox em test, via Discord.",
                 roblox_desc: "Bot da NKS e realizador de cações (em beta).",
                 gravity_desc: "Canal focado em tutoriais no YouTube.",
                 "1x1_desc": "Canal no YouTube dedicado a demonstração de scripts.",
-                waiting_selection: "Aguardando Seleção..."
+                waiting_selection: "Aguardando Seleção...",
+                badge_desc: "Operações Encerradas",
+                footer_rights: "Todos os direitos reservados."
             },
             EN: {
                 hub_menu: "Hub Menu",
                 header_subtitle: "Your central hub for brands and ecosystems",
                 our_brands: "Our Brands",
+                discontinued_brands: "Discontinued",
+                pinned_title: "📌 Community Highlight",
+                pinned_expire: "Expires in",
+                days: "days",
                 sodhupn_desc: "Store dedicated to selling digital products, operating with excellence in 3 major marketplaces (GG Max, Eldorado, and Desapego Games). Our absolute focus is offering security and high-standard delivery for our customers.",
                 sodhupn_vision_title: "Our Vision for 2026",
                 sodhupn_vision_goal: "Unification of 14 Stores",
@@ -384,17 +465,23 @@
                 tobump_btn: "Add to Server",
                 toup_desc: "Bot for general growth, data analysis, and automated publishing on Instagram and Facebook (Beta).",
                 scripard_desc: "YouTube channel and Discord community dedicated to script creation.",
-                nks_desc: "Nicks Verification service and tailored automation for businesses and individuals.",
-                hapiephone_desc: "Advanced cloud-based mobile automation system, featuring device management focused on Termux.",
+                nks_desc: "Disabled indefinitely our Discord or any form linked to NKS. We noticed that parts of Nick verification were being used for account theft. We do not tolerate this and have decided to close all operations. Discord will undergo restructuring.",
+                hapiephone_desc: "Great news, 100% automatic automations on Roblox in testing, via Discord.",
                 roblox_desc: "NKS bot and action executor (in beta).",
                 gravity_desc: "Channel focused on YouTube tutorials.",
                 "1x1_desc": "YouTube channel dedicated to script demonstration.",
-                waiting_selection: "Waiting for Selection..."
+                waiting_selection: "Waiting for Selection...",
+                badge_desc: "Operations Closed",
+                footer_rights: "All rights reserved."
             },
             ES: {
                 hub_menu: "Menú del Hub",
                 header_subtitle: "Tu centro de marcas y ecosistemas",
                 our_brands: "Nuestras Marcas",
+                discontinued_brands: "Descontinuados",
+                pinned_title: "📌 Destacado de la Comunidad",
+                pinned_expire: "Expira en",
+                days: "días",
                 sodhupn_desc: "Tienda dedicada a la venta de productos digitales, operando con excelencia en 3 grandes marketplaces (GG Max, Eldorado y Desapego Games). Nuestro enfoque absoluto es ofrecer seguridad y entrega de alto nivel para nuestros clientes.",
                 sodhupn_vision_title: "Nuestra Visión para 2026",
                 sodhupn_vision_goal: "Unificación de 14 Tiendas",
@@ -406,17 +493,18 @@
                 tobump_btn: "Añadir al Servidor",
                 toup_desc: "Bot para crecimiento general, análisis de datos y publicación automática en Instagram y Facebook (Beta).",
                 scripard_desc: "Canal de YouTube y comunidad de Discord dedicados a la creación de scripts.",
-                nks_desc: "Servicio de Nicks Verification y automatización personalizada para empresas e individuos.",
-                hapiephone_desc: "Avanzado sistema de automatización móvil en la nube, con gestión de dispositivos centrada en Termux.",
+                nks_desc: "Desactivado indefinidamente nuestro Discord o cualquier forma vinculada a NKS. Nos dimos cuenta de que partes de la verificación de Nick se estaban utilizando para robo de cuentas. No toleramos esto y decidimos cerrar todas las operaciones. El Discord se reestructurará.",
+                hapiephone_desc: "Grandes novedades, automatizaciones 100% automáticas en Roblox en pruebas, vía Discord.",
                 roblox_desc: "Bot de NKS y realizador de acciones (en beta).",
                 gravity_desc: "Canal centrado en tutoriales de YouTube.",
                 "1x1_desc": "Canal de YouTube dedicado a la demostración de scripts.",
-                waiting_selection: "Esperando Selección..."
+                waiting_selection: "Esperando Selección...",
+                badge_desc: "Operaciones Cerradas",
+                footer_rights: "Todos los derechos reservados."
             }
         };
 
         let currentLang = localStorage.getItem('userLanguage');
-
         if (!currentLang) {
             const browserLang = (navigator.language || navigator.userLanguage).substring(0, 2).toUpperCase();
             currentLang = ['PT', 'EN', 'ES'].includes(browserLang) ? browserLang : 'EN';
@@ -432,28 +520,152 @@
             });
         }
 
+        let currentShowcaseIndex = 0;
+        let hasPinnedPost = false;
+
+        function updateShowcaseView() {
+            const track = document.getElementById('showcase-track');
+            const btnPrev = document.getElementById('showcase-prev');
+            const btnNext = document.getElementById('showcase-next');
+            track.style.transform = `translateX(-${currentShowcaseIndex * 100}%)`;
+            
+            if (hasPinnedPost) {
+                btnPrev.style.display = currentShowcaseIndex > 0 ? 'flex' : 'none';
+                btnNext.style.display = currentShowcaseIndex < 1 ? 'flex' : 'none';
+            } else {
+                btnPrev.style.display = 'none';
+                btnNext.style.display = 'none';
+            }
+        }
+
+        document.getElementById('showcase-prev').addEventListener('click', () => {
+            if(currentShowcaseIndex > 0) currentShowcaseIndex--;
+            updateShowcaseView();
+        });
+        document.getElementById('showcase-next').addEventListener('click', () => {
+            if(currentShowcaseIndex < 1) currentShowcaseIndex++;
+            updateShowcaseView();
+        });
+
+        async function loadPinnedPost() {
+            const pinnedSlide = document.getElementById('slide-pinned');
+            const token = localStorage.getItem('evollogic_auth_token');
+
+            let pinnedData = null;
+            const localPin = localStorage.getItem('evollogic_pinned_post');
+            
+            if (localPin) {
+                try { pinnedData = JSON.parse(localPin); } catch(e) {}
+            }
+
+            try {
+                const response = await fetch('https://evollogic-backend-production.up.railway.app/api/posts/pinned', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const apiData = await response.json();
+                    // CORREÇÃO: Permite posts que tenham conteúdo OU imagem
+                    if(apiData && (apiData.content || apiData.image)) {
+                        pinnedData = apiData;
+                    }
+                }
+            } catch (e) {}
+
+            // CORREÇÃO: Mesma validação aqui para posts salvos
+            if (pinnedData && (pinnedData.content || pinnedData.image)) {
+                const pinDate = new Date(pinnedData.pinnedAt || pinnedData.createdAt || new Date());
+                const diffDays = Math.floor(Math.abs(new Date() - pinDate) / (1000 * 60 * 60 * 24));
+
+                if (diffDays <= 7) {
+                    hasPinnedPost = true;
+                    currentShowcaseIndex = 0;
+                    
+                    const authorName = pinnedData.author?.nickname || pinnedData.author?.name || pinnedData.authorName || 'Administrador';
+                    const authorAvatar = pinnedData.author?.avatar || pinnedData.authorAvatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${authorName}`;
+                    const targetId = pinnedData.author?._id || pinnedData.authorId || '';
+                    let imageHtml = '';
+                    
+                    if (pinnedData.image) imageHtml = `<img src="${pinnedData.image}" class="pinned-image">`;
+                    
+                    const diasRestantes = 7 - diffDays;
+                    const langTxt = translations[currentLang] || translations.PT;
+                    
+                    pinnedSlide.innerHTML = `
+                        <h2 class="section-title" style="color: #f59e0b;">
+                            <span data-i18n="pinned_title">${langTxt.pinned_title}</span>
+                            <span class="badge ad-style" style="margin-left: auto; font-size: 0.75rem;" id="pinnedExpireBadge">${langTxt.pinned_expire} ${diasRestantes} ${langTxt.days}</span>
+                        </h2>
+                        <div class="pinned-card hover-sfx click-sfx" onclick="window.location.href='profile.html?id=${targetId}'">
+                            <div class="pinned-header">
+                                <img src="${authorAvatar}" class="pinned-avatar" alt="Avatar">
+                                <div>
+                                    <div class="pinned-author">${authorName}
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                    </div>
+                                    <div class="pinned-date">${new Date(pinDate).toLocaleDateString()}</div>
+                                </div>
+                            </div>
+                            <div class="pinned-body">${pinnedData.content || ''}${imageHtml}</div>
+                        </div>
+                    `;
+                } else {
+                    hasPinnedPost = false;
+                    localStorage.removeItem('evollogic_pinned_post');
+                }
+            } else {
+                hasPinnedPost = false;
+            }
+
+            const track = document.getElementById('showcase-track');
+            track.style.transition = 'none';
+
+            if (!hasPinnedPost) {
+                currentShowcaseIndex = 1; 
+                pinnedSlide.innerHTML = '<div style="padding: 50px;"></div>';
+            }
+            
+            updateShowcaseView();
+            setTimeout(() => {
+                track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)';
+            }, 50);
+        }
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+
+                const targetId = e.target.getAttribute('data-target');
+                document.getElementById('carousel-ativas').style.display = 'none';
+                document.getElementById('carousel-desc').style.display = 'none';
+                const selectedCarousel = document.getElementById(targetId);
+                selectedCarousel.style.display = 'flex';
+                selectedCarousel.style.animation = 'fadeIn 0.4s';
+
+                const firstItem = selectedCarousel.querySelector('.company-card');
+                if(firstItem) firstItem.click();
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('evollogic_auth_token');
             const profileBtn = document.getElementById('userProfileBtn');
             if (token) {
                 profileBtn.href = 'profile.html';
                 try {
-                    const meRes = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', {
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    });
+                    const meRes = await fetch('https://evollogic-backend-production.up.railway.app/api/user/me', { headers: { 'Authorization': `Bearer ${token}` }});
                     if (meRes.ok) {
                         const myData = await meRes.json();
                         const displayName = myData.nickname || myData.name || 'User';
                         const avatarSrc = myData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${displayName}`;
                         profileBtn.innerHTML = `<img src="${avatarSrc}" alt="Perfil" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
-                    } else {
-                        localStorage.removeItem('evollogic_auth_token');
-                    }
+                    } else { localStorage.removeItem('evollogic_auth_token'); }
                 } catch(e) {}
             }
-
+            
             applyTranslations(currentLang);
-
+            await loadPinnedPost();
+            
             (async () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 let ref = urlParams.get('ref') || 'organico';
@@ -461,7 +673,7 @@
                 const navLang = navigator.language || navigator.userLanguage;
                 if (navLang.includes('pt-PT')) country = 'Portugal';
                 else if (navLang.includes('en')) country = 'EUA';
-
+                
                 try {
                     await fetch('https://evollogic-backend-production.up.railway.app/api/stats/track', {
                         method: 'POST',
@@ -475,6 +687,7 @@
                 if (e.key === 'userLanguage') {
                     currentLang = e.newValue || 'EN';
                     applyTranslations(currentLang);
+                    loadPinnedPost();
                 }
             });
 
@@ -488,21 +701,11 @@
             sfx.click.volume = 0.3;
             sfx.slide.volume = 0.2;
 
-            function playSound(type) {
-                let sound = sfx[type].cloneNode(); 
-                sound.volume = sfx[type].volume;
-                sound.play().catch(() => {}); 
-            }
+            function playSound(type) { let sound = sfx[type].cloneNode(); sound.volume = sfx[type].volume; sound.play().catch(() => {}); }
 
-            document.querySelectorAll('.hover-sfx').forEach(el => {
-                el.addEventListener('mouseenter', () => playSound('hover'));
-            });
-            document.querySelectorAll('.click-sfx').forEach(el => {
-                el.addEventListener('click', () => playSound('click'));
-            });
-            document.querySelectorAll('.slide-sfx').forEach(el => {
-                el.addEventListener('click', () => playSound('slide'));
-            });
+            document.querySelectorAll('.hover-sfx').forEach(el => { el.addEventListener('mouseenter', () => playSound('hover')); });
+            document.querySelectorAll('.click-sfx').forEach(el => { el.addEventListener('click', () => playSound('click')); });
+            document.querySelectorAll('.slide-sfx').forEach(el => { el.addEventListener('click', () => playSound('slide')); });
 
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
@@ -514,22 +717,17 @@
             const adContainerBox = document.getElementById('ad-container-box');
             const adBadgeTag = document.getElementById('ad-badge-tag');
             const adTextDisplay = document.getElementById('ad-text-display');
-            const track = document.getElementById('company-carousel');
             const details = document.querySelectorAll('.company-details');
-            const cards = document.querySelectorAll('.company-card');
-
+            
             const tvPlaylists = [
-                { id: "UUikhw5yi9tW7NjIaWG9KNoQ", title: "Sodhupn TV", badge: {PT: "Destaque", EN: "Featured", ES: "Destacado"}, isAd: false, text: {PT: "🔥 Novidade: O novo sistema da Sodhupn já está no ar!", EN: "🔥 News: The new Sodhupn system is live!", ES: "🔥 Novedad: ¡El nuevo sistema de Sodhupn ya está activo!"} },
+                { id: "UUikhw5yi9tW7NjIaWG9KNoQ", title: "Sodhupn TV", badge: {PT: "Destaque", EN: "Featured", ES: "Destacado"}, isAd: false, text: {PT: "🔥 Novidade: O novo sistema da Sodhupn já está no ar!", EN: " 🔥 News: The new Sodhupn system is live!", ES: "🔥 Novedad: ¡El nuevo sistema de Sodhupn ya está activo!"} },
                 { id: "UUpqcsjk80XDpTg1aSFCE1Rg", title: "Gravity Coil TV", badge: {PT: "Tutoriais", EN: "Tutorials", ES: "Tutoriales"}, isAd: false, text: {PT: "🚀 Aprenda a criar os melhores scripts no Roblox!", EN: "🚀 Learn to create the best Roblox scripts!", ES: "🚀 ¡Aprende a crear los mejores scripts en Roblox!"} },
                 { id: "UUOICWIjtxdufi0jQE2ZlxQw", title: "1x1Scripter TV", badge: {PT: "Scripts", EN: "Scripts", ES: "Scripts"}, isAd: false, text: {PT: "💻 Demonstrações dos projetos mais recentes.", EN: "💻 Demos of the latest projects.", ES: "💻 Demostraciones de los últimos proyectos."} },
                 { id: "UUyJj933jDli0Baj8n76wpqQ", title: "Hapiephone TV", badge: {PT: "Mobile", EN: "Mobile", ES: "Móvil"}, isAd: false, text: {PT: "📱 Automação mobile em nuvem!", EN: "📱 Cloud mobile automation!", ES: "📱 ¡Automatización móvil en la nube!"} }
             ];
 
-            let scheduleIndex = 0;
-            let tvRotationInterval;
-            let nextQueuedPlaylist = null;
-            let nextQueuedTitle = null;
-
+            let scheduleIndex = 0; let tvRotationInterval; let nextQueuedPlaylist = null; let nextQueuedTitle = null;
+            
             function triggerTvEvent(data) {
                 adTextDisplay.style.opacity = 0;
                 setTimeout(() => {
@@ -539,75 +737,63 @@
                     
                     if (data.isAd) {
                         adBadgeTag.textContent = currentLang === 'EN' ? "AD" : (currentLang === 'ES' ? "ANUNCIO" : "ANÚNCIO");
-                        adBadgeTag.classList.add('is-ad');
-                        adContainerBox.classList.add('is-ad');
+                        adBadgeTag.classList.add('is-ad'); adContainerBox.classList.add('is-ad');
                     } else {
                         adBadgeTag.textContent = "INFO";
-                        adBadgeTag.classList.remove('is-ad');
-                        adContainerBox.classList.remove('is-ad');
+                        adBadgeTag.classList.remove('is-ad'); adContainerBox.classList.remove('is-ad');
                     }
                 }, 400);
             }
-
+            
             function rotateTV() {
                 let currentData;
-                
                 if (nextQueuedPlaylist) {
-                    currentData = {
-                        id: nextQueuedPlaylist,
-                        title: nextQueuedTitle + " TV",
-                        badge: {PT: "A Pedido", EN: "Requested", ES: "A Pedido"},
-                        isAd: false,
-                        text: {
-                            PT: `📺 Exibindo a playlist de ${nextQueuedTitle} a seu pedido!`,
-                            EN: `📺 Playing the ${nextQueuedTitle} playlist you selected!`,
-                            ES: `📺 ¡Reproduciendo la lista de ${nextQueuedTitle} que seleccionaste!`
-                        }
-                    };
-                    nextQueuedPlaylist = null; 
+                    currentData = { id: nextQueuedPlaylist, title: nextQueuedTitle + " TV", badge: {PT: "A Pedido", EN: "Requested", ES: "A Pedido"}, isAd: false, text: { PT: `📺 Exibindo a playlist de ${nextQueuedTitle} a seu pedido!`, EN: `📺 Playing the ${nextQueuedTitle} playlist you selected!`, ES: `📺 ¡Reproduciendo la lista de ${nextQueuedTitle} que seleccionaste!` }};
+                    nextQueuedPlaylist = null;
                 } else {
                     currentData = tvPlaylists[scheduleIndex];
                     scheduleIndex = (scheduleIndex + 1) % tvPlaylists.length;
                 }
-
-                // CORREÇÃO DA TV: Usa 'youtube-nocookie' e 'listType=playlist' para evitar bloqueios no celular!
                 document.getElementById('tv-frame').src = `https://www.youtube-nocookie.com/embed?listType=playlist&list=${currentData.id}&autoplay=1&mute=1&playsinline=1`;
                 triggerTvEvent(currentData);
             }
+            
+            rotateTV();
+            tvRotationInterval = setInterval(rotateTV, 45000);
 
-            rotateTV(); 
-            tvRotationInterval = setInterval(rotateTV, 45000); 
+            document.querySelectorAll('.carousel-container').forEach(track => {
+                track.onclick = (e) => {
+                    const card = e.target.closest('.company-card');
+                    if (!card) return;
+                    track.querySelectorAll('.company-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
 
-            track.onclick = (e) => {
-                const card = e.target.closest('.company-card');
-                if (!card) return;
-                
-                cards.forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                
-                const targetId = card.getAttribute('data-target');
-                details.forEach(d => d.classList.remove('active'));
-                const targetInfo = document.getElementById(`${targetId}-info`) || document.getElementById('placeholder-info');
-                targetInfo.classList.add('active');
+                    const targetId = card.getAttribute('data-target');
+                    details.forEach(d => d.classList.remove('active'));
+                    const targetInfo = document.getElementById(`${targetId}-info`) || document.getElementById('placeholder-info');
+                    targetInfo.classList.add('active');
 
-                const ytId = card.getAttribute('data-yt');
-                if (ytId) {
-                    nextQueuedPlaylist = ytId;
-                    nextQueuedTitle = card.querySelector('span').innerText;
-                    
-                    // MELHORIA DE UX: Atualiza a TV instantaneamente quando clica (cancela e reinicia o timer)
-                    clearInterval(tvRotationInterval);
-                    rotateTV();
-                    tvRotationInterval = setInterval(rotateTV, 45000);
-                }
-            };
+                    const ytId = card.getAttribute('data-yt');
+                    if (ytId) {
+                        nextQueuedPlaylist = ytId;
+                        nextQueuedTitle = card.querySelector('span').innerText;
+                        if(hasPinnedPost){
+                            currentShowcaseIndex = 1;
+                            updateShowcaseView();
+                        }
+                        clearInterval(tvRotationInterval); rotateTV(); tvRotationInterval = setInterval(rotateTV, 45000);
+                    }
+                };
+            });
 
             let isTransitioning = false;
-            function move(direction) {
+            function move(direction, trackId) {
                 if (isTransitioning) return;
                 isTransitioning = true;
-                const cardWidth = 160; 
+                const track = document.getElementById(trackId);
+                const cardWidth = 160;
                 track.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                
                 if(direction === 'next') {
                     track.style.transform = `translateX(-${cardWidth}px)`;
                     setTimeout(() => { track.appendChild(track.firstElementChild); track.style.transition = 'none'; track.style.transform = 'translateX(0)'; isTransitioning = false; }, 400);
@@ -616,8 +802,11 @@
                     requestAnimationFrame(() => { track.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)'; track.style.transform = 'translateX(0)'; setTimeout(() => isTransitioning = false, 400); });
                 }
             }
-            document.getElementById('scroll-right').onclick = () => move('next');
-            document.getElementById('scroll-left').onclick = () => move('prev');
+            
+            document.getElementById('scroll-right-ativas').onclick = () => move('next', 'company-carousel');
+            document.getElementById('scroll-left-ativas').onclick = () => move('prev', 'company-carousel');
+            document.getElementById('scroll-right-desc').onclick = () => move('next', 'desc-carousel');
+            document.getElementById('scroll-left-desc').onclick = () => move('prev', 'desc-carousel');
         });
     </script>
 </body>
